@@ -14,9 +14,13 @@ namespace InnatAPP.Infra.Data.Context
             : base(options) 
         { }
 
-        public DbSet<Categoria> Categories { get; set; }
 
-        public DbSet<Produto> Products { get; set; }
+
+        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Produto> Produtos { get; set; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
