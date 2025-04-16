@@ -1,11 +1,17 @@
-﻿using InnatAPP.Domain.Validation;
+﻿#region Importações
+
+using InnatAPP.Domain.Validation;
 using System;
+
+#endregion
 
 namespace InnatAPP.Domain.Entities
 {
     public sealed class Review
 
     {
+        #region Atributos
+
         public int Id { get; set; }
         public int Satisfacao { get; set; }
         public string Mensagem { get; set; }
@@ -14,6 +20,12 @@ namespace InnatAPP.Domain.Entities
         public int Likes { get; set; }
         public int Dislikes { get; set; }
         public decimal Avaliacao { get; set; }
+        public int IdAvaliador { get; set; }
+        public Avaliador Avaliador { get; set; }
+
+        #endregion
+
+        #region Construtores
 
         public Review(int satisfacao, string mensagem, int likes, int dislikes, decimal avaliacao)
         {
@@ -31,28 +43,39 @@ namespace InnatAPP.Domain.Entities
             AtualizadoEm = atualizadoem;    
         }
 
-        public void Update(int satisfacao, string mensagem, int likes, int dislikes, decimal avaliacao)
+        #endregion
+
+        #region Métodos
+
+        public void Atualizar(int satisfacao, string mensagem, int likes, int dislikes, decimal avaliacao)
         {
             ValidateDomain(satisfacao, mensagem, likes, dislikes, avaliacao);
             AtualizadoEm = DateTime.UtcNow;
         }
 
+        #endregion
+
+        #region Validações
+
         private void ValidateDomain(int satisfacao, string mensagem, int likes, int dislikes, decimal avaliacao)
         {
             DomainExceptionValidation.When(satisfacao < 0 || satisfacao > 2,
-               "Satisfação inválida, o valor de satisfação tem que ser entre 0 e 2.");
+            "Satisfação inválida, a satisfação deve estar entre 0 e 2.");
+
+            DomainExceptionValidation.When(!string.IsNullOrEmpty(mensagem) && mensagem.Length < 5,
+            "Mensagem inválida, a mensagem deve ter no mínimo 5 caracteres.");
 
             DomainExceptionValidation.When(mensagem.Length > 500,
-               "mensagem inválida, a mensagem só pode ter no máximo 500 caracteres.");
+            "Mensagem inválida, a mensagem pode ter no máximo 500 caracteres.");
 
             DomainExceptionValidation.When(likes < 0,
-               "Valor de likes inválido.");
+            "Valor de likes inválido.");
 
             DomainExceptionValidation.When(dislikes < 0,
-              "Valor de dislikes inválido.");
+            "Valor de dislikes inválido.");
 
             DomainExceptionValidation.When(avaliacao < 0 || avaliacao > 5,
-              "Avaliação inválida, o valor de avaliação tem ser entre 0 e 5.");
+            "Avaliação inválida, a avaliação deve estar entre 0 e 5.");
 
             Satisfacao = satisfacao;
             Mensagem = mensagem;
@@ -60,7 +83,7 @@ namespace InnatAPP.Domain.Entities
             Dislikes = dislikes;
             Avaliacao = avaliacao;
         }
-        public int IdAvaliador { get; set; }
-        public Avaliador Avaliador { get; set; }
+
+        #endregion
     }
 }

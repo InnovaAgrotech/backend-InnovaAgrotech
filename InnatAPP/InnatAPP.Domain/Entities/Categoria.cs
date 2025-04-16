@@ -1,12 +1,28 @@
-﻿using InnatAPP.Domain.Validation;
+﻿#region Importações
+
+using InnatAPP.Domain.Validation;
 using System.Collections.Generic;
+
+#endregion
 
 namespace InnatAPP.Domain.Entities
 {
     public sealed class Categoria 
     {
+        #region Atributos
+
         public int Id { get; set; }
         public string Nome { get; set; }
+
+        #endregion
+
+        #region Coleções
+
+        public ICollection<Produto> Produtos { get; set; } = new List<Produto>();
+
+        #endregion
+
+        #region Construtores
 
         public Categoria(string nome) 
         { 
@@ -20,12 +36,18 @@ namespace InnatAPP.Domain.Entities
             ValidateDomain(nome);
         }
 
-        public void Update(string nome) 
+        #endregion
+
+        #region Métodos
+
+        public void Atualizar(string nome) 
         {
             ValidateDomain(nome);
         }
 
-        public ICollection<Produto> Produtos { get; set; }
+        #endregion
+
+        #region Validações
 
         private void ValidateDomain(string nome)
         {
@@ -33,12 +55,14 @@ namespace InnatAPP.Domain.Entities
                 "Nome inválido, o nome é obrigatório.");
 
             DomainExceptionValidation.When(nome.Length < 2,
-                "Nome inválido, o nome tem que ter no mínimo 2 caracteres.");
+                "Nome inválido, o nome deve ter no mínimo 2 caracteres.");
 
             DomainExceptionValidation.When(nome.Length > 50,
-                "Nome inválido, o nome só pode ter no máximo 50 caracteres.");
+                "Nome inválido, o nome pode ter no máximo 50 caracteres.");
 
             Nome = nome;
         }
+
+        #endregion
     }
 }

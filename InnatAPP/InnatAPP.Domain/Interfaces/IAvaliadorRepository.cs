@@ -11,10 +11,10 @@ namespace InnatAPP.Domain.Interfaces
 
         Task<Avaliador> BuscarAvaliadorReviewAsync(int? id);
 
-        Task<Avaliador> AdicionarAsync(Review review);
+        Task<Avaliador> AdicionarAsync(Avaliador avaliador);
 
-        Task<Avaliador> AtualizarAsync(Review review);
+        Task<Avaliador> AtualizarAsync(Avaliador avaliador);
 
-        Task<Avaliador> RemoverAsync(Review review);
+        Task<Avaliador> RemoverAsync(Avaliador avaliador);
     }
 }

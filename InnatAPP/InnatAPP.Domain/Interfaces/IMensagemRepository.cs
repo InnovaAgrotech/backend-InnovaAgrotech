@@ -9,10 +9,10 @@ namespace InnatAPP.Domain.Interfaces
         Task<IEnumerable<Mensagem>> BuscarMensagensAsync();
         Task<Mensagem> BuscarPorIdAsync(int? id);
 
-        Task<Mensagem> AdicionarAsync(Produto produto);
+        Task<Mensagem> AdicionarAsync(Mensagem mensagem);
 
-        Task<Mensagem> AtualizarAsync(Produto produto);
+        Task<Mensagem> AtualizarAsync(Mensagem mensagem);
 
-        Task<Mensagem> RemoverAsync(Produto produto);
+        Task<Mensagem> RemoverAsync(Mensagem mensagem);
     }
 }
