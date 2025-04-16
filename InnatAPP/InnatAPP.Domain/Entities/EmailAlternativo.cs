@@ -8,74 +8,65 @@ using InnatAPP.Domain.Shared;
 
 namespace InnatAPP.Domain.Entities
 {
-    public sealed class Mensagem
+    public sealed class EmailAlternativo
     {
         #region Atributos
 
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Texto { get; set; }
+        public string EnderecoEmail { get; set; }
+        public int UsuarioBaseId { get; set; }
+        public UsuarioBase UsuarioBase { get; set; }
 
         #endregion
 
         #region Construtores
 
-        public Mensagem(string nome, string email, string texto)
+        public EmailAlternativo(string enderecodeemail)
         {
-            ValidateDomain(nome, email, texto);
+            ValidateDomain(enderecodeemail);
         }
 
-        public Mensagem(int id, string nome, string email, string texto)
+        public EmailAlternativo(int id, string enderecodeemail)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
-            ValidateDomain(nome, email, texto);
+            ValidateDomain(enderecodeemail);
         }
 
         #endregion
 
         #region Métodos
 
-        public void Atualizar(string nome, string email, string texto)
+        public void Atualizar(string enderecodeemail)
         {
-            ValidateDomain(nome, email, texto);
+            ValidateDomain(enderecodeemail);
         }
 
         #endregion
 
         #region Validações
 
-        private void ValidateDomain(string nome, string email, string texto)
+        private void ValidateDomain(string enderecodeemail)
         {
-            DomainExceptionValidation.When(string.IsNullOrEmpty(nome),
-            "Nome inválido, o nome é obrigatório.");
-
-            DomainExceptionValidation.When(nome.Length < 2,
-            "Nome inválido, o nome deve ter no mínimo 2 caracteres.");
-
-            DomainExceptionValidation.When(nome.Length > 100,
-            "Nome inválido, o nome pode ter no máximo 100 caracteres.");
-
-            DomainExceptionValidation.When(string.IsNullOrEmpty(email),
+            DomainExceptionValidation.When(string.IsNullOrEmpty(enderecodeemail),
             "E-mail inválido, o e-mail é obrigatório.");
 
-            DomainExceptionValidation.When(email.Length < 5,
+            DomainExceptionValidation.When(enderecodeemail.Length < 5,
             "E-mail inválido, o e-mail deve ter no mínimo 5 caracteres.");
 
-            DomainExceptionValidation.When(email.Length > 255,
+            DomainExceptionValidation.When(enderecodeemail.Length > 255,
             "E-mail inválido, o e-mail pode ter no máximo 255 caracteres.");
 
-            DomainExceptionValidation.When(!email.Contains("@"),
+            DomainExceptionValidation.When(!enderecodeemail.Contains("@"),
             "E-mail inválido, o e-mail deve conter um '@'.");
 
-            DomainExceptionValidation.When(email.Contains(" "),
+            DomainExceptionValidation.When(enderecodeemail.Contains(" "),
             "E-mail inválido, o e-mail não pode conter espaços.");
 
-            DomainExceptionValidation.When(email.Split('@').Length - 1 > 1,
+            DomainExceptionValidation.When(enderecodeemail.Split('@').Length - 1 > 1,
             "E-mail inválido, o e-mail pode ter apenas um '@'.");
 
-            var partesEmail = email.Split('@');
+            var partesEmail = enderecodeemail.Split('@');
             var nomeUsuario = partesEmail.Length > 0 ? partesEmail[0] : null;
             var dominio = partesEmail.Length > 1 ? partesEmail[1] : null;
 
@@ -106,18 +97,7 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.Intersect(ConstantesValidacao.caracteresInvalidosEmailDominio).Any(),
             $"E-mail inválido, o domínio não pode conter: {ConstantesValidacao.caracteresInvalidosEmailDominio}.");
 
-            DomainExceptionValidation.When(string.IsNullOrEmpty(texto),
-            "Mensagem inválida, a mensagem é obrigatória.");
-
-            DomainExceptionValidation.When(texto.Length < 2,
-            "Mensagem inválida, a mensagem deve ter no mínimo 2 caracteres.");
-
-            DomainExceptionValidation.When(texto.Length > 700,
-            "Mensagem inválida, a mensagem pode ter no máximo 700 caracteres.");
-
-            Nome = nome;
-            Email = email;
-            Texto = texto;
+            EnderecoEmail = enderecodeemail;
         }
 
         #endregion

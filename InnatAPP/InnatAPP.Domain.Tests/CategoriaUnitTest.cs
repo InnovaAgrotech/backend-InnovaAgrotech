@@ -1,21 +1,31 @@
+#region Importações
+
+using Xunit;
 using FluentAssertions;
 using InnatAPP.Domain.Entities;
-using Xunit;
+
+#endregion
 
 namespace InnatAPP.Domain.Tests
 {
     public class CategoriaUnitTest
     {
+        #region Testes com parâmetros válidos
+
         [Fact(DisplayName = "Criar categoria com estado válido")]
-        public void CreateCategory_WithValideParameters_ResultObjectValidState()
+        public void CriarCategori_ComParametrosValidos_ResultandoEmObjetoComEstadoValido()
         {
             Action action = () => new Categoria(1, "Tratores");
             action.Should()
                 .NotThrow<InnatAPP.Domain.Validation.DomainExceptionValidation>();
         }
 
-        [Fact(DisplayName = "Criar categoria com id inválido")]
-        public void CreateCategory_NegativeIdValue_DomainExceptionInvalidId()
+        #endregion
+
+        #region Testes de id
+
+        [Fact(DisplayName = "Criar categoria com id negativo")]
+        public void CriarCategoria_ComIdNegativo_ResultandoEmExcecaoDeDominio()
         {
             Action action = () => new Categoria(-1, "Tratores");
             action.Should()
@@ -23,8 +33,12 @@ namespace InnatAPP.Domain.Tests
                 .WithMessage("Valor de id inválido.");
         }
 
+        #endregion
+
+        #region Testes de nome
+
         [Fact(DisplayName = "Criar categoria com nome nulo")]
-        public void CreateCategory_WithNullNameValue_DomainExceptionInvalidName()
+        public void CriarCategoria_ComNomeNulo_ResultandoEmExcecaoDeDominio()
         {
             Action action = () => new Categoria(1, null);
             action.Should()
@@ -33,7 +47,7 @@ namespace InnatAPP.Domain.Tests
         }
 
         [Fact(DisplayName = "Criar categoria com nome vazio")]
-        public void CreateCategory_MissingNameValue_DomainExceptionRequiredName()
+        public void CriarCategoria_ComNomeVazio_ResultandoEmExcecaoDeDominio()
         {
             Action action = () => new Categoria(1, "");
             action.Should()
@@ -42,21 +56,23 @@ namespace InnatAPP.Domain.Tests
         }
 
         [Fact(DisplayName = "Criar categoria com nome muito curto")]
-        public void CreateCategory_ShortNameValue_DomainExceptionShortName()
+        public void CriarCategoria_ComNomeMuitoCurto_ResultandoEmExcecaoDeDominio()
         {
-            Action action = () => new Categoria(1, "D");
+            Action action = () => new Categoria(1, "T");
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
-                .WithMessage("Nome inválido, o nome tem que ter no mínimo 2 caracteres.");
+                .WithMessage("Nome inválido, o nome deve ter no mínimo 2 caracteres.");
         }
 
         [Fact(DisplayName = "Criar categoria com nome muito longo")]
-        public void CreateCategory_LongNameValue_DomainExceptionLongName()
+        public void CriarCategoria_ComNomeMuitoLongo_ResultandoEmExcecaoDeDominio()
         {
-            Action action = () => new Categoria(1, "Etiam posuere quam ac quam. Maecenas aliquet accumsan");
+            Action action = () => new Categoria(1, "Sensores e monitores de solo para agricultura de precisão");
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
-                .WithMessage("Nome inválido, o nome só pode ter no máximo 50 caracteres.");
+                .WithMessage("Nome inválido, o nome pode ter no máximo 50 caracteres.");
         }
+
+        #endregion
     }
 }
