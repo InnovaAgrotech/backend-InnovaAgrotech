@@ -1,20 +1,16 @@
-﻿using InnatAPP.Domain.Entities;
+﻿using System.Threading.Tasks;
+using InnatAPP.Domain.Entities;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace InnatAPP.Domain.Interfaces
 {
-    internal interface IAvaliadorRepository
+    public interface IAvaliadorRepository
     {
         Task<IEnumerable<Avaliador>> BuscarAvaliadoresAsync();
-        Task<Avaliador> BuscarPorIdAsync(int? id);
+        Task<Avaliador> BuscarAvaliadorPorIdAsync(int id);
 
-        Task<Avaliador> BuscarAvaliadorReviewAsync(int? id);
-
-        Task<Avaliador> AdicionarAsync(Avaliador avaliador);
-
-        Task<Avaliador> AtualizarAsync(Avaliador avaliador);
-
-        Task<Avaliador> RemoverAsync(Avaliador avaliador);
+        Task<Avaliador> CriarAvaliadorAsync(Avaliador avaliador);
+        Task<Avaliador> AtualizarAvaliadorAsync(Avaliador avaliador);
+        Task<Avaliador> DeletarAvaliadorAsync(Avaliador avaliador);
     }
 }

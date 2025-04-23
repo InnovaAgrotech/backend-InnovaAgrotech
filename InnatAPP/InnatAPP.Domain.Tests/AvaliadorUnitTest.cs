@@ -174,7 +174,7 @@ namespace InnatAPP.Domain.Tests
             Action action = () => new Avaliador(1, "Eduarda Ribeiro", "<EduardaRb>@outlook.com", "Edu@rd@9382", "Foto-de-perfil.png", "Agrônoma há mais de 10 anos.");
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
-                .WithMessage($"E-mail inválido, o nome de usuário não pode conter: {ConstantesValidacao.caracteresInvalidosEmailUsuario}.");
+                .WithMessage($"E-mail inválido, o nome de usuário não pode conter: {new string(ConstantesValidacao.caracteresInvalidosEmailUsuario)}.");
         }
 
         [Fact(DisplayName = "Criar avaliador com domínio de email vazio")]
@@ -219,7 +219,7 @@ namespace InnatAPP.Domain.Tests
             Action action = () => new Avaliador(1, "Eduarda Ribeiro", "EduardaRb@outlook#.com", "Edu@rd@9382", "Foto-de-perfil.png", "Agrônoma há mais de 10 anos.");
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
-                .WithMessage($"E-mail inválido, o domínio não pode conter: {ConstantesValidacao.caracteresInvalidosEmailDominio}.");
+                .WithMessage($"E-mail inválido, o domínio não pode conter: {new string(ConstantesValidacao.caracteresInvalidosEmailDominio)}.");
         }
 
         #endregion
@@ -304,7 +304,7 @@ namespace InnatAPP.Domain.Tests
             Action action = () => new Avaliador(1, "Eduarda Ribeiro", "EduardaRb@outlook.com", "Eduarda9382", "Foto-de-perfil.png", "Agrônoma há mais de 10 anos.");
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
-                .WithMessage($"Senha inválida, a senha deve conter pelo menos um caractere especial. Exemplo: {ConstantesValidacao.caracteresEspeciaisPermitidosSenha}.");
+                .WithMessage($"Senha inválida, a senha deve conter pelo menos um caractere especial. Exemplo: {new string(ConstantesValidacao.caracteresEspeciaisPermitidosSenha)}.");
         }
 
         #endregion

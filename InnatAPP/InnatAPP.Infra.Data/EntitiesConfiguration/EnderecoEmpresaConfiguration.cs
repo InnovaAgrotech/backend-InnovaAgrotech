@@ -1,17 +1,12 @@
 ﻿using InnatAPP.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {  
-    class EnderecoConfiguration : IEntityTypeConfiguration<Endereco>
+    class EnderecoEmpresaConfiguration : IEntityTypeConfiguration<EnderecoEmpresa>
     {
-        public void Configure(EntityTypeBuilder<Endereco> builder)
+        public void Configure(EntityTypeBuilder<EnderecoEmpresa> builder)
         {
                 
             builder.HasKey(t => t.Id);
@@ -43,9 +38,9 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
             builder.Property(p => p.Complemento)
                 .HasMaxLength(100);
 
-            builder.HasOne(e => e.UsuarioBase)
-                .WithMany(e => e.Enderecos)
-                .HasForeignKey(e => e.UsuarioBaseId)
+            builder.HasOne(e => e.Empresa)
+                .WithMany(e => e.EnderecosEmpresa)
+                .HasForeignKey(e => e.IdEmpresa)
                 .IsRequired();
         }
     }

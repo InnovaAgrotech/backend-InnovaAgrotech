@@ -1,18 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Identity\**" />
-    <Compile Remove="Repositories\**" />
     <EmbeddedResource Remove="Identity\**" />
-    <EmbeddedResource Remove="Repositories\**" />
     <None Remove="Identity\**" />
-    <None Remove="Repositories\**" />
   </ItemGroup>
 
   <ItemGroup>
