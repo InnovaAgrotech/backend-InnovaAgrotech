@@ -8,10 +8,10 @@ namespace InnatAPP.Domain.Shared
 {
     public class ConstantesValidacao
     {
-        public const string caracteresEspeciaisPermitidosSenha = "! @ # $ % ^ & * ( ) _ - + = { } [ ] ; : < > | / ? ' \" , .";
+        public static readonly char[] caracteresEspeciaisPermitidosSenha = new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=', '{', '}', '[', ']', ';', ':', '<', '>', '|', '/', '?', '\'', '"', ',', '.' };
 
-        public const string caracteresInvalidosEmailUsuario = "( ) [ ] ; : < >  , \\ \"";
+        public static readonly char [] caracteresInvalidosEmailUsuario = new char[] { '(', ')', '[', ']', ';', ':', '<', '>',  ',', '\\', '"' };
 
-        public const string caracteresInvalidosEmailDominio = "! # $ % ^ & * ( ) _ + = { } [ ] ; : < > | / ? ' \" ";
+        public static readonly char[] caracteresInvalidosEmailDominio = new char[] { '!', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '=', '{', '}', '[', ']', ';', ':', '<', '>', '|', '/', '?', '\'', '"' };
     }
 }

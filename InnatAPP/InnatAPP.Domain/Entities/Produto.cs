@@ -1,6 +1,7 @@
 ﻿#region Importações
 
 using System.Collections.Generic;
+using System.Linq;
 using InnatAPP.Domain.Validation;
 
 #endregion
@@ -32,33 +33,33 @@ namespace InnatAPP.Domain.Entities
 
         #region Construtores
 
-        public Produto(string nome, string descricao, decimal avaliacao, string imagem, int totalreviews)
+        public Produto(string nome, string descricao, decimal avaliacao, string imagem, int totalReviews)
         {
-            ValidateDomain(nome, descricao, avaliacao, imagem, totalreviews);
+            ValidateDomain(nome, descricao, avaliacao, imagem, totalReviews);
         }
 
-        public Produto(int id, string nome, string descricao, decimal avaliacao, string imagem, int totalreviews)
+        public Produto(int id, string nome, string descricao, decimal avaliacao, string imagem, int totalReviews)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
-            ValidateDomain(nome, descricao, avaliacao, imagem, totalreviews);
+            ValidateDomain(nome, descricao, avaliacao, imagem, totalReviews);
         }
 
         #endregion
 
         #region Métodos
 
-        public void Atualizar(string nome, string descricao, decimal avaliacao, string imagem, int totalreviews, int idcategoria)
+        public void Alterar(string nome, string descricao, decimal avaliacao, string imagem, int totalReviews, int idCategoria)
         {
-            ValidateDomain(nome, descricao, avaliacao, imagem, totalreviews);
-            IdCategoria = idcategoria;
+            ValidateDomain(nome, descricao, avaliacao, imagem, totalReviews);
+            IdCategoria = idCategoria;
         }
 
         #endregion
 
         #region Validações
 
-        private void ValidateDomain(string nome, string descricao, decimal avaliacao, string imagem, int totalreviews)
+        private void ValidateDomain(string nome, string descricao, decimal avaliacao, string imagem, int totalReviews)
         {
             DomainExceptionValidation.When(string.IsNullOrEmpty(nome),
             "Nome inválido, o nome é obrigatório.");
@@ -84,14 +85,15 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(imagem?.Length > 250,
             "URL da imagem inválida, a URL pode ter no máximo 250 caracteres.");
 
-            DomainExceptionValidation.When(totalreviews < 0,
-             "Valor de total de reviews inválido.");
+            DomainExceptionValidation.When(totalReviews < 0,
+            "Valor de total de reviews inválido.");
 
             Nome = nome;
             Descricao = descricao;
             Avaliacao = avaliacao;
             Imagem = imagem;
-            TotalReviews = totalreviews;
+            TotalReviews = totalReviews;
+
         }
 
         #endregion

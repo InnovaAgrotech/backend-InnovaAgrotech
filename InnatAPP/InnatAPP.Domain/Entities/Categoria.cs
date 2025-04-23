@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace InnatAPP.Domain.Entities
 {
-    public sealed class Categoria 
+    public class Categoria 
     {
         #region Atributos
 
@@ -40,7 +40,7 @@ namespace InnatAPP.Domain.Entities
 
         #region Métodos
 
-        public void Atualizar(string nome) 
+        public void Alterar(string nome) 
         {
             ValidateDomain(nome);
         }

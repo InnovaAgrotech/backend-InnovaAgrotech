@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
-    class AvaliadorConfiguration : IEntityTypeConfiguration<Avaliador>
+    class MensagemConfiguration : IEntityTypeConfiguration<Mensagem>
     {
-        public void Configure(EntityTypeBuilder<Avaliador> builder)
+        public void Configure(EntityTypeBuilder<Mensagem> builder)
         {
             builder.HasKey(t => t.Id);
 
@@ -18,15 +18,9 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
                 .HasMaxLength(255)
                 .IsRequired();
 
-            builder.Property(p => p.Senha)
-                .HasMaxLength(64)
+            builder.Property(p => p.Texto)
+                .HasMaxLength(700)
                 .IsRequired();
-
-            builder.Property(p => p.Foto)
-                .HasMaxLength(250);
-
-            builder.Property(p => p.Bio)
-                .HasMaxLength(500);
         }
     }
 }

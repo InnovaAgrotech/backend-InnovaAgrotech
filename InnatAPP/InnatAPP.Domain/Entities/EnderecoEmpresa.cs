@@ -7,7 +7,7 @@ using InnatAPP.Domain.Validation;
 
 namespace InnatAPP.Domain.Entities
 {
-    public sealed class Endereco
+    public sealed class EnderecoEmpresa
     {
         #region Atributos
 
@@ -19,19 +19,19 @@ namespace InnatAPP.Domain.Entities
         public string Estado { get; set; }
         public string Cep { get; set; }
         public string Complemento { get; set; }
-        public int UsuarioBaseId { get; set; }
-        public UsuarioBase UsuarioBase { get; set; }
+        public int IdEmpresa { get; set; }
+        public Empresa Empresa { get; set; }
 
         #endregion
 
         #region Construtores
 
-        public Endereco(string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento)
+        public EnderecoEmpresa(string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento)
         {
             ValidateDomain(numero, rua, bairro, cidade, estado, cep, complemento);
         }
 
-        public Endereco(int id, string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento)
+        public EnderecoEmpresa(int id, string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
@@ -42,7 +42,7 @@ namespace InnatAPP.Domain.Entities
 
         #region Métodos
 
-        public void Atualizar(string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento)
+        public void Alterar(string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento)
         {
             ValidateDomain(numero, rua, bairro, cidade, estado, cep, complemento);
         }

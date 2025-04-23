@@ -7,7 +7,7 @@ using InnatAPP.Domain.Validation;
 
 namespace InnatAPP.Domain.Entities
 {
-    public sealed class Telefone
+    public sealed class TelefoneAvaliador
     {
         #region Atributos
 
@@ -16,19 +16,19 @@ namespace InnatAPP.Domain.Entities
         public int Id { get; set; }
         public string DDD { get; set; }
         public string Numero { get; set; }
-        public int UsuarioBaseId { get; set; }
-        public UsuarioBase UsuarioBase { get; set; }
+        public int IdAvaliador { get; set; }
+        public Avaliador Avaliador { get; set; }
 
         #endregion
 
         #region Construtores
 
-        public Telefone(string ddd, string numero)
+        public TelefoneAvaliador(string ddd, string numero)
         {
             ValidateDomain(ddd, numero);
         }
 
-        public Telefone(int id, string ddd, string numero)
+        public TelefoneAvaliador(int id, string ddd, string numero)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
@@ -39,7 +39,7 @@ namespace InnatAPP.Domain.Entities
 
         #region Métodos
 
-        public void Atualizar(string ddd, string numero)
+        public void Alterar(string ddd, string numero)
         {
             ValidateDomain(ddd, numero);
         }

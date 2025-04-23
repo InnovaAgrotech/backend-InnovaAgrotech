@@ -41,7 +41,7 @@ namespace InnatAPP.Domain.Tests
         [Fact(DisplayName = "Criar mensagem com nome nulo")]
         public void CriarMensagem_ComNomeNulo_ResultandoEmExcecaoDeDominio()
         {
-            Action action = () => new Mensagem(1, null, "EduardaRb@outlook.com", "Adorei o site, mas gostaria que tivesse como favoritar produtos");
+            Action action = () => new Mensagem(1, null!, "EduardaRb@outlook.com", "Adorei o site, mas gostaria que tivesse como favoritar produtos");
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
                 .WithMessage("Nome inválido, o nome é obrigatório.");
@@ -81,7 +81,7 @@ namespace InnatAPP.Domain.Tests
         [Fact(DisplayName = "Criar mensagem com email nulo")]
         public void CriarMensagem_ComEmailNulo_ResultandoEmExcecaoDeDominio()
         {
-            Action action = () => new Mensagem(1, "Eduarda Ribeiro", null, "Adorei o site, mas gostaria que tivesse como favoritar produtos");
+            Action action = () => new Mensagem(1, "Eduarda Ribeiro", null!, "Adorei o site, mas gostaria que tivesse como favoritar produtos");
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
                 .WithMessage("E-mail inválido, o e-mail é obrigatório.");
@@ -174,7 +174,7 @@ namespace InnatAPP.Domain.Tests
             Action action = () => new Mensagem(1, "Eduarda Ribeiro", "<EduardaRb>@outlook.com", "Adorei o site, mas gostaria que tivesse como favoritar produtos");
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
-                .WithMessage($"E-mail inválido, o nome de usuário não pode conter: {ConstantesValidacao.caracteresInvalidosEmailUsuario}.");
+                .WithMessage($"E-mail inválido, o nome de usuário não pode conter: {new string(ConstantesValidacao.caracteresInvalidosEmailUsuario)}.");
         }
 
         [Fact(DisplayName = "Criar mensagem com domínio de email vazio")]
@@ -219,7 +219,7 @@ namespace InnatAPP.Domain.Tests
             Action action = () => new Mensagem(1, "Eduarda Ribeiro", "EduardaRb@outlook#.com", "Adorei o site, mas gostaria que tivesse como favoritar produtos");
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
-                .WithMessage($"E-mail inválido, o domínio não pode conter: {ConstantesValidacao.caracteresInvalidosEmailDominio}.");
+                .WithMessage($"E-mail inválido, o domínio não pode conter: {new string(ConstantesValidacao.caracteresInvalidosEmailDominio)}.");
         }
 
         #endregion
@@ -229,7 +229,7 @@ namespace InnatAPP.Domain.Tests
         [Fact(DisplayName = "Criar mensagem com texto nulo")]
         public void CriarMensagem_ComTextoNulo_ResultandoEmExcecaoDeDominio()
         {
-            Action action = () => new Mensagem(1, "Eduarda Ribeiro", "EduardaRb@outlook.com", null);
+            Action action = () => new Mensagem(1, "Eduarda Ribeiro", "EduardaRb@outlook.com", null!);
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
                 .WithMessage("Mensagem inválida, a mensagem é obrigatória.");

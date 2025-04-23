@@ -13,8 +13,8 @@ namespace InnatAPP.Domain.Entities
         #region Atributos
 
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Email { get; set; }
+        public string Nome { get; set; } 
+        public string Email { get; set; } 
         public string Texto { get; set; }
 
         #endregion
@@ -37,7 +37,7 @@ namespace InnatAPP.Domain.Entities
 
         #region Métodos
 
-        public void Atualizar(string nome, string email, string texto)
+        public void Alterar(string nome, string email, string texto)
         {
             ValidateDomain(nome, email, texto);
         }
@@ -66,18 +66,18 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(email.Length > 255,
             "E-mail inválido, o e-mail pode ter no máximo 255 caracteres.");
 
-            DomainExceptionValidation.When(!email.Contains("@"),
+            DomainExceptionValidation.When(!email.Contains('@'),
             "E-mail inválido, o e-mail deve conter um '@'.");
 
-            DomainExceptionValidation.When(email.Contains(" "),
+            DomainExceptionValidation.When(email.Contains(' '),
             "E-mail inválido, o e-mail não pode conter espaços.");
 
             DomainExceptionValidation.When(email.Split('@').Length - 1 > 1,
             "E-mail inválido, o e-mail pode ter apenas um '@'.");
 
             var partesEmail = email.Split('@');
-            var nomeUsuario = partesEmail.Length > 0 ? partesEmail[0] : null;
-            var dominio = partesEmail.Length > 1 ? partesEmail[1] : null;
+            var nomeUsuario = partesEmail.Length > 0 ? partesEmail[0] : string.Empty;
+            var dominio = partesEmail.Length > 1 ? partesEmail[1] : string.Empty;
 
             DomainExceptionValidation.When(partesEmail.Length == 2 && string.IsNullOrEmpty(nomeUsuario),
             "E-mail inválido, o nome de usuário é obrigatório.");
@@ -88,13 +88,13 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(partesEmail.Length == 2 && nomeUsuario.EndsWith("."),
             "E-mail inválido, o nome de usuário não pode terminar com ponto (.).");
 
-            DomainExceptionValidation.When(partesEmail.Length == 2 && nomeUsuario.Intersect(ConstantesValidacao.caracteresInvalidosEmailUsuario).Any(),
-            $"E-mail inválido, o nome de usuário não pode conter: {ConstantesValidacao.caracteresInvalidosEmailUsuario}.");
+            DomainExceptionValidation.When(partesEmail.Length == 2 && !string.IsNullOrEmpty(nomeUsuario) && nomeUsuario.Intersect(ConstantesValidacao.caracteresInvalidosEmailUsuario).Any(),
+            $"E-mail inválido, o nome de usuário não pode conter: {new string (ConstantesValidacao.caracteresInvalidosEmailUsuario)}.");
 
             DomainExceptionValidation.When(partesEmail.Length == 2 && string.IsNullOrEmpty(dominio),
             "E-mail inválido, o domínio é obrigatório.");
 
-            DomainExceptionValidation.When(partesEmail.Length == 2 && !dominio.Contains("."),
+            DomainExceptionValidation.When(partesEmail.Length == 2 && !dominio.Contains('.'),
              "E-mail inválido, o domínio deve conter pelo menos um '.' (Exemplo: gmail.com).");
 
             DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.StartsWith("-"),
@@ -103,8 +103,8 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.EndsWith("-"),
             "E-mail inválido, o e-mail não pode terminar com hífen (-).");
 
-            DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.Intersect(ConstantesValidacao.caracteresInvalidosEmailDominio).Any(),
-            $"E-mail inválido, o domínio não pode conter: {ConstantesValidacao.caracteresInvalidosEmailDominio}.");
+            DomainExceptionValidation.When(partesEmail.Length == 2 && !string.IsNullOrEmpty(dominio) &&  dominio.Intersect(ConstantesValidacao.caracteresInvalidosEmailDominio).Any(),
+            $"E-mail inválido, o domínio não pode conter: {new string (ConstantesValidacao.caracteresInvalidosEmailDominio)}.");
 
             DomainExceptionValidation.When(string.IsNullOrEmpty(texto),
             "Mensagem inválida, a mensagem é obrigatória.");

@@ -1,23 +1,18 @@
-﻿using InnatAPP.Domain.Entities;
-using System;
+﻿using System.Threading.Tasks;
+using InnatAPP.Domain.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InnatAPP.Domain.Interfaces
 {
-    internal interface IReviewRepository
+    public interface IReviewRepository
     {
+        Task<Review> BuscarReviewPorIdAsync(int id);
         Task<IEnumerable<Review>> BuscarReviewsAsync();
-        Task<Review> BuscarPorIdAsync(int? id);
+        Task<IEnumerable<Review>> BuscarReviewsPorAvaliadorAsync(int idAvaliador);
+        Task<IEnumerable<Review>> BuscarReviewsPorProdutoAsync(int idProduto);
 
-        Task<Review> BuscarReviewProdutoAsync(int? id);
-
-        Task<Review> AdicionarAsync(Review review);
-
-        Task<Review> AtualizarAsync(Review review);
-
-        Task<Review> RemoverAsync(Review review);
+        Task<Review> CriarReviewAsync(Review review);
+        Task<Review> AtualizarReviewAsync(Review review);
+        Task<Review> DeletarReviewAsync(Review review);
     }
 }

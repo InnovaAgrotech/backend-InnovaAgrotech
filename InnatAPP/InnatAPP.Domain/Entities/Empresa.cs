@@ -9,7 +9,7 @@ using InnatAPP.Domain.Shared;
 
 namespace InnatAPP.Domain.Entities
 {
-    public sealed class Empresa : UsuarioBase
+    public sealed class Empresa 
     {
         #region Atributos
 
@@ -24,6 +24,9 @@ namespace InnatAPP.Domain.Entities
 
         #region Coleções
 
+        public ICollection<EmailAlternativoEmpresa> EmailsAlternativosEmpresa { get; set; } = new List<EmailAlternativoEmpresa>();
+        public ICollection<TelefoneEmpresa> TelefonesEmpresa { get; set; } = new List<TelefoneEmpresa>();
+        public ICollection<EnderecoEmpresa> EnderecosEmpresa { get; set; } = new List<EnderecoEmpresa>();
         public ICollection<Produto> Produtos { get; set; } = new List<Produto>();
 
         #endregion
@@ -46,7 +49,7 @@ namespace InnatAPP.Domain.Entities
 
         #region Métodos
 
-        public void Atualizar(string nome, string email, string senha, string foto, string bio)
+        public void Alterar(string nome, string email, string senha, string foto, string bio)
         {
             ValidateDomain(nome, email, senha, foto, bio);
         }
@@ -75,10 +78,10 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(email.Length > 255,
             "E-mail inválido, o e-mail pode ter no máximo 255 caracteres.");
 
-            DomainExceptionValidation.When(!email.Contains("@"),
+            DomainExceptionValidation.When(!email.Contains('@'),
             "E-mail inválido, o e-mail deve conter um '@'.");
 
-            DomainExceptionValidation.When(email.Contains(" "),
+            DomainExceptionValidation.When(email.Contains(' '),
             "E-mail inválido, o e-mail não pode conter espaços.");
 
             DomainExceptionValidation.When(email.Split('@').Length - 1 > 1,
@@ -98,12 +101,12 @@ namespace InnatAPP.Domain.Entities
             "E-mail inválido, o nome de usuário não pode terminar com ponto (.).");
 
             DomainExceptionValidation.When(partesEmail.Length == 2 && nomeUsuario.Intersect(ConstantesValidacao.caracteresInvalidosEmailUsuario).Any(),
-            $"E-mail inválido, o nome de usuário não pode conter: {ConstantesValidacao.caracteresInvalidosEmailUsuario}.");
+            $"E-mail inválido, o nome de usuário não pode conter: {new string(ConstantesValidacao.caracteresInvalidosEmailUsuario)}.");
 
             DomainExceptionValidation.When(partesEmail.Length == 2 && string.IsNullOrEmpty(dominio),
             "E-mail inválido, o domínio é obrigatório.");
 
-            DomainExceptionValidation.When(partesEmail.Length == 2 && !dominio.Contains("."),
+            DomainExceptionValidation.When(partesEmail.Length == 2 && !dominio.Contains('.'),
              "E-mail inválido, o domínio deve conter pelo menos um '.' (Exemplo: gmail.com).");
 
             DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.StartsWith("-"),
@@ -113,7 +116,7 @@ namespace InnatAPP.Domain.Entities
             "E-mail inválido, o e-mail não pode terminar com hífen (-).");
 
             DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.Intersect(ConstantesValidacao.caracteresInvalidosEmailDominio).Any(),
-            $"E-mail inválido, o domínio não pode conter: {ConstantesValidacao.caracteresInvalidosEmailDominio}.");
+            $"E-mail inválido, o domínio não pode conter: {new string(ConstantesValidacao.caracteresInvalidosEmailDominio)}.");
 
             DomainExceptionValidation.When(string.IsNullOrEmpty(senha),
             "Senha inválida, a senha é obrigatória.");
@@ -124,7 +127,7 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(senha.Length > 64,
             "Senha inválida, a senha pode ter no máximo 64 caracteres.");
 
-            DomainExceptionValidation.When(senha.Contains(" "),
+            DomainExceptionValidation.When(senha.Contains(' '),
             "Senha inválida, a senha não pode conter espaços.");
 
             DomainExceptionValidation.When(!senha.Any(char.IsUpper),
@@ -137,7 +140,7 @@ namespace InnatAPP.Domain.Entities
             "Senha inválida, a senha deve conter pelo menos um número.");
 
             DomainExceptionValidation.When(!senha.Intersect(ConstantesValidacao.caracteresEspeciaisPermitidosSenha).Any(),
-            $"Senha inválida, a senha deve conter pelo menos um caractere especial. Exemplo: {ConstantesValidacao.caracteresEspeciaisPermitidosSenha}.");
+            $"Senha inválida, a senha deve conter pelo menos um caractere especial. Exemplo: {new string(ConstantesValidacao.caracteresEspeciaisPermitidosSenha)}.");
 
             DomainExceptionValidation.When(foto?.Length > 250,
             "URL da imagem inválida, a URL pode ter no máximo 250 caracteres.");

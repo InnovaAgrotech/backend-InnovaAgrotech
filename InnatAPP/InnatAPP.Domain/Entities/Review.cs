@@ -22,6 +22,8 @@ namespace InnatAPP.Domain.Entities
         public decimal Avaliacao { get; set; }
         public int IdAvaliador { get; set; }
         public Avaliador Avaliador { get; set; }
+        public int IdProduto { get; set; }
+        public Produto Produto { get; set; }
 
         #endregion
 
@@ -47,7 +49,7 @@ namespace InnatAPP.Domain.Entities
 
         #region Métodos
 
-        public void Atualizar(int satisfacao, string mensagem, int likes, int dislikes, decimal avaliacao)
+        public void Alterar(int satisfacao, string mensagem, int likes, int dislikes, decimal avaliacao)
         {
             ValidateDomain(satisfacao, mensagem, likes, dislikes, avaliacao);
             AtualizadoEm = DateTime.UtcNow;
