@@ -141,10 +141,10 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(!senha.Intersect(ConstantesValidacao.caracteresEspeciaisPermitidosSenha).Any(),
             $"Senha inválida, a senha deve conter pelo menos um caractere especial. Exemplo: {new string(ConstantesValidacao.caracteresEspeciaisPermitidosSenha)}.");
 
-            DomainExceptionValidation.When(foto?.Length > 250,
+            DomainExceptionValidation.When(foto.Length > 250,
             "URL da imagem inválida, a URL pode ter no máximo 250 caracteres.");
 
-            DomainExceptionValidation.When(bio?.Length > 500,
+            DomainExceptionValidation.When(bio.Length > 500,
             "Biografia inválida, a biografia pode ter no máximo 500 caracteres.");
 
             Nome = nome;

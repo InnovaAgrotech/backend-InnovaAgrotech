@@ -10,7 +10,7 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
         {
             builder.HasKey(t => t.Id);
 
-            builder.Property(p => p.DDD)
+            builder.Property(p => p.Ddd)
                 .HasMaxLength(2)
                 .IsRequired();
 

@@ -14,7 +14,7 @@ namespace InnatAPP.Domain.Entities
         public const string DDI = "55";
 
         public int Id { get; set; }
-        public string DDD { get; set; }
+        public string Ddd { get; set; }
         public string Numero { get; set; }
         public int IdAvaliador { get; set; }
         public Avaliador Avaliador { get; set; }
@@ -46,7 +46,7 @@ namespace InnatAPP.Domain.Entities
 
         public string ObterNumeroCompleto()
         {
-            return $"+{DDI}({DDD}){Numero}";
+            return $"+{DDI}({Ddd}){Numero}";
         }
 
         #endregion
@@ -79,7 +79,7 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(numero.Length > 9,
             "Número inválido, o número deve ter no máximo 9 dígitos.");
 
-            DDD = ddd;
+            Ddd = ddd;
             Numero = numero;
         }
 
