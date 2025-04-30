@@ -27,7 +27,7 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
                 .HasMaxLength(80)
                 .IsRequired();
                 
-            builder.Property(p => p.Cidade)
+            builder.Property(p => p.Estado)
                 .HasMaxLength(2)
                 .IsRequired();
 

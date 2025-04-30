@@ -21,52 +21,52 @@ namespace InnatAPP.Domain.Entities
 
         #region Construtores
 
-        public EmailAlternativoAvaliador(string enderecodeemail)
+        public EmailAlternativoAvaliador(string enderecoEmail)
         {
-            ValidateDomain(enderecodeemail);
+            ValidateDomain(enderecoEmail);
         }
 
-        public EmailAlternativoAvaliador(int id, string enderecodeemail)
+        public EmailAlternativoAvaliador(int id, string enderecoEmail)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
-            ValidateDomain(enderecodeemail);
+            ValidateDomain(enderecoEmail);
         }
 
         #endregion
 
         #region Métodos
 
-        public void Alterar(string enderecodeemail)
+        public void Alterar(string enderecoEmail)
         {
-            ValidateDomain(enderecodeemail);
+            ValidateDomain(enderecoEmail);
         }
 
         #endregion
 
         #region Validações
 
-        private void ValidateDomain(string enderecodeemail)
+        private void ValidateDomain(string enderecoEmail)
         {
-            DomainExceptionValidation.When(string.IsNullOrEmpty(enderecodeemail),
+            DomainExceptionValidation.When(string.IsNullOrEmpty(enderecoEmail),
             "E-mail inválido, o e-mail é obrigatório.");
 
-            DomainExceptionValidation.When(enderecodeemail.Length < 5,
+            DomainExceptionValidation.When(enderecoEmail.Length < 5,
             "E-mail inválido, o e-mail deve ter no mínimo 5 caracteres.");
 
-            DomainExceptionValidation.When(enderecodeemail.Length > 255,
+            DomainExceptionValidation.When(enderecoEmail.Length > 255,
             "E-mail inválido, o e-mail pode ter no máximo 255 caracteres.");
 
-            DomainExceptionValidation.When(!enderecodeemail.Contains('@'),
+            DomainExceptionValidation.When(!enderecoEmail.Contains('@'),
             "E-mail inválido, o e-mail deve conter um '@'.");
 
-            DomainExceptionValidation.When(enderecodeemail.Contains(' '),
+            DomainExceptionValidation.When(enderecoEmail.Contains(' '),
             "E-mail inválido, o e-mail não pode conter espaços.");
 
-            DomainExceptionValidation.When(enderecodeemail.Split('@').Length - 1 > 1,
+            DomainExceptionValidation.When(enderecoEmail.Split('@').Length - 1 > 1,
             "E-mail inválido, o e-mail pode ter apenas um '@'.");
 
-            var partesEmail = enderecodeemail.Split('@');
+            var partesEmail = enderecoEmail.Split('@');
             var nomeUsuario = partesEmail.Length > 0 ? partesEmail[0] : null;
             var dominio = partesEmail.Length > 1 ? partesEmail[1] : null;
 
@@ -97,7 +97,7 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.Intersect(ConstantesValidacao.caracteresInvalidosEmailDominio).Any(),
             $"E-mail inválido, o domínio não pode conter: {new string(ConstantesValidacao.caracteresInvalidosEmailDominio)}.");
 
-            EnderecoEmail = enderecodeemail;
+            EnderecoEmail = enderecoEmail;
         }
 
         #endregion
