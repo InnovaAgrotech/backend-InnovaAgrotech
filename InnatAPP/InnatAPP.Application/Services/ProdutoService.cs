@@ -1,65 +1,82 @@
 ﻿using AutoMapper;
-using InnatAPP.Application.DTOs;
-using InnatAPP.Application.Interfaces;
 using InnatAPP.Domain.Entities;
+using InnatAPP.Application.DTOs;
 using InnatAPP.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using InnatAPP.Application.Interfaces;
+using MediatR;
+using InnatAPP.Application.Produtos.Queries;
+using InnatAPP.Application.Produtos.Commands;
 
 namespace InnatAPP.Application.Services
 {
     public class ProdutoService : IProdutoService
     {
-        private IProdutoRepository _produtoRepository;
         private readonly IMapper _mapper;
-        public ProdutoService(IProdutoRepository produtoRepository, IMapper mapper)
+        private readonly IMediator _mediator;
+        public ProdutoService(IMapper mapper, IMediator mediator)
         {
-            _produtoRepository = produtoRepository;
             _mapper = mapper;
+            _mediator = mediator;
         }
         public async Task AtualizarProdutoAsync(ProdutoDTO produtoDto)
         {
-            var produtoEntity = _mapper.Map<Produto>(produtoDto);
-            await _produtoRepository.AtualizarProdutoAsync(produtoEntity);
+            var produtoUpdateCommand = _mapper.Map<ProdutoUpdateCommand>(produtoDto);
+            await _mediator.Send(produtoUpdateCommand);
         }
 
         public async Task<ProdutoDTO> BuscarProdutoPorIdAsync(int id)
         {
-            var produtoEntity = await _produtoRepository.BuscarProdutoPorIdAsync(id);
-            return _mapper.Map<ProdutoDTO>(produtoEntity);
+            var produtoByIdQuery = new GetProdutoByIdQuery(id);
+            if (produtoByIdQuery == null)
+                throw new Exception($"Não foi possível carregar a entidade.");
+
+            var result = await _mediator.Send(produtoByIdQuery);
+            return _mapper.Map<ProdutoDTO>(result);
         }
 
         public async Task<IEnumerable<ProdutoDTO>> BuscarProdutosAsync()
         {
-            var produtoEntity = await _produtoRepository.BuscarProdutosAsync();
-            return _mapper.Map<IEnumerable<ProdutoDTO>>(produtoEntity);
+            var produtosQuery = new GetProdutosQuery();
+            if (produtosQuery == null)
+                throw new Exception($"Não foi possível carregar a entidade.");
+
+            var result = await _mediator.Send(produtosQuery);
+            return _mapper.Map<IEnumerable<ProdutoDTO>>(result);
         }
 
         public async Task<IEnumerable<ProdutoDTO>> BuscarProdutosPorCategoriaAsync(int idCategoria)
         {
-            var produtoEntity = await _produtoRepository.BuscarProdutosPorCategoriaAsync(idCategoria);
-            return _mapper.Map <IEnumerable<ProdutoDTO>>(produtoEntity);
+            var produtosPorCategoriaQuery = new GetProdutosPorCategoriaQuery(idCategoria);
+            if (produtosPorCategoriaQuery == null)
+                throw new Exception($"Não foi possível carregar a entidade.");
+
+            var result = await _mediator.Send(produtosPorCategoriaQuery);
+            return _mapper.Map<IEnumerable<ProdutoDTO>>(result);
         }
 
         public async Task<IEnumerable<ProdutoDTO>> BuscarProdutosPorEmpresaAsync(int idEmpresa)
         {
-            var produtoEntity = await _produtoRepository.BuscarProdutosPorCategoriaAsync(idEmpresa);
-            return _mapper.Map<IEnumerable<ProdutoDTO>>(produtoEntity);
+            var produtosPorEmpresaQuery = new GetProdutosPorEmpresaQuery(idEmpresa);
+            if (produtosPorEmpresaQuery == null)
+                throw new Exception($"Não foi possível carregar a entidade.");
+
+            var result = await _mediator.Send(produtosPorEmpresaQuery);
+            return _mapper.Map<IEnumerable<ProdutoDTO>>(result);
         }
 
         public async Task CriarProdutoAsync(ProdutoDTO produtoDto)
         {
-            var produtoEntity = _mapper.Map<Produto>(produtoDto);
-            await _produtoRepository.CriarProdutoAsync(produtoEntity);
+            var produtoCreateCommand = _mapper.Map<ProdutoCreateCommand>(produtoDto);
+            await _mediator.Send(produtoCreateCommand);
         }
 
         public async Task DeletarProdutoAsync(int id)
         {
-            var produtoEntity = _produtoRepository.BuscarProdutoPorIdAsync(id).Result;
-            await _produtoRepository.DeletarProdutoAsync(produtoEntity);
+            var produtoRemoveCommand = new ProdutoRemoveCommand(id);
+            if (produtoRemoveCommand == null)
+                throw new Exception($"Não foi possível carregar a entidade.");
+
+            await _mediator.Send(produtoRemoveCommand);
         }
     }
 }

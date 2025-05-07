@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using InnatAPP.Domain.Entities;
-using System.Collections.Generic;
+﻿using InnatAPP.Domain.Entities;
 
 namespace InnatAPP.Domain.Interfaces
 {

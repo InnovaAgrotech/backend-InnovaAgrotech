@@ -13,4 +13,9 @@ namespace InnatAPP.Application.DTOs
         [DisplayName("Nome")]
         public string Nome { get; set; }
     }
+
+    public class CategoriaProdutosDTO : CategoriaDTO 
+    {
+        public List <ProdutoDTO> Produtos { get; set; }
+    }
 }

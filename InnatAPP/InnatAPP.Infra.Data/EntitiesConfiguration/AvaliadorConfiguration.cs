@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
-    class AvaliadorConfiguration : IEntityTypeConfiguration<Avaliador>
+    public class AvaliadorConfiguration : IEntityTypeConfiguration<Avaliador>
     {
         public void Configure(EntityTypeBuilder<Avaliador> builder)
         {

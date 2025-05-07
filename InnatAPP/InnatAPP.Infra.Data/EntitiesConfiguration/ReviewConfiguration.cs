@@ -2,23 +2,22 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-class ReviewConfiguration : IEntityTypeConfiguration<Review>
+public class ReviewConfiguration : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
         builder.HasKey(t => t.Id);
 
-        builder.Property(p => p.Satisfacao)
-            .IsRequired();
-
         builder.Property(p => p.Mensagem)
             .HasMaxLength(500);
 
         builder.Property(p => p.CriadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasDefaultValue(DateTime.UtcNow);
 
         builder.Property(p => p.AtualizadoEm)
-            .IsRequired();
+            .IsRequired()
+            .HasDefaultValue(DateTime.UtcNow);
 
         builder.Property(p => p.Likes)
             .IsRequired()

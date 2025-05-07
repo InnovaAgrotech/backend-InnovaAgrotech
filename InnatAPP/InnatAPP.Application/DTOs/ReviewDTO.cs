@@ -8,10 +8,6 @@ namespace InnatAPP.Application.DTOs
     {
         public int Id { get; set; }
 
-        [Range(0, 2, ErrorMessage = "Satisfação inválida, a satisfação deve estar entre 0 e 2.")]
-        [DisplayName("Satisfação")]
-        public int Satisfacao { get; set; }
-
         [MaxLength(500, ErrorMessage = "Mensagem inválida, a mensagem pode ter no máximo 500 caracteres.")]
         [DisplayName("Mensagem")]
         public string Mensagem { get; set; }
@@ -34,11 +30,12 @@ namespace InnatAPP.Application.DTOs
 
         [DisplayName("Avaliador")]
         public int IdAvaliador { get; set; }
-        public Avaliador Avaliador { get; set; }
 
         [DisplayName("Produto")]
         public int IdProduto { get; set; }
 
-        public Produto Produto { get; set; }
+        public AvaliadorDTO Avaliador { get; set; }
+
+        public ProdutoDTO Produto { get; set; }
     }
 }

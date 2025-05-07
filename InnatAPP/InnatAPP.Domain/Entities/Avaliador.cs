@@ -1,9 +1,7 @@
 ﻿#region Importações
 
-using System.Linq;
-using System.Collections.Generic;
-using InnatAPP.Domain.Validation;
 using InnatAPP.Domain.Shared;
+using InnatAPP.Domain.Validation;
 
 #endregion
 
@@ -23,6 +21,7 @@ namespace InnatAPP.Domain.Entities
         #endregion
 
         #region Coleções
+
         public ICollection<EmailAlternativoAvaliador> EmailsAlternativosAvaliador { get; set; } = new List<EmailAlternativoAvaliador>();
         public ICollection<TelefoneAvaliador> TelefonesAvaliador { get; set; } = new List<TelefoneAvaliador>();
         public ICollection<EnderecoAvaliador> EnderecosAvaliador { get; set; } = new List<EnderecoAvaliador>();
@@ -141,10 +140,10 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(!senha.Intersect(ConstantesValidacao.caracteresEspeciaisPermitidosSenha).Any(),
             $"Senha inválida, a senha deve conter pelo menos um caractere especial. Exemplo: {new string(ConstantesValidacao.caracteresEspeciaisPermitidosSenha)}.");
 
-            DomainExceptionValidation.When(foto.Length > 250,
+            DomainExceptionValidation.When(foto?.Length > 250,
             "URL da imagem inválida, a URL pode ter no máximo 250 caracteres.");
 
-            DomainExceptionValidation.When(bio.Length > 500,
+            DomainExceptionValidation.When(bio?.Length > 500,
             "Biografia inválida, a biografia pode ter no máximo 500 caracteres.");
 
             Nome = nome;

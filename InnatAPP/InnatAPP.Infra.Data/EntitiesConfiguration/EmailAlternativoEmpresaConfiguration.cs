@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
-    class EmailAlternativoEmpresaConfiguration : IEntityTypeConfiguration<EmailAlternativoEmpresa>
+    public class EmailAlternativoEmpresaConfiguration : IEntityTypeConfiguration<EmailAlternativoEmpresa>
     {
         public void Configure(EntityTypeBuilder<EmailAlternativoEmpresa> builder)
         {

@@ -1,6 +1,5 @@
 ﻿#region Importações
 
-using System.Linq;
 using InnatAPP.Domain.Validation;
 
 #endregion
@@ -11,7 +10,7 @@ namespace InnatAPP.Domain.Entities
     {
         #region Atributos
 
-        public const string DDI = "55";
+        public const string Ddi = "55";
 
         public int Id { get; set; }
         public string Ddd { get; set; }
@@ -23,16 +22,18 @@ namespace InnatAPP.Domain.Entities
 
         #region Construtores
 
-        public TelefoneAvaliador(string ddd, string numero)
+        public TelefoneAvaliador(string ddd, string numero, int idAvaliador)
         {
             ValidateDomain(ddd, numero);
+            IdAvaliador = idAvaliador;
         }
 
-        public TelefoneAvaliador(int id, string ddd, string numero)
+        public TelefoneAvaliador(int id, string ddd, string numero, int idAvaliador)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
             ValidateDomain(ddd, numero);
+            IdAvaliador = idAvaliador;
         }
 
         #endregion
@@ -46,7 +47,7 @@ namespace InnatAPP.Domain.Entities
 
         public string ObterNumeroCompleto()
         {
-            return $"+{DDI}({Ddd}){Numero}";
+            return $"+{Ddi}({Ddd}){Numero}";
         }
 
         #endregion
@@ -84,6 +85,5 @@ namespace InnatAPP.Domain.Entities
         }
 
         #endregion
-
     }
 }

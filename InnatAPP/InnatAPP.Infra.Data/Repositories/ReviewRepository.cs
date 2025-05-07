@@ -22,7 +22,9 @@ namespace InnatAPP.Infra.Data.Repositories
 
         public async Task<Review> BuscarReviewPorIdAsync(int id)
         {
-            return await _reviewContext.Reviews.FindAsync(id);
+            return await _reviewContext.Reviews.Include(e => e.Produto)
+                .Include(e => e.Avaliador)
+                .SingleOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Review>> BuscarReviewsAsync()

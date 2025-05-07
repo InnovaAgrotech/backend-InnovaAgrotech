@@ -21,16 +21,18 @@ namespace InnatAPP.Domain.Entities
 
         #region Construtores
 
-        public EmailAlternativoEmpresa(string enderecoEmail)
+        public EmailAlternativoEmpresa(string enderecoEmail, int idEmpresa)
         {
             ValidateDomain(enderecoEmail);
+            IdEmpresa = idEmpresa;
         }
 
-        public EmailAlternativoEmpresa(int id, string enderecoEmail)
+        public EmailAlternativoEmpresa(int id, string enderecoEmail, int idEmpresa)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
             ValidateDomain(enderecoEmail);
+            IdEmpresa = idEmpresa;
         }
 
         #endregion

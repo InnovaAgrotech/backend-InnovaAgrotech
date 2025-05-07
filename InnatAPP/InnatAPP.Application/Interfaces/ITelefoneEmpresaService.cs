@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InnatAPP.Application.Interfaces
 {
-    public interface ITelefoneEmpresaServico
+    public interface ITelefoneEmpresaService
     {
         Task<TelefoneEmpresaDTO> BuscarTelefoneDeEmpresaPorIdAsync(int id);
         Task<IEnumerable<TelefoneEmpresaDTO>> BuscarTelefonesDeEmpresasAsync();

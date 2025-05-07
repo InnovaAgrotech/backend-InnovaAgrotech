@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {  
-    class EnderecoAvaliadorConfiguration : IEntityTypeConfiguration<EnderecoAvaliador>
+    public class EnderecoAvaliadorConfiguration : IEntityTypeConfiguration<EnderecoAvaliador>
     {
         public void Configure(EntityTypeBuilder<EnderecoAvaliador> builder)
         {

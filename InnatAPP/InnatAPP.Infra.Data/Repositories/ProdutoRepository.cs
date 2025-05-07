@@ -22,7 +22,10 @@ namespace InnatAPP.Infra.Data.Repositories
 
         public async Task<Produto> BuscarProdutoPorIdAsync(int id)
         {
-            return await _produtoContext.Produtos.FindAsync(id);
+            return await _produtoContext.Produtos
+                .Include(p => p.Categoria)
+                .Include(p => p.Empresa)
+                .SingleOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Produto>> BuscarProdutosAsync()
@@ -33,16 +36,18 @@ namespace InnatAPP.Infra.Data.Repositories
         public async Task<IEnumerable<Produto>> BuscarProdutosPorCategoriaAsync(int idCategoria)
         {
             return await _produtoContext.Produtos
-                .Include(e => e.Categoria)
-                .Where(e => e.IdCategoria == idCategoria)
+                .Include(p => p.Categoria)
+                .Include(p => p.Empresa)
+                .Where(p => p.IdCategoria == idCategoria)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Produto>> BuscarProdutosPorEmpresaAsync(int idEmpresa)
         {
             return await _produtoContext.Produtos
-                .Include(e => e.Empresa)
-                .Where(e => e.IdEmpresa == idEmpresa)
+                .Include(p => p.Empresa)
+                .Include(p => p.Categoria)
+                .Where(p => p.IdEmpresa == idEmpresa)
                 .ToListAsync();
         }
 

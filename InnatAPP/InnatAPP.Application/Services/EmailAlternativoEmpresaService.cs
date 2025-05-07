@@ -1,17 +1,12 @@
 ﻿using AutoMapper;
-using InnatAPP.Application.DTOs;
-using InnatAPP.Application.Interfaces;
 using InnatAPP.Domain.Entities;
+using InnatAPP.Application.DTOs;
 using InnatAPP.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using InnatAPP.Application.Interfaces;
 
 namespace InnatAPP.Application.Services
 {
-    class EmailAlternativoEmpresaService : IEmailAlternativoEmpresaService
+    public class EmailAlternativoEmpresaService : IEmailAlternativoEmpresaService
     {
         private IEmailAlternativoEmpresaRepository _emailAlternativoEmpresaRepository;
         private readonly IMapper _mapper;

@@ -10,6 +10,8 @@ namespace InnatAPP.Application.DTOs
 {
     public class EmpresaDTO
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Nome inválido, o nome é obrigatório.")]
         [MinLength(2, ErrorMessage = "Nome inválido, o nome deve ter no mínimo 2 caracteres.")]
         [MaxLength(100, ErrorMessage = "Nome inválido, o nome pode ter no máximo 100 caracteres.")]
@@ -35,5 +37,10 @@ namespace InnatAPP.Application.DTOs
         [MaxLength(500, ErrorMessage = "Biografia inválida, a biografia pode ter no máximo 500 caracteres.")]
         [DisplayName("Biografia")]
         public string Bio { get; set; }
+    }
+
+    public class EmpresaProdutosDTO
+    {
+        public List<ProdutoDTO> Produtos { get; set; }
     }
 }
