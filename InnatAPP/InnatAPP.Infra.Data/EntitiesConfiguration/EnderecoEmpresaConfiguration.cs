@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {  
-    class EnderecoEmpresaConfiguration : IEntityTypeConfiguration<EnderecoEmpresa>
+    public class EnderecoEmpresaConfiguration : IEntityTypeConfiguration<EnderecoEmpresa>
     {
         public void Configure(EntityTypeBuilder<EnderecoEmpresa> builder)
         {

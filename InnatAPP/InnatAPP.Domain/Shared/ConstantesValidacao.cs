@@ -12,6 +12,10 @@ namespace InnatAPP.Domain.Shared
 
         public static readonly char [] caracteresInvalidosEmailUsuario = new char[] { '(', ')', '[', ']', ';', ':', '<', '>',  ',', '\\', '"' };
 
-        public static readonly char[] caracteresInvalidosEmailDominio = new char[] { '!', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '=', '{', '}', '[', ']', ';', ':', '<', '>', '|', '/', '?', '\'', '"' };
+        public static readonly char[] caracteresInvalidosInicioFimEmailUsuario = new char[] { '!', '#', '$', '%', '&', '\'', '*', '+', '/', '=', '?', '^', '`', '{', '|', '}', '~' };
+
+        public static readonly char[] caracteresInvalidosEmailDominio = new char[] { '!', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '=', '{', '}', '[', ']', ';', ':', '<', '>', '|', '/', '?', '\'', '"', '\\', '~', '`','^' };
+
+        
     }
 }

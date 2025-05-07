@@ -22,6 +22,6 @@ namespace InnatAPP.Application.DTOs
 
         [DisplayName("Empresa")]
         public int IdEmpresa { get; set; }
-        public Empresa Empresa { get; set; }
+        public EmpresaDTO Empresa { get; set; }
     }
 }

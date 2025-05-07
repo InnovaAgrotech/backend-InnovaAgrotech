@@ -26,16 +26,18 @@ namespace InnatAPP.Domain.Entities
 
         #region Construtores
 
-        public EnderecoAvaliador(string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento)
+        public EnderecoAvaliador(string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento, int idAvaliador)
         {
             ValidateDomain(numero, rua, bairro, cidade, estado, cep, complemento);
+            IdAvaliador = idAvaliador;
         }
 
-        public EnderecoAvaliador(int id, string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento)
+        public EnderecoAvaliador(int id, string numero, string rua, string bairro, string cidade, string estado, string cep, string complemento, int idAvaliador)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
             ValidateDomain(numero, rua, bairro, cidade, estado, cep, complemento);
+            IdAvaliador = idAvaliador;
         }
 
         #endregion

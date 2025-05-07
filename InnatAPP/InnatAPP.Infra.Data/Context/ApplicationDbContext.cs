@@ -1,18 +1,13 @@
 ﻿using InnatAPP.Domain.Entities;
+using InnatAPP.Infra.Data.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InnatAPP.Infra.Data.Context
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
-            : base(options) 
-        { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Avaliador> Avaliadores { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
@@ -26,7 +21,6 @@ namespace InnatAPP.Infra.Data.Context
         public DbSet<Review> Reviews { get; set; }
         public DbSet<TelefoneAvaliador> TelefonesAvaliador { get; set; }
         public DbSet<TelefoneEmpresa> TelefonesEmpresa { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder Builder)
         {

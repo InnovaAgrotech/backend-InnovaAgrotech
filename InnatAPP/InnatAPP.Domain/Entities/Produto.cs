@@ -1,7 +1,5 @@
 ﻿#region Importações
 
-using System.Collections.Generic;
-using System.Linq;
 using InnatAPP.Domain.Validation;
 
 #endregion
@@ -33,25 +31,35 @@ namespace InnatAPP.Domain.Entities
 
         #region Construtores
 
-        public Produto(string nome, string descricao, decimal avaliacao, string imagem, int totalReviews)
+        public Produto(string nome, string descricao, string imagem, int idCategoria, int idEmpresa)
         {
-            ValidateDomain(nome, descricao, avaliacao, imagem, totalReviews);
+            ValidateDomain(nome, descricao, imagem);
+            Avaliacao = 5.0m;
+            TotalReviews = 0;
+            IdCategoria = idCategoria;
+            IdEmpresa = idEmpresa;
         }
 
-        public Produto(int id, string nome, string descricao, decimal avaliacao, string imagem, int totalReviews)
+        public Produto(int id, string nome, string descricao, decimal avaliacao, string imagem, int totalReviews, int idCategoria, int idEmpresa)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
-            ValidateDomain(nome, descricao, avaliacao, imagem, totalReviews);
+            ValidateDomain(nome, descricao, imagem);
+            DomainExceptionValidation.When(avaliacao < 0 || avaliacao > 5, "Valor de avaliação inválido.");
+            Avaliacao = avaliacao;
+            DomainExceptionValidation.When(totalReviews < 0, "Valor total de reviews inválido.");
+            TotalReviews = totalReviews;
+            IdCategoria = idCategoria;
+            IdEmpresa = idEmpresa;
         }
 
         #endregion
 
         #region Métodos
 
-        public void Alterar(string nome, string descricao, decimal avaliacao, string imagem, int totalReviews, int idCategoria)
+        public void Alterar(string nome, string descricao, string imagem, int idCategoria)
         {
-            ValidateDomain(nome, descricao, avaliacao, imagem, totalReviews);
+            ValidateDomain(nome, descricao, imagem);
             IdCategoria = idCategoria;
         }
 
@@ -59,7 +67,7 @@ namespace InnatAPP.Domain.Entities
 
         #region Validações
 
-        private void ValidateDomain(string nome, string descricao, decimal avaliacao, string imagem, int totalReviews)
+        private void ValidateDomain(string nome, string descricao, string imagem)
         {
             DomainExceptionValidation.When(string.IsNullOrEmpty(nome),
             "Nome inválido, o nome é obrigatório.");
@@ -79,21 +87,12 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(descricao.Length > 500,
             "Descrição inválida, a descrição pode ter no máximo 500 caracteres.");
 
-            DomainExceptionValidation.When(avaliacao < 0 || avaliacao > 5,
-            "Avaliação inválida, o valor de avaliação tem ser entre 0 e 5.");
-
             DomainExceptionValidation.When(imagem?.Length > 250,
             "URL da imagem inválida, a URL pode ter no máximo 250 caracteres.");
 
-            DomainExceptionValidation.When(totalReviews < 0,
-            "Valor de total de reviews inválido.");
-
             Nome = nome;
             Descricao = descricao;
-            Avaliacao = avaliacao;
             Imagem = imagem;
-            TotalReviews = totalReviews;
-
         }
 
         #endregion

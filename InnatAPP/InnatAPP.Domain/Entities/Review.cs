@@ -1,25 +1,22 @@
 ﻿#region Importações
 
 using InnatAPP.Domain.Validation;
-using System;
 
 #endregion
 
 namespace InnatAPP.Domain.Entities
 {
     public sealed class Review
-
     {
         #region Atributos
 
         public int Id { get; set; }
-        public int Satisfacao { get; set; }
+        public decimal Avaliacao { get; set; }
         public string Mensagem { get; set; }
         public DateTime CriadoEm { get; set; }
         public DateTime AtualizadoEm { get; set; }
         public int Likes { get; set; }
         public int Dislikes { get; set; }
-        public decimal Avaliacao { get; set; }
         public int IdAvaliador { get; set; }
         public Avaliador Avaliador { get; set; }
         public int IdProduto { get; set; }
@@ -29,29 +26,39 @@ namespace InnatAPP.Domain.Entities
 
         #region Construtores
 
-        public Review(int satisfacao, string mensagem, int likes, int dislikes, decimal avaliacao)
+        public Review(decimal avaliacao, string mensagem, int idAvaliador, int idProduto)
         {
-            ValidateDomain(satisfacao, mensagem, likes, dislikes, avaliacao);
+            ValidateDomain(avaliacao, mensagem);
             CriadoEm = DateTime.UtcNow;
             AtualizadoEm = DateTime.UtcNow;
+            Likes = 0;
+            Dislikes = 0;
+            IdAvaliador = idAvaliador;
+            IdProduto = idProduto;
         }
 
-        public Review(int id, int satisfacao, string mensagem, DateTime criadoem, DateTime atualizadoem, int likes, int dislikes, decimal avaliacao)
+        public Review(int id, decimal avaliacao, string mensagem, DateTime criadoEm, DateTime atualizadoEm, int likes, int dislikes, int idAvaliador, int idProduto)
         {
             DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
             Id = id;
-            ValidateDomain(satisfacao, mensagem, likes, dislikes, avaliacao);
-            CriadoEm = criadoem;
-            AtualizadoEm = atualizadoem;    
+            ValidateDomain(avaliacao, mensagem);
+            CriadoEm = criadoEm;
+            AtualizadoEm = atualizadoEm;
+            DomainExceptionValidation.When(likes < 0, "Valor de likes inválido.");
+            Likes = likes;
+            DomainExceptionValidation.When(dislikes < 0, "Valor de dislikes inválido.");
+            Dislikes = dislikes;
+            IdAvaliador = idAvaliador;
+            IdProduto = idProduto;
         }
 
         #endregion
 
         #region Métodos
 
-        public void Alterar(int satisfacao, string mensagem, int likes, int dislikes, decimal avaliacao)
+        public void Alterar(decimal avaliacao, string mensagem)
         {
-            ValidateDomain(satisfacao, mensagem, likes, dislikes, avaliacao);
+            ValidateDomain(avaliacao, mensagem);
             AtualizadoEm = DateTime.UtcNow;
         }
 
@@ -59,10 +66,10 @@ namespace InnatAPP.Domain.Entities
 
         #region Validações
 
-        private void ValidateDomain(int satisfacao, string mensagem, int likes, int dislikes, decimal avaliacao)
+        private void ValidateDomain(decimal avaliacao, string mensagem)
         {
-            DomainExceptionValidation.When(satisfacao < 0 || satisfacao > 2,
-            "Satisfação inválida, a satisfação deve estar entre 0 e 2.");
+            DomainExceptionValidation.When(avaliacao < 0 || avaliacao > 5,
+            "Avaliação inválida, a avaliação deve estar entre 0 e 5.");
 
             DomainExceptionValidation.When(!string.IsNullOrEmpty(mensagem) && mensagem.Length < 5,
             "Mensagem inválida, a mensagem deve ter no mínimo 5 caracteres.");
@@ -70,19 +77,7 @@ namespace InnatAPP.Domain.Entities
             DomainExceptionValidation.When(mensagem.Length > 500,
             "Mensagem inválida, a mensagem pode ter no máximo 500 caracteres.");
 
-            DomainExceptionValidation.When(likes < 0,
-            "Valor de likes inválido.");
-
-            DomainExceptionValidation.When(dislikes < 0,
-            "Valor de dislikes inválido.");
-
-            DomainExceptionValidation.When(avaliacao < 0 || avaliacao > 5,
-            "Avaliação inválida, a avaliação deve estar entre 0 e 5.");
-
-            Satisfacao = satisfacao;
             Mensagem = mensagem;
-            Likes = likes;
-            Dislikes = dislikes;
             Avaliacao = avaliacao;
         }
 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
-    class CategoriaConfiguration : IEntityTypeConfiguration<Categoria>
+    public class CategoriaConfiguration : IEntityTypeConfiguration<Categoria>
     {
         public void Configure(EntityTypeBuilder<Categoria> builder)
         {

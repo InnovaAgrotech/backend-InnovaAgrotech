@@ -31,13 +31,14 @@ namespace InnatAPP.Application.DTOs
         [DisplayName("Total de reviews")]
         public int TotalReviews { get; set; }
 
-        public Categoria Categoria { get; set; }
-
         [DisplayName("Categoria")]
         public int IdCategoria { get; set; }
 
         [DisplayName("Empresa")]
         public int IdEmpresa { get; set; }
 
+        public CategoriaDTO Categoria { get; set; }
+
+        public EmpresaDTO Empresa { get; set; }
     }
 }

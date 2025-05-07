@@ -16,6 +16,6 @@ namespace InnatAPP.Application.DTOs
 
         [DisplayName("Avaliador")]
         public int IdAvaliador { get; set; }
-        public Avaliador Avaliador { get; set; }
+        public AvaliadorDTO Avaliador { get; set; }
     }
 }

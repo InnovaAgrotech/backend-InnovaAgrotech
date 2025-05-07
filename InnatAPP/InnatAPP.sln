@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnatAPP.Infra.IoC", "Innat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnatAPP.Domain.Tests", "InnatAPP.Domain.Tests\InnatAPP.Domain.Tests.csproj", "{B215ADC4-08B6-4898-9117-612D45086D02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnatAPP.App", "InnatAPP.App\InnatAPP.App.csproj", "{939FFD0C-A4B9-4B15-81E1-A2F34833F2C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnatAPP.API", "InnatAPP.App\InnatAPP.API.csproj", "{939FFD0C-A4B9-4B15-81E1-A2F34833F2C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InnatAPP.Infra.Data", "InnatAPP.Infra.Data\InnatAPP.Infra.Data.csproj", "{918EE8CD-F4B9-4C43-B677-8D244B2C5B1D}"
 EndProject

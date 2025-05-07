@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
-    class MensagemConfiguration : IEntityTypeConfiguration<Mensagem>
+    public class MensagemConfiguration : IEntityTypeConfiguration<Mensagem>
     {
         public void Configure(EntityTypeBuilder<Mensagem> builder)
         {

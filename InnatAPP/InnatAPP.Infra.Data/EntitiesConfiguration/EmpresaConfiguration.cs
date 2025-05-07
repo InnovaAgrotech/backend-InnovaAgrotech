@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
-    class EmpresaConfiguration : IEntityTypeConfiguration<Empresa>
+    public class EmpresaConfiguration : IEntityTypeConfiguration<Empresa>
     {
         public void Configure(EntityTypeBuilder<Empresa> builder)
         {
