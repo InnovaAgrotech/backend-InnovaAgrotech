@@ -20,16 +20,16 @@ namespace InnatAPP.API.Controllers
         public async Task<ActionResult<IEnumerable<CategoriaDTO>>> Get()
         {
             var categorias = await _categoriaService.BuscarCategoriasAsync();
-            if (categorias == null) 
-            { 
+            if (categorias == null)
+            {
                 return NotFound("Categorias não encontradas.");
             }
             return Ok(categorias);
         }
 
         [HttpGet("{id:int}", Name = "GetCategoria")]
-        public async Task<ActionResult<CategoriaDTO>> Get(int id) 
-        { 
+        public async Task<ActionResult<CategoriaDTO>> Get(int id)
+        {
             var categoria = await _categoriaService.BuscarCategoriaPorIdAsync(id);
             if (categoria == null)
             {
@@ -50,7 +50,7 @@ namespace InnatAPP.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] CategoriaDTO categoriaDTO) 
+        public async Task<ActionResult> Put(int id, [FromBody] CategoriaDTO categoriaDTO)
         {
             if (id != categoriaDTO.Id)
                 return BadRequest("Dados inválidos.");
@@ -64,12 +64,12 @@ namespace InnatAPP.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<CategoriaDTO>> Delete(int id) 
-        { 
-         var categoria = await _categoriaService.BuscarCategoriaPorIdAsync(id);
-            if (categoria == null) 
-            {  
-                return NotFound("Categoria não encontrada."); 
+        public async Task<ActionResult<CategoriaDTO>> Delete(int id)
+        {
+            var categoria = await _categoriaService.BuscarCategoriaPorIdAsync(id);
+            if (categoria == null)
+            {
+                return NotFound("Categoria não encontrada.");
             }
 
             await _categoriaService.DeletarCategoriaAsync(id);
