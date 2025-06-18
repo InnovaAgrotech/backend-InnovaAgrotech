@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
-using InnatAPP.Application.DTOs;
 using InnatAPP.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using InnatAPP.Application.DTOs;
 
 namespace InnatAPP.Application.Mappings
 {
@@ -16,18 +11,12 @@ namespace InnatAPP.Application.Mappings
             CreateMap<Avaliador, AvaliadorDTO>().ReverseMap();
 
             CreateMap<Categoria, CategoriaDTO>().ReverseMap();
-            CreateMap<Categoria, CategoriaProdutosDTO>().ReverseMap();
 
-            CreateMap<EmailAlternativoAvaliador, EmailAlternativoAvaliadorDTO>().ReverseMap();
-
-            CreateMap<EmailAlternativoEmpresa, EmailAlternativoEmpresaDTO>().ReverseMap();
+            CreateMap<EmailAlternativo, EmailAlternativoDTO>().ReverseMap();
 
             CreateMap<Empresa, EmpresaDTO>().ReverseMap();
-            CreateMap<Empresa, EmpresaProdutosDTO>().ReverseMap();
 
-            CreateMap<EnderecoAvaliador, EnderecoAvaliadorDTO>().ReverseMap();
-
-            CreateMap<EnderecoEmpresa, EnderecoEmpresaDTO>().ReverseMap();
+            CreateMap<Endereco, EnderecoDTO>().ReverseMap();
 
             CreateMap<Mensagem, MensagemDTO>().ReverseMap();
 
@@ -35,9 +24,9 @@ namespace InnatAPP.Application.Mappings
 
             CreateMap<Review, ReviewDTO>().ReverseMap();
 
-            CreateMap<TelefoneAvaliador, TelefoneAvaliadorDTO>().ReverseMap();
+            CreateMap<Telefone, TelefoneDTO>().ReverseMap();
 
-            CreateMap<TelefoneEmpresa, TelefoneEmpresaDTO>().ReverseMap();
+            CreateMap<Usuario, UsuarioDTO>().ReverseMap();
         }
     }
 }

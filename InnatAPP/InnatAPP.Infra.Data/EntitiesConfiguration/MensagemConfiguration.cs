@@ -1,6 +1,6 @@
 ﻿using InnatAPP.Domain.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
@@ -8,17 +8,19 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
     {
         public void Configure(EntityTypeBuilder<Mensagem> builder)
         {
-            builder.HasKey(t => t.Id);
+            builder.ToTable("Mensagens");
 
-            builder.Property(p => p.Nome)
+            builder.HasKey(m => m.Id);
+
+            builder.Property(m => m.Nome)
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.Property(p => p.Email)
-                .HasMaxLength(255)
+            builder.Property(m => m.Email)
+                .HasMaxLength(254)
                 .IsRequired();
 
-            builder.Property(p => p.Texto)
+            builder.Property(m => m.Texto)
                 .HasMaxLength(700)
                 .IsRequired();
         }

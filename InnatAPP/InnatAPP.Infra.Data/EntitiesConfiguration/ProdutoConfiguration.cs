@@ -1,6 +1,6 @@
 ﻿using InnatAPP.Domain.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
@@ -8,7 +8,9 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
     {
         public void Configure(EntityTypeBuilder<Produto> builder) 
         {
-            builder.HasKey(t => t.Id);
+            builder.ToTable("Produtos");
+
+            builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Nome)
                 .HasMaxLength(100)
@@ -18,26 +20,26 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
                 .HasMaxLength(500)
                 .IsRequired();
 
-            builder.Property(p => p.Avaliacao)
+            builder.Property(p => p.Foto)
+                .HasMaxLength(250);
+
+            builder.Property(p => p.Nota)
                 .HasPrecision(3,2)
                 .IsRequired()
                 .HasDefaultValue(5.0);
-
-            builder.Property(p => p.Imagem)
-                .HasMaxLength(250);
 
             builder.Property(p => p.TotalReviews)
                 .IsRequired()
                 .HasDefaultValue(0);
 
-            builder.HasOne(e => e.Categoria)
-                .WithMany(e => e.Produtos)
-                .HasForeignKey(e => e.IdCategoria)
+            builder.HasOne(p => p.Categoria)
+                .WithMany(p => p.Produtos)
+                .HasForeignKey(p => p.IdCategoria)
                 .IsRequired();
 
-            builder.HasOne(e => e.Empresa)
-                .WithMany(e => e.Produtos)
-                .HasForeignKey(e => e.IdEmpresa)
+            builder.HasOne(p => p.Empresa)
+                .WithMany(p => p.Produtos)
+                .HasForeignKey(p => p.IdEmpresa)
                 .IsRequired();
         }
     }

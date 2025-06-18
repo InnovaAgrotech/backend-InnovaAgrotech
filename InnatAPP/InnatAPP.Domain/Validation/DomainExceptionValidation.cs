@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace InnatAPP.Domain.Validation
+﻿namespace InnatAPP.Domain.Validation
 {
     public class DomainExceptionValidation : Exception
     {

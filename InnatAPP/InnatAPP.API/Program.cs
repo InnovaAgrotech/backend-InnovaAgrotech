@@ -1,3 +1,4 @@
+using InnatAPP.Infra.Data.Firestore;
 using InnatAPP.Infra.IoC;
 
 namespace InnatAPP.API
@@ -13,6 +14,7 @@ namespace InnatAPP.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddInfrastructureAPI(builder.Configuration);
+            builder.Services.AddSingleton<FirestoreService>();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

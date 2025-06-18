@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using InnatAPP.Domain.Entities;
+﻿using MediatR;
+using AutoMapper;
 using InnatAPP.Application.DTOs;
-using InnatAPP.Domain.Interfaces;
 using InnatAPP.Application.Interfaces;
-using MediatR;
-using InnatAPP.Application.Produtos.Queries;
-using InnatAPP.Application.Produtos.Commands;
+using InnatAPP.Application.CQRS.Produtos.Queries;
+using InnatAPP.Application.CQRS.Produtos.Commands;
 
 namespace InnatAPP.Application.Services
 {

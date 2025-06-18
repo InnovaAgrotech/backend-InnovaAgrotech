@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
 using InnatAPP.Application.DTOs;
-using InnatAPP.Application.Produtos.Commands;
-using InnatAPP.Application.Reviews.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using InnatAPP.Application.CQRS.Produtos.Commands;
+using InnatAPP.Application.CQRS.Reviews.Commands;
 
 namespace InnatAPP.Application.Mappings
 {

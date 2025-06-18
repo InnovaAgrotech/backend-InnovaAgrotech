@@ -1,8 +1,6 @@
-﻿using InnatAPP.Application.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using InnatAPP.Application.DTOs;
 using InnatAPP.Application.Interfaces;
-using InnatAPP.Application.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace InnatAPP.API.Controllers
 {

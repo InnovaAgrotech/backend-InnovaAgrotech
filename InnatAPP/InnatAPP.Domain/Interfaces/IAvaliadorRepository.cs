@@ -1,16 +1,29 @@
-﻿using System.Threading.Tasks;
-using InnatAPP.Domain.Entities;
-using System.Collections.Generic;
+﻿using InnatAPP.Domain.Entities;
 
 namespace InnatAPP.Domain.Interfaces
 {
     public interface IAvaliadorRepository
     {
+        #region Buscas
+
+        Task<Avaliador?> BuscarAvaliadorPorIdAsync(Guid id);
+        Task<Avaliador?> BuscarAvaliadorPorIdDeUsuarioAsync(Guid idUsuario);
+        Task<Avaliador?> BuscarAvaliadorPorEmailAsync(string email);
         Task<IEnumerable<Avaliador>> BuscarAvaliadoresAsync();
-        Task<Avaliador> BuscarAvaliadorPorIdAsync(int id);
+
+        #endregion
+
+        #region Comandos
 
         Task<Avaliador> CriarAvaliadorAsync(Avaliador avaliador);
-        Task<Avaliador> AtualizarAvaliadorAsync(Avaliador avaliador);
         Task<Avaliador> DeletarAvaliadorAsync(Avaliador avaliador);
+
+        #endregion
+
+        #region Verificação de Id de Usuario
+
+        Task<bool> ExistePorUsuarioId(Guid idUsuario);
+
+        #endregion
     }
 }

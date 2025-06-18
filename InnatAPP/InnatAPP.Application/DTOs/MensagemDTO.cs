@@ -1,35 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InnatAPP.Application.DTOs
 {
     public class MensagemDTO
     {
-        public int Id { get; set; }
+        [Required(ErrorMessage = "O id é obrigatório.")]
+        [DisplayName("Id")]
+        public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "Nome inválido, o nome é obrigatório.")]
-        [MinLength(2, ErrorMessage = "Nome inválido, o nome deve ter no mínimo 2 caracteres.")]
-        [MaxLength(100, ErrorMessage = "Nome inválido, o nome pode ter no máximo 100 caracteres.")]
-        [DisplayName("Nome")]
-        public string Nome { get; set; }
+        [Required(ErrorMessage = "O nome de usuário é obrigatório.")]
+        [MinLength(3, ErrorMessage = "O nome de usuário deve ter no mínimo 3 caracteres.")]
+        [MaxLength(100, ErrorMessage = "O nome de usuário pode ter no máximo 100 caracteres.")]
+        [DisplayName("Nome de Usuário")]
+        public string Nome { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "E-mail inválido, o e-mail é obrigatório.")]
-        [MinLength(5, ErrorMessage = "E-mail inválido, o e-mail deve ter no mínimo 5 caracteres.")]
-        [MaxLength(255, ErrorMessage = "E-mail inválido, o e-mail pode ter no máximo 255 caracteres.")]
+        [Required(ErrorMessage = "O e-mail é obrigatório.")]
+        [MinLength(6, ErrorMessage = "O e-mail deve ter no mínimo 6 caracteres.")]
+        [MaxLength(254, ErrorMessage = "O e-mail pode ter no máximo 254 caracteres.")]
         [DisplayName("E-mail")]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Mensagem inválida, a mensagem é obrigatória.")]
-        [MinLength(2, ErrorMessage = "Mensagem inválida, a mensagem deve ter no mínimo 2 caracteres.")]
-        [MaxLength(700, ErrorMessage = "Mensagem inválida, a mensagem pode ter no máximo 700 caracteres.")]
+        [Required(ErrorMessage = "A mensagem é obrigatória.")]
+        [MinLength(5, ErrorMessage = "A mensagem deve ter no mínimo 5 caracteres.")]
+        [MaxLength(700, ErrorMessage = "A mensagem pode ter no máximo 700 caracteres.")]
         [DisplayName("Mensagem")]
-        public string Texto { get; set; }
-
-
+        public string Texto { get; set; } = string.Empty;
     }
 }

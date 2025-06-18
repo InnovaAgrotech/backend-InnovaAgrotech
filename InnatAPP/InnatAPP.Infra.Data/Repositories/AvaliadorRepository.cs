@@ -7,28 +7,35 @@ namespace InnatAPP.Infra.Data.Repositories
 {
     public class AvaliadorRepository : IAvaliadorRepository
     {
-        private ApplicationDbContext _avaliadorContext;
+        private readonly ApplicationDbContext _avaliadorContext;
 
-        public AvaliadorRepository (ApplicationDbContext context) 
+        public AvaliadorRepository(ApplicationDbContext context)
         {
             _avaliadorContext = context;
         }
-        public async Task<Avaliador> AtualizarAvaliadorAsync(Avaliador avaliador)
-        {
-            _avaliadorContext.Update(avaliador);
-            await _avaliadorContext.SaveChangesAsync();
-            return avaliador;
-        }
 
+        #region Buscas
+
+        public async Task<Avaliador?> BuscarAvaliadorPorIdAsync(Guid id)
+            => await _avaliadorContext.Avaliadores
+                                      .Include(a => a.Reviews)
+                                      .FirstOrDefaultAsync(a => a.Id == id);
+        public async Task<Avaliador?> BuscarAvaliadorPorIdDeUsuarioAsync(Guid idUsuario)
+            => await _avaliadorContext.Avaliadores
+                                      .Include(a => a.Reviews)
+                                      .FirstOrDefaultAsync(a => a.IdUsuario == idUsuario);
+        public async Task<Avaliador?> BuscarAvaliadorPorEmailAsync(string email)
+            => await _avaliadorContext.Avaliadores
+                                      .Include(a => a.Usuario)
+                                      .FirstOrDefaultAsync(a => a.Usuario.Email == email);
         public async Task<IEnumerable<Avaliador>> BuscarAvaliadoresAsync()
-        {
-            return await _avaliadorContext.Avaliadores.ToListAsync();        
-        }
+            => await _avaliadorContext.Avaliadores
+                                      .Include(a => a.Usuario)
+                                      .AsNoTracking()
+                                      .ToListAsync();
+        #endregion
 
-        public async Task<Avaliador> BuscarAvaliadorPorIdAsync(int id)
-        {
-            return await _avaliadorContext.Avaliadores.FindAsync(id);
-        }
+        #region Comandos
 
         public async Task<Avaliador> CriarAvaliadorAsync(Avaliador avaliador)
         {
@@ -43,5 +50,15 @@ namespace InnatAPP.Infra.Data.Repositories
             await _avaliadorContext.SaveChangesAsync();
             return avaliador;
         }
+
+        #endregion
+
+        #region Verificação de Id de Usuário
+
+        public async Task<bool> ExistePorUsuarioId(Guid idUsuario)
+            => await _avaliadorContext.Avaliadores.AnyAsync(a => a.IdUsuario == idUsuario);
+
+        #endregion
     }
+
 }
