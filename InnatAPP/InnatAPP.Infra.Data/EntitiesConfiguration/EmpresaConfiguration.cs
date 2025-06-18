@@ -1,6 +1,6 @@
 ﻿using InnatAPP.Domain.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
@@ -8,25 +8,20 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
     {
         public void Configure(EntityTypeBuilder<Empresa> builder)
         {
-            builder.HasKey(t => t.Id);
+            builder.ToTable("Empresas");
 
-            builder.Property(p => p.Nome)
-                .HasMaxLength(100)
+            builder.HasKey(e => e.Id);
+
+            builder.Property(e => e.IdUsuario)
                 .IsRequired();
 
-            builder.Property(p => p.Email)
-                .HasMaxLength(255)
+            builder.HasIndex(e => e.IdUsuario)
+                .IsUnique();
+
+            builder.HasOne(e => e.Usuario)
+                .WithOne()
+                .HasForeignKey<Empresa>(e => e.IdUsuario)
                 .IsRequired();
-
-            builder.Property(p => p.Senha)
-                .HasMaxLength(64)
-                .IsRequired();
-
-            builder.Property(p => p.Foto)
-                .HasMaxLength(250);
-
-            builder.Property(p => p.Bio)
-                .HasMaxLength(500);
         }
     }
 }

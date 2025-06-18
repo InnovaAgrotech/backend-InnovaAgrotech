@@ -7,17 +7,18 @@ namespace InnatAPP.Infra.Data.Repositories
 {
     public class CategoriaRepository : ICategoriaRepository
     {
-        private ApplicationDbContext _categoriaContext;
+        private readonly ApplicationDbContext _categoriaContext;
 
         public CategoriaRepository(ApplicationDbContext context)
         {
             _categoriaContext = context;
         }
-        public async Task<Categoria> AtualizarCategoriaAsync(Categoria categoria)
+
+        #region Buscas
+
+        public async Task<Categoria?> BuscarCategoriaPorIdAsync(Guid id)
         {
-            _categoriaContext.Update(categoria);
-            await _categoriaContext.SaveChangesAsync();
-            return categoria;
+            return await _categoriaContext.Categorias.FindAsync(id);
         }
 
         public async Task<IEnumerable<Categoria>> BuscarCategoriasAsync()
@@ -25,14 +26,20 @@ namespace InnatAPP.Infra.Data.Repositories
             return await _categoriaContext.Categorias.ToListAsync();
         }
 
-        public async Task<Categoria> BuscarCategoriaPorIdAsync(int id)
-        {
-            return await _categoriaContext.Categorias.FindAsync(id);
-        }
+        #endregion
+
+        #region Comandos
 
         public async Task<Categoria> CriarCategoriaAsync(Categoria categoria)
         {
             _categoriaContext.Add(categoria);
+            await _categoriaContext.SaveChangesAsync();
+            return categoria;
+        }
+
+        public async Task<Categoria> AtualizarCategoriaAsync(Categoria categoria)
+        {
+            _categoriaContext.Update(categoria);
             await _categoriaContext.SaveChangesAsync();
             return categoria;
         }
@@ -43,5 +50,7 @@ namespace InnatAPP.Infra.Data.Repositories
             await _categoriaContext.SaveChangesAsync();
             return categoria;
         }
+
+        #endregion
     }
 }

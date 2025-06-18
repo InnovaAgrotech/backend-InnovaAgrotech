@@ -1,44 +1,49 @@
 ﻿using InnatAPP.Domain.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-public class ReviewConfiguration : IEntityTypeConfiguration<Review>
+namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
-    public void Configure(EntityTypeBuilder<Review> builder)
+    public class ReviewConfiguration : IEntityTypeConfiguration<Review>
     {
-        builder.HasKey(t => t.Id);
+        public void Configure(EntityTypeBuilder<Review> builder)
+        {
+            builder.ToTable("Reviews");
 
-        builder.Property(p => p.Mensagem)
-            .HasMaxLength(500);
+            builder.HasKey(r => r.Id);
 
-        builder.Property(p => p.CriadoEm)
-            .IsRequired()
-            .HasDefaultValue(DateTime.UtcNow);
+            builder.Property(r => r.Nota)
+                .HasPrecision(3, 2)
+                .IsRequired();
 
-        builder.Property(p => p.AtualizadoEm)
-            .IsRequired()
-            .HasDefaultValue(DateTime.UtcNow);
+            builder.Property(r => r.Resenha)
+                .HasMaxLength(500);
 
-        builder.Property(p => p.Likes)
-            .IsRequired()
-            .HasDefaultValue(0);
+            builder.Property(r => r.CriadoEm)
+                .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()");
 
-        builder.Property(p => p.Dislikes)
-            .IsRequired()
-            .HasDefaultValue(0);
+            builder.Property(r => r.AtualizadoEm)
+                .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()");
 
-        builder.Property(p => p.Avaliacao)
-            .HasPrecision(3, 2)
-            .IsRequired();
+            builder.Property(r => r.Curtidas)
+                .IsRequired()
+                .HasDefaultValue(0);
 
-        builder.HasOne(e => e.Avaliador)
-            .WithMany(e => e.Reviews)
-            .HasForeignKey(e => e.IdAvaliador)
-            .IsRequired();
+            builder.Property(r => r.Descurtidas)
+                .IsRequired()
+                .HasDefaultValue(0);
 
-        builder.HasOne(e => e.Produto)
-            .WithMany(e => e.Reviews)
-            .HasForeignKey(e => e.IdProduto)
-            .IsRequired();
+            builder.HasOne(r => r.Avaliador)
+                .WithMany(r => r.Reviews)
+                .HasForeignKey(r => r.IdAvaliador)
+                .IsRequired();
+
+            builder.HasOne(r => r.Produto)
+                .WithMany(r => r.Reviews)
+                .HasForeignKey(r => r.IdProduto)
+                .IsRequired();
+        }
     }
 }

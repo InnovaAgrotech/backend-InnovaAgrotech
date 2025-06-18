@@ -1,16 +1,20 @@
-﻿using System.Threading.Tasks;
-using InnatAPP.Domain.Entities;
-using System.Collections.Generic;
+﻿using InnatAPP.Domain.Entities;
 
 namespace InnatAPP.Domain.Interfaces
 {
     public interface IMensagemRepository
     {
+        #region Buscas
+
+        Task<Mensagem?> BuscarMensagemPorIdAsync(Guid id);
         Task<IEnumerable<Mensagem>> BuscarMensagensAsync();
-        Task<Mensagem> BuscarMensagemPorIdAsync(int id);
+
+        #endregion
+
+        #region Comandos
 
         Task<Mensagem> CriarMensagemAsync(Mensagem mensagem);
-        Task<Mensagem> AtualizarMensagemAsync(Mensagem mensagem);
-        Task<Mensagem> DeletarMensagemAsync(Mensagem mensagem);
+
+        #endregion
     }
 }

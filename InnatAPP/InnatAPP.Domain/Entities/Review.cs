@@ -1,84 +1,142 @@
-﻿#region Importações
-
-using InnatAPP.Domain.Validation;
-
-#endregion
+﻿using InnatAPP.Domain.Validation;
 
 namespace InnatAPP.Domain.Entities
 {
-    public sealed class Review
+    public class Review
     {
-        #region Atributos
+        #region Propriedades
 
-        public int Id { get; set; }
-        public decimal Avaliacao { get; set; }
-        public string Mensagem { get; set; }
-        public DateTime CriadoEm { get; set; }
-        public DateTime AtualizadoEm { get; set; }
-        public int Likes { get; set; }
-        public int Dislikes { get; set; }
-        public int IdAvaliador { get; set; }
-        public Avaliador Avaliador { get; set; }
-        public int IdProduto { get; set; }
-        public Produto Produto { get; set; }
+        public Guid Id { get; private set; }
+        public decimal Nota { get; private set; }
+        public string Resenha { get; private set; } = string.Empty;
+        public DateTime CriadoEm { get; private set; }
+        public DateTime AtualizadoEm { get; private set; }
+        public int Curtidas { get; private set; }
+        public int Descurtidas { get; private set; }
+
+
+        #endregion
+
+        #region Chaves Estrangeiras
+
+        public Guid IdAvaliador { get; private set; }
+        public Guid IdProduto { get; private set; }
+
+        #endregion
+
+        #region Propriedades de Navegação
+
+        public Avaliador Avaliador { get; private set; } = default!;
+        public Produto Produto { get; private set; } = default!;
 
         #endregion
 
         #region Construtores
 
-        public Review(decimal avaliacao, string mensagem, int idAvaliador, int idProduto)
+        public Review() { }
+
+        public Review(decimal nota, string resenha, Guid idAvaliador, Guid idProduto)
         {
-            ValidateDomain(avaliacao, mensagem);
+            #region Validações de Entrada
+
+            ValidateDomain(nota, resenha);
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
+            Id = Guid.NewGuid();
             CriadoEm = DateTime.UtcNow;
             AtualizadoEm = DateTime.UtcNow;
-            Likes = 0;
-            Dislikes = 0;
+            Curtidas = 0;
+            Descurtidas = 0;
             IdAvaliador = idAvaliador;
             IdProduto = idProduto;
+
+            #endregion
         }
 
-        public Review(int id, decimal avaliacao, string mensagem, DateTime criadoEm, DateTime atualizadoEm, int likes, int dislikes, int idAvaliador, int idProduto)
+        public Review(Guid id, decimal nota, string resenha, DateTime criadoEm, DateTime atualizadoEm, int curtidas, int descurtidas, Guid idAvaliador, Guid idProduto)
         {
-            DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
+            #region Validações de Entrada
+
+            DomainExceptionValidation.When(id == Guid.Empty, "O id é obrigatório.");
+
+            ValidateDomain(nota, resenha);
+
+            DomainExceptionValidation.When(curtidas < 0, "O número de curtidas não pode ser menor que zero (0).");
+
+            DomainExceptionValidation.When(descurtidas < 0, "O número de descurtidas não pode ser menor que zero (0).");
+
+            DomainExceptionValidation.When(idAvaliador == Guid.Empty, "O id de avaliador é obrigatório.");
+
+            DomainExceptionValidation.When(idProduto == Guid.Empty, "O id de produto é obrigatório.");
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
+
             Id = id;
-            ValidateDomain(avaliacao, mensagem);
             CriadoEm = criadoEm;
             AtualizadoEm = atualizadoEm;
-            DomainExceptionValidation.When(likes < 0, "Valor de likes inválido.");
-            Likes = likes;
-            DomainExceptionValidation.When(dislikes < 0, "Valor de dislikes inválido.");
-            Dislikes = dislikes;
+            Curtidas = curtidas;
+            Descurtidas = descurtidas;
             IdAvaliador = idAvaliador;
             IdProduto = idProduto;
+
+            #endregion
         }
 
         #endregion
 
-        #region Métodos
+        #region Métodos Públicos
 
-        public void Alterar(decimal avaliacao, string mensagem)
+        public void Alterar(decimal nota, string resenha)
         {
-            ValidateDomain(avaliacao, mensagem);
+            #region Validações de Entrada
+
+            ValidateDomain(nota, resenha);
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
             AtualizadoEm = DateTime.UtcNow;
+
+            #endregion
         }
 
         #endregion
 
-        #region Validações
+        #region Validações de Domínio
 
-        private void ValidateDomain(decimal avaliacao, string mensagem)
+        private void ValidateDomain(decimal nota, string? resenha)
         {
-            DomainExceptionValidation.When(avaliacao < 0 || avaliacao > 5,
-            "Avaliação inválida, a avaliação deve estar entre 0 e 5.");
+            #region Validações de Nota
 
-            DomainExceptionValidation.When(!string.IsNullOrEmpty(mensagem) && mensagem.Length < 5,
-            "Mensagem inválida, a mensagem deve ter no mínimo 5 caracteres.");
+            DomainExceptionValidation.When(nota < 0, "A nota não pode ser menor que zero (0).");
 
-            DomainExceptionValidation.When(mensagem.Length > 500,
-            "Mensagem inválida, a mensagem pode ter no máximo 500 caracteres.");
+            DomainExceptionValidation.When(nota > 5, "A nota não pode ser maior que cinco (5).");
 
-            Mensagem = mensagem;
-            Avaliacao = avaliacao;
+            #endregion
+
+            #region Validações de Resenha
+
+            DomainExceptionValidation.When(!string.IsNullOrWhiteSpace(resenha) && resenha.Length < 5,
+            "A resenha deve ter no mínimo 5 caracteres.");
+
+            DomainExceptionValidation.When(resenha?.Length > 500,
+            "A resenha pode ter no máximo 500 caracteres.");
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
+            Nota = nota;
+            Resenha = resenha ?? string.Empty; ;
+
+            #endregion
         }
 
         #endregion

@@ -1,6 +1,6 @@
 ﻿using InnatAPP.Domain.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace InnatAPP.Infra.Data.EntitiesConfiguration
 {
@@ -8,26 +8,28 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
     {
         public void Configure(EntityTypeBuilder<Categoria> builder)
         {
-            builder.HasKey(t => t.Id);
+            builder.ToTable("Categorias");
 
-            builder.Property(p => p.Nome)
+            builder.HasKey(c => c.Id);
+
+            builder.Property(c => c.Nome)
                 .HasMaxLength(50)
                 .IsRequired();
 
             builder.HasData(
-                new Categoria (1, "Drones"),
-                new Categoria(2, "Tratores"),
-                new Categoria(3, "Semeadeiras"),
-                new Categoria(4, "Colheitadeiras"),
-                new Categoria(5, "Pulverizadores"),
-                new Categoria(6, "Arados"),
-                new Categoria(7, "Grades"),
-                new Categoria(8, "Subsoladores"),
-                new Categoria(9, "Enxadas Rotativas"),
-                new Categoria(10, "Escarificadores"),
-                new Categoria(11, "Adubadoras"),
-                new Categoria(12, "Enfardadoras")
-                );
+                new Categoria(Guid.NewGuid(), "Drones"),
+                new Categoria(Guid.NewGuid(), "Tratores"),
+                new Categoria(Guid.NewGuid(), "Semeadeiras"),
+                new Categoria(Guid.NewGuid(), "Colheitadeiras"),
+                new Categoria(Guid.NewGuid(), "Pulverizadores"),
+                new Categoria(Guid.NewGuid(), "Arados"),
+                new Categoria(Guid.NewGuid(), "Grades"),
+                new Categoria(Guid.NewGuid(), "Subsoladores"),
+                new Categoria(Guid.NewGuid(), "Enxadas Rotativas"),
+                new Categoria(Guid.NewGuid(), "Escarificadores"),
+                new Categoria(Guid.NewGuid(), "Adubadoras"),
+                new Categoria(Guid.NewGuid(), "Enfardadoras")
+            );
         }
     }
 }

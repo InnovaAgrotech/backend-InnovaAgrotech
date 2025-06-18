@@ -7,25 +7,18 @@ namespace InnatAPP.Infra.Data.Repositories
 {
     public class ProdutoRepository : IProdutoRepository
     {
-        private ApplicationDbContext _produtoContext;
+        private readonly ApplicationDbContext _produtoContext;
 
         public ProdutoRepository(ApplicationDbContext context)
         {
             _produtoContext = context;
         }
-        public async Task<Produto> AtualizarProdutoAsync(Produto produto)
-        {
-            _produtoContext.Update(produto);
-            await _produtoContext.SaveChangesAsync();
-            return produto;
-        }
 
-        public async Task<Produto> BuscarProdutoPorIdAsync(int id)
+        #region Buscas
+
+        public async Task<Produto?> BuscarProdutoPorIdAsync(Guid id)
         {
-            return await _produtoContext.Produtos
-                .Include(p => p.Categoria)
-                .Include(p => p.Empresa)
-                .SingleOrDefaultAsync(p => p.Id == id);
+            return await _produtoContext.Produtos.FindAsync(id);
         }
 
         public async Task<IEnumerable<Produto>> BuscarProdutosAsync()
@@ -33,27 +26,36 @@ namespace InnatAPP.Infra.Data.Repositories
             return await _produtoContext.Produtos.ToListAsync();
         }
 
-        public async Task<IEnumerable<Produto>> BuscarProdutosPorCategoriaAsync(int idCategoria)
+        public async Task<IEnumerable<Produto>> BuscarProdutosPorCategoriaAsync(Guid idCategoria)
         {
             return await _produtoContext.Produtos
                 .Include(p => p.Categoria)
-                .Include(p => p.Empresa)
                 .Where(p => p.IdCategoria == idCategoria)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Produto>> BuscarProdutosPorEmpresaAsync(int idEmpresa)
+        public async Task<IEnumerable<Produto>> BuscarProdutosPorEmpresaAsync(Guid idEmpresa)
         {
             return await _produtoContext.Produtos
                 .Include(p => p.Empresa)
-                .Include(p => p.Categoria)
                 .Where(p => p.IdEmpresa == idEmpresa)
                 .ToListAsync();
         }
 
+        #endregion
+
+        #region Comandos
+
         public async Task<Produto> CriarProdutoAsync(Produto produto)
         {
             _produtoContext.Add(produto);
+            await _produtoContext.SaveChangesAsync();
+            return produto;
+        }
+
+        public async Task<Produto> AtualizarProdutoAsync(Produto produto)
+        {
+            _produtoContext.Update(produto);
             await _produtoContext.SaveChangesAsync();
             return produto;
         }
@@ -64,5 +66,7 @@ namespace InnatAPP.Infra.Data.Repositories
             await _produtoContext.SaveChangesAsync();
             return produto;
         }
+
+        #endregion
     }
 }

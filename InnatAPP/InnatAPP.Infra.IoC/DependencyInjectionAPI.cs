@@ -31,10 +31,10 @@ namespace InnatAPP.Infra.IoC
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IAvaliadorRepository, AvaliadorRepository>();
+            services.AddScoped<IAvaliadorRepository, AvaliadorFirestoreRepository>();
             services.AddScoped<IAvaliadorService, AvaliadorService>();
 
-            services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+            services.AddScoped<ICategoriaRepository, CategoriaFirestoreRepository>();
             services.AddScoped<ICategoriaService, CategoriaService>();
 
             services.AddScoped<IEmailAlternativoAvaliadorRepository, EmailAlternativoAvaliadorRepository>();
@@ -43,7 +43,7 @@ namespace InnatAPP.Infra.IoC
             services.AddScoped<IEmailAlternativoEmpresaRepository, EmailAlternativoEmpresaRepository>();
             services.AddScoped<IEmailAlternativoEmpresaService, EmailAlternativoEmpresaService>();
 
-            services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+            services.AddScoped<IEmpresaRepository, EmpresaFirestoreRepository>();
             services.AddScoped<IEmpresaService, EmpresaService>();
 
             services.AddScoped<IEnderecoAvaliadorRepository, EnderecoAvaliadorRepository>();
@@ -52,13 +52,13 @@ namespace InnatAPP.Infra.IoC
             services.AddScoped<IEnderecoEmpresaRepository, EnderecoEmpresaRepository>();
             services.AddScoped<IEnderecoEmpresaService, EnderecoEmpresaService>();
 
-            services.AddScoped<IMensagemRepository, MensagemRepository>();
+            services.AddScoped<IMensagemRepository, MensagemFirestoreRepository>();
             services.AddScoped<IMensagemService, MensagemService>();
 
-            services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IProdutoRepository, ProdutoFirestoreRepository>();
             services.AddScoped<IProdutoService, ProdutoService>();
 
-            services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IReviewRepository, ReviewFirestoreRepository>();
             services.AddScoped<IReviewService, ReviewService>();
 
             services.AddScoped<ITelefoneAvaliadorRepository, TelefoneAvaliadorRepository>();

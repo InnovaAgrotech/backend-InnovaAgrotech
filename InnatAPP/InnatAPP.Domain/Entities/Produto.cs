@@ -1,98 +1,176 @@
-﻿#region Importações
-
+﻿using InnatAPP.Domain.Shared;
 using InnatAPP.Domain.Validation;
-
-#endregion
 
 namespace InnatAPP.Domain.Entities
 {
-    public sealed class Produto
+    public class Produto
     {
-        #region Atributos
+        #region Propriedades
 
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Descricao { get; set; }
-        public decimal Avaliacao { get; set; }
-        public string Imagem { get; set; }
-        public int TotalReviews { get; set; }
-        public int IdCategoria { get; set; }
-        public Categoria Categoria { get; set; }
-        public int IdEmpresa { get; set; }
-        public Empresa Empresa { get; set; }
+        public Guid Id { get; private set; }
+        public string Nome { get; private set; } = string.Empty;
+        public string Descricao { get; private set; } = string.Empty;
+        public string Foto { get; private set; } = string.Empty;
+        public decimal Nota { get; private set; }
+        public int TotalReviews { get; private set; }
+
+        #endregion
+
+        #region Chaves Estrangeiras
+
+        public Guid IdCategoria { get; private set; }
+        public Guid IdEmpresa { get; private set; }
+
+        #endregion
+
+        #region Propriedades de Navegação
+
+        public Categoria Categoria { get; private set; } = default!;
+        public Empresa Empresa { get; private set; } = default!;
 
         #endregion
 
         #region Coleções
 
-        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<Review> Reviews { get; private set; } = new List<Review>();
 
         #endregion
 
         #region Construtores
 
-        public Produto(string nome, string descricao, string imagem, int idCategoria, int idEmpresa)
+        public Produto() { }
+
+        public Produto(string nome, string descricao, string foto, Guid idCategoria, Guid idEmpresa)
         {
-            ValidateDomain(nome, descricao, imagem);
-            Avaliacao = 5.0m;
+            #region Validações de Entrada
+
+            ValidateDomain(nome, descricao, foto);
+
+            DomainExceptionValidation.When(idCategoria == Guid.Empty, "O id de categoria é obrigatório.");
+
+            DomainExceptionValidation.When(idEmpresa == Guid.Empty, "O id de empresa é obrigatório.");
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
+            Id = Guid.NewGuid();
+            Nota = 5.0m;
             TotalReviews = 0;
             IdCategoria = idCategoria;
             IdEmpresa = idEmpresa;
+
+            #endregion
         }
 
-        public Produto(int id, string nome, string descricao, decimal avaliacao, string imagem, int totalReviews, int idCategoria, int idEmpresa)
+        public Produto(Guid id, string nome, string descricao, string foto, decimal nota, int totalReviews, Guid idCategoria, Guid idEmpresa)
         {
-            DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
+            #region Validações de Entrada
+
+            DomainExceptionValidation.When(id == Guid.Empty, "O id é obrigatório.");
+
+            ValidateDomain(nome, descricao, foto);
+
+            DomainExceptionValidation.When(nota < 0, "A nota não pode ser menor que zero (0).");
+
+            DomainExceptionValidation.When(nota > 5, "A nota não pode ser maior que cinco (5).");
+
+            DomainExceptionValidation.When(totalReviews < 0, "O valor total de reviews não pode ser menor que zero (0).");
+
+            DomainExceptionValidation.When(idCategoria == Guid.Empty, "O id de categoria é obrigatório.");
+
+            DomainExceptionValidation.When(idEmpresa == Guid.Empty, "O id de empresa é obrigatório.");
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
+
             Id = id;
-            ValidateDomain(nome, descricao, imagem);
-            DomainExceptionValidation.When(avaliacao < 0 || avaliacao > 5, "Valor de avaliação inválido.");
-            Avaliacao = avaliacao;
-            DomainExceptionValidation.When(totalReviews < 0, "Valor total de reviews inválido.");
+            Nota = nota;
             TotalReviews = totalReviews;
             IdCategoria = idCategoria;
             IdEmpresa = idEmpresa;
+
+            #endregion
         }
 
         #endregion
 
-        #region Métodos
+        #region Métodos Públicos
 
-        public void Alterar(string nome, string descricao, string imagem, int idCategoria)
+        public void Alterar(string nome, string descricao, string foto, Guid idCategoria)
         {
-            ValidateDomain(nome, descricao, imagem);
+            #region Validações de Entrada
+
+            ValidateDomain(nome, descricao, foto);
+
+            DomainExceptionValidation.When(idCategoria == Guid.Empty, "O id de categoria é obrigatório.");
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
             IdCategoria = idCategoria;
+
+            #endregion
         }
 
         #endregion
 
-        #region Validações
+        #region Validações de Domínio
 
-        private void ValidateDomain(string nome, string descricao, string imagem)
+        private void ValidateDomain(string nome, string descricao, string foto)
         {
-            DomainExceptionValidation.When(string.IsNullOrEmpty(nome),
-            "Nome inválido, o nome é obrigatório.");
+            #region Validações de Nome
+
+            DomainExceptionValidation.When(string.IsNullOrWhiteSpace(nome),
+            "O nome é obrigatório.");
+
+            DomainExceptionValidation.When(nome.StartsWith(' '),
+            "O nome não pode começar com espaço (\" \").");
+
+            DomainExceptionValidation.When(nome.EndsWith(' '),
+            "O nome não pode terminar com espaço (\" \").");
+
+            DomainExceptionValidation.When(ConstantesValidacao.EspacosConsecutivos.IsMatch(nome),
+            "O nome não pode ter espaços consecutivos (\"  \", \"   \", \"    \" e etc).");
 
             DomainExceptionValidation.When(nome.Length < 2,
-            "Nome inválido, o nome deve ter no mínimo 2 caracteres.");
+            "O nome deve ter no mínimo 2 caracteres.");
 
             DomainExceptionValidation.When(nome.Length > 100,
-            "Nome inválido, o nome pode ter no máximo 100 caracteres.");
+            "O nome pode ter no máximo 100 caracteres.");
 
-            DomainExceptionValidation.When(string.IsNullOrEmpty(descricao),
-            "Descrição inválida, a descrição é obrigatória.");
+            #endregion
+
+            #region Validações de descrição
+
+            DomainExceptionValidation.When(string.IsNullOrWhiteSpace(descricao),
+            "A descrição é obrigatória.");
 
             DomainExceptionValidation.When(descricao.Length < 10,
-            "Descrição inválida, a descrição deve ter no mínimo 10 caracteres.");
+            "A descrição deve ter no mínimo 10 caracteres.");
 
             DomainExceptionValidation.When(descricao.Length > 500,
-            "Descrição inválida, a descrição pode ter no máximo 500 caracteres.");
+            "A descrição pode ter no máximo 500 caracteres.");
 
-            DomainExceptionValidation.When(imagem?.Length > 250,
-            "URL da imagem inválida, a URL pode ter no máximo 250 caracteres.");
+            #endregion
+
+            #region Validações de Foto
+
+            DomainExceptionValidation.When(foto?.Length > 250,
+            "A URL da foto pode ter no máximo 250 caracteres.");
+
+            #endregion
+
+            #region Inicialização das Propriedades
 
             Nome = nome;
             Descricao = descricao;
-            Imagem = imagem;
+            Foto = foto ?? string.Empty;
+
+            #endregion
         }
 
         #endregion

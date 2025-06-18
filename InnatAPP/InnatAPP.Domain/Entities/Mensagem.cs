@@ -1,146 +1,242 @@
-﻿#region Importações
-
-using InnatAPP.Domain.Shared;
+﻿using InnatAPP.Domain.Shared;
 using InnatAPP.Domain.Validation;
-
-#endregion
+using System.Text.RegularExpressions;
 
 namespace InnatAPP.Domain.Entities
 {
-    public sealed class Mensagem
+    public class Mensagem
     {
-        #region Atributos
+        #region Propriedades
 
-        public int Id { get; set; }
-        public string Nome { get; set; } 
-        public string Email { get; set; } 
-        public string Texto { get; set; }
+        public Guid Id { get; private set; }
+        public string Nome { get; private set; } = string.Empty;
+        public string Email { get; private set; } = string.Empty;
+        public string Texto { get; private set; } = string.Empty;
 
         #endregion
 
         #region Construtores
 
+        public Mensagem() { }
+
         public Mensagem(string nome, string email, string texto)
         {
+            #region Validações de Entrada
+
             ValidateDomain(nome, email, texto);
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
+            Id = Guid.NewGuid();
+
+            #endregion
         }
 
-        public Mensagem(int id, string nome, string email, string texto)
+        public Mensagem(Guid id, string nome, string email, string texto)
         {
-            DomainExceptionValidation.When(id < 0, "Valor de id inválido.");
+            #region Validações de Entrada
+
+            DomainExceptionValidation.When(id == Guid.Empty, "O id é obrigatório.");
+
+            ValidateDomain(nome, email, texto);
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
             Id = id;
-            ValidateDomain(nome, email, texto);
+
+            #endregion
         }
 
         #endregion
 
-        #region Métodos
-
-        public void Alterar(string nome, string email, string texto)
-        {
-            ValidateDomain(nome, email, texto);
-        }
-
-        #endregion
-
-        #region Validações
+        #region Validações de Domínio
 
         private void ValidateDomain(string nome, string email, string texto)
         {
-            #region Validações de nome
+            #region Validações de Nome
 
-            DomainExceptionValidation.When(string.IsNullOrEmpty(nome),
-            "Nome inválido, o nome é obrigatório.");
+            DomainExceptionValidation.When(string.IsNullOrWhiteSpace(nome),
+            "O nome é obrigatório.");
 
-            DomainExceptionValidation.When(nome.Length < 2,
-            "Nome inválido, o nome deve ter no mínimo 2 caracteres.");
+            DomainExceptionValidation.When(nome.StartsWith(' '),
+            "O nome não pode começar com espaço (\" \").");
+
+            DomainExceptionValidation.When(nome.EndsWith(' '),
+            "O nome não pode terminar com espaço (\" \").");
+
+            DomainExceptionValidation.When(ConstantesValidacao.EspacosConsecutivos.IsMatch(nome),
+            "O nome não pode ter espaços consecutivos (\"  \", \"   \", \"    \" e etc).");
+
+            DomainExceptionValidation.When(nome.Length < 3,
+            "O nome deve ter no mínimo 3 caracteres.");
 
             DomainExceptionValidation.When(nome.Length > 100,
-            "Nome inválido, o nome pode ter no máximo 100 caracteres.");
+            "O nome pode ter no máximo 100 caracteres.");
 
             #endregion
 
-            #region Validações de e-mail
+            #region Validações de E-mail
 
-            #region Validações gerais de e-mail
+            #region Validações Gerais de E-mail
 
             DomainExceptionValidation.When(string.IsNullOrEmpty(email),
-            "E-mail inválido, o e-mail é obrigatório.");
+            "O e-mail é obrigatório.");
 
-            DomainExceptionValidation.When(email.Length < 5,
-            "E-mail inválido, o e-mail deve ter no mínimo 5 caracteres.");
+            DomainExceptionValidation.When(email.Length < 6,
+            "O e-mail deve ter no mínimo 6 caracteres.");
 
-            DomainExceptionValidation.When(email.Length > 255,
-            "E-mail inválido, o e-mail pode ter no máximo 255 caracteres.");
+            DomainExceptionValidation.When(email.Length > 254,
+            "O e-mail pode ter no máximo 254 caracteres.");
 
             DomainExceptionValidation.When(!email.Contains('@'),
-            "E-mail inválido, o e-mail deve conter um '@'.");
+            "O e-mail deve conter um arroba (@).");
 
             DomainExceptionValidation.When(email.Contains(' '),
-            "E-mail inválido, o e-mail não pode conter espaços.");
+            "O e-mail não pode conter espaços.");
 
-            DomainExceptionValidation.When(email.Split('@').Length - 1 > 1,
-            "E-mail inválido, o e-mail pode ter apenas um '@'.");
-
-            #endregion
-
-            #region Validações de nome de usuário do e-mail
-
-            var partesEmail = email.Split('@');
-            var nomeUsuario = partesEmail.Length > 0 ? partesEmail[0] : string.Empty;
-            var dominio = partesEmail.Length > 1 ? partesEmail[1] : string.Empty;
-
-            DomainExceptionValidation.When(partesEmail.Length == 2 && string.IsNullOrEmpty(nomeUsuario),
-            "E-mail inválido, o nome de usuário é obrigatório.");
-
-            DomainExceptionValidation.When(partesEmail.Length == 2 && nomeUsuario.StartsWith("."),
-            "E-mail inválido, o email não pode começar com ponto (.).");
-
-            DomainExceptionValidation.When(partesEmail.Length == 2 && nomeUsuario.EndsWith("."),
-            "E-mail inválido, o nome de usuário não pode terminar com ponto (.).");
-
-            DomainExceptionValidation.When(partesEmail.Length == 2 && nomeUsuario.Intersect(ConstantesValidacao.caracteresInvalidosEmailUsuario).Any(),
-            $"E-mail inválido, o nome de usuário não pode conter: {new string(ConstantesValidacao.caracteresInvalidosEmailUsuario)}.");
+            DomainExceptionValidation.When(email.Count(c => c == '@') > 1,
+            "O e-mail pode ter apenas um arroba (@).");
 
             #endregion
 
-            #region Validações de domínio do e-mail
+            #region Separação das Partes de E-mail
 
-            DomainExceptionValidation.When(partesEmail.Length == 2 && string.IsNullOrEmpty(dominio),
-            "E-mail inválido, o domínio é obrigatório.");
-
-            DomainExceptionValidation.When(partesEmail.Length == 2 && !dominio.Contains('.'),
-             "E-mail inválido, o domínio deve conter pelo menos um '.' (Exemplo: gmail.com).");
-
-            DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.StartsWith("-"),
-            "E-mail inválido, o domínio não pode começar com hífen (-).");
-
-            DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.EndsWith("-"),
-            "E-mail inválido, o e-mail não pode terminar com hífen (-).");
-
-            DomainExceptionValidation.When(partesEmail.Length == 2 && dominio.Intersect(ConstantesValidacao.caracteresInvalidosEmailDominio).Any(),
-            $"E-mail inválido, o domínio não pode conter: {new string(ConstantesValidacao.caracteresInvalidosEmailDominio)}.");
+            var partesEmail = email.Split('@', 2);
+            var nomeUsuario = partesEmail[0];
+            var dominio = partesEmail[1];
 
             #endregion
 
-            #region Validações de texto
+            if (partesEmail.Length == 2)
+            {
+                #region Validações do Nome de Usuário do E-mail
 
-            DomainExceptionValidation.When(string.IsNullOrEmpty(texto),
-            "Mensagem inválida, a mensagem é obrigatória.");
+                DomainExceptionValidation.When(string.IsNullOrEmpty(nomeUsuario),
+                "O nome de usuário do e-mail é obrigatório.");
 
-            DomainExceptionValidation.When(texto.Length < 2,
-            "Mensagem inválida, a mensagem deve ter no mínimo 2 caracteres.");
+                DomainExceptionValidation.When(nomeUsuario.Length > 64,
+                "O nome de usuário do e-mail pode ter no máximo 64 caracteres.");
+
+                DomainExceptionValidation.When(nomeUsuario.StartsWith('.'),
+                "O e-mail não pode começar com ponto (.).");
+
+                DomainExceptionValidation.When(nomeUsuario.StartsWith('-'),
+                "O e-mail não pode começar com hífen (-).");
+
+                DomainExceptionValidation.When(nomeUsuario.StartsWith('_'),
+                "O e-mail não pode começar com underscore (_).");
+
+                DomainExceptionValidation.When(!string.IsNullOrEmpty(nomeUsuario) &&
+                ConstantesValidacao.CaracteresInvalidosInicioFimEmailUsuario.Contains(nomeUsuario[0]),
+                "O e-mail não pode começar com caractere especial.");
+
+                DomainExceptionValidation.When(ConstantesValidacao.PontosConsecutivos.IsMatch(nomeUsuario),
+                "O nome de usuário do e-mail não pode conter pontos consecutivos (.., ..., .... e etc).");
+
+                DomainExceptionValidation.When(ConstantesValidacao.HifensConsecutivos.IsMatch(nomeUsuario),
+                "O nome de usuário do e-mail não pode conter hífens consecutivos (--, ---, ---- e etc).");
+
+                DomainExceptionValidation.When(ConstantesValidacao.UnderscoresConsecutivos.IsMatch(nomeUsuario),
+                "O nome de usuário do e-mail não pode conter underscores consecutivos (__, ___, ____ e etc).");
+
+                DomainExceptionValidation.When(nomeUsuario.EndsWith('.'),
+                "O nome de usuário do e-mail não pode terminar com ponto (.).");
+
+                DomainExceptionValidation.When(nomeUsuario.EndsWith('-'),
+                "O nome de usuário do e-mail não pode terminar com hífen (-).");
+
+                DomainExceptionValidation.When(nomeUsuario.EndsWith('_'),
+                "O nome de usuário do e-mail não pode terminar com underscore (_).");
+
+                DomainExceptionValidation.When(!string.IsNullOrEmpty(nomeUsuario) &&
+                ConstantesValidacao.CaracteresInvalidosInicioFimEmailUsuario.Contains(nomeUsuario[^1]),
+                "O nome de usuário do e-mail não pode terminar com caractere especial.");
+
+                DomainExceptionValidation.When(!string.IsNullOrEmpty(nomeUsuario) &&
+                nomeUsuario.Intersect(ConstantesValidacao.CaracteresInvalidosEmailUsuario).Any(),
+                $"O nome de usuário do e-mail não pode conter: {new string(ConstantesValidacao.CaracteresInvalidosEmailUsuario)}.");
+
+                #endregion
+
+                #region Validações de Domínio do E-mail
+
+                DomainExceptionValidation.When(string.IsNullOrEmpty(dominio),
+                "O domínio de e-mail é obrigatório.");
+
+                DomainExceptionValidation.When(dominio.Length < 4,
+                "O domínio de e-mail deve ter no mínimo 4 caracteres.");
+
+                DomainExceptionValidation.When(dominio.Length > 251,
+                "O domínio de e-mail pode ter no máximo 251 caracteres.");
+
+                DomainExceptionValidation.When(!dominio.Contains('.'),
+                "O domínio de e-mail deve conter pelo menos um ponto (.), exemplo: \"dominio.com\".");
+
+                DomainExceptionValidation.When(dominio.StartsWith('.'),
+                "O domínio de e-mail não pode começar com ponto (.).");
+
+                DomainExceptionValidation.When(dominio.StartsWith('-'),
+                "O domínio de e-mail não pode começar com hífen (-).");
+
+                DomainExceptionValidation.When(ConstantesValidacao.PontosConsecutivos.IsMatch(dominio),
+                "O domínio de e-mail não pode conter pontos consecutivos (.., ..., .... e etc).");
+
+                DomainExceptionValidation.When(ConstantesValidacao.HifensConsecutivos.IsMatch(dominio),
+                "O domínio de e-mail não pode conter hífens consecutivos (--, ---, ---- e etc).");
+
+                DomainExceptionValidation.When(dominio.EndsWith('.'),
+                "O e-mail não pode terminar com ponto (.).");
+
+                DomainExceptionValidation.When(dominio.EndsWith('-'),
+                "O e-mail não pode terminar com hífen (-).");
+
+                DomainExceptionValidation.When(!string.IsNullOrEmpty(dominio) &&
+                dominio.Intersect(ConstantesValidacao.CaracteresInvalidosEmailDominio).Any(),
+                $"O domínio de e-mail não pode conter: {new string(ConstantesValidacao.CaracteresInvalidosEmailDominio)}.");
+
+                if (!string.IsNullOrEmpty(dominio) && !dominio.StartsWith('.') && !dominio.EndsWith('.') && dominio.Contains('.'))
+                {
+                    var rotulos = dominio.Split('.');
+
+                    DomainExceptionValidation.When(rotulos.Any(r => r.Length > 63),
+                    "Os rótulos do domínio de e-mail podem ter no máximo 63 caracteres.");
+
+                    DomainExceptionValidation.When(rotulos[^1].Length < 2,
+                    "As extensões de domínio (TLDs) devem ter no mínimo 2 caracteres.");
+
+                    DomainExceptionValidation.When(!Regex.IsMatch(rotulos[^1], @"^[a-zA-Z]+$"),
+                    "As extensões de domínio (TLDs) não podem conter números.");
+                }
+            }
+
+            #endregion
+
+            #endregion
+
+            #region Validações de Texto
+
+            DomainExceptionValidation.When(string.IsNullOrWhiteSpace(texto),
+            "A mensagem é obrigatória.");
+
+            DomainExceptionValidation.When(texto.Length < 5,
+            "A mensagem deve ter no mínimo 5 caracteres.");
 
             DomainExceptionValidation.When(texto.Length > 700,
-            "Mensagem inválida, a mensagem pode ter no máximo 700 caracteres.");
+            "A mensagem pode ter no máximo 700 caracteres.");
 
             #endregion
 
-            #endregion
+            #region Inicialização das Propriedades
 
             Nome = nome;
             Email = email;
             Texto = texto;
+
+            #endregion
         }
 
         #endregion

@@ -1,76 +1,101 @@
-﻿using InnatAPP.Domain.Interfaces;
+﻿using MediatR;
+using InnatAPP.Domain.Interfaces;
 using InnatAPP.Infra.Data.Context;
+using InnatAPP.Infra.Data.Firestore;
+using InnatAPP.Application.Mappings;
+using InnatAPP.Application.Services;
 using Microsoft.EntityFrameworkCore;
+using InnatAPP.Infra.Data.UnitOfWork;
 using InnatAPP.Infra.Data.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR;
-using InnatAPP.Application.Services;
-using InnatAPP.Application.Interfaces;
-using InnatAPP.Application.Mappings;
-using InnatAPP.Infra.Data.Identity;
-using Microsoft.AspNetCore.Identity;
-using InnatAPP.Domain.Account;
+
+using Google.Cloud.Firestore;
+using InnatAPP.Infra.Data.Jobs;
 
 namespace InnatAPP.Infra.IoC
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) 
-        { 
-        services.AddDbContext<ApplicationDbContext>(options => 
-        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
-        b =>b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.ConfigureApplicationCookie(options => options.AccessDeniedPath = "/Account/Login");
+            #region repositórios baseados em EF Core
 
             services.AddScoped<IAvaliadorRepository, AvaliadorRepository>();
-            services.AddScoped<IAvaliadorService, AvaliadorService>();
 
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-            services.AddScoped<ICategoriaService, CategoriaService>();
 
-            services.AddScoped<IEmailAlternativoAvaliadorRepository, EmailAlternativoAvaliadorRepository>();
-            services.AddScoped<IEmailAlternativoAvaliadorService, EmailAlternativoAvaliadorService>();
-
-            services.AddScoped<IEmailAlternativoEmpresaRepository, EmailAlternativoEmpresaRepository>();
-            services.AddScoped<IEmailAlternativoEmpresaService, EmailAlternativoEmpresaService>();
+            services.AddScoped<IEmailAlternativoRepository, EmailAlternativoRepository>();
 
             services.AddScoped<IEmpresaRepository, EmpresaRepository>();
-            services.AddScoped<IEmpresaService, EmpresaService>();
 
-            services.AddScoped<IEnderecoAvaliadorRepository, EnderecoAvaliadorRepository>();
-            services.AddScoped<IEnderecoAvaliadorService, EnderecoAvaliadorService>();
-
-            services.AddScoped<IEnderecoEmpresaRepository, EnderecoEmpresaRepository>();
-            services.AddScoped<IEnderecoEmpresaService, EnderecoEmpresaService>();
+            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
 
             services.AddScoped<IMensagemRepository, MensagemRepository>();
-            services.AddScoped<IMensagemService, MensagemService>();
 
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
-            services.AddScoped<IProdutoService, ProdutoService>();
 
             services.AddScoped<IReviewRepository, ReviewRepository>();
-            services.AddScoped<IReviewService, ReviewService>();
 
-            services.AddScoped<ITelefoneAvaliadorRepository, TelefoneAvaliadorRepository>();
-            services.AddScoped<ITelefoneAvaliadorService, TelefoneAvaliadorService>();
+            services.AddScoped<ITelefoneRepository, TelefoneRepository>();
 
-            services.AddScoped<ITelefoneEmpresaRepository, TelefoneEmpresaRepository>();
-            services.AddScoped<ITelefoneEmpresaService, TelefoneEmpresaService>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
-            services.AddScoped<IAuthenticate, AuthenticateService>();
-            services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
+            #endregion
+
+            #region Firestore Service
+
+            services.AddSingleton<FirestoreService>();
+
+            #endregion
+
+            #region Jobs
+
+            services.AddHostedService<AvaliadorSyncJob>();
+
+            services.AddHostedService<CategoriaSyncJob>();
+
+            services.AddHostedService<EmailAlternativoSyncJob>();
+
+            services.AddHostedService<EmpresaSyncJob>();
+
+            services.AddHostedService<EnderecoSyncJob>();
+
+            services.AddHostedService<MensagemSyncJob>();
+
+            services.AddHostedService<ProdutoSyncJob>();
+
+            services.AddHostedService<ReviewSyncJob>();
+
+            services.AddHostedService<TelefoneSyncJob>();
+
+            services.AddHostedService<UsuarioSyncJob>();
+
+            #endregion
+
+            #region Serviços da camada application
+
+            services.AddScoped<PerfilService>();
+
+            #endregion
+
+            #region AutoMapper e MediatR
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
-
             var myhandlers = AppDomain.CurrentDomain.Load("InnatAPP.Application");
             services.AddMediatR(myhandlers);
+
+            #endregion
+
+            #region Unit of work
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            #endregion
 
             return services;
         }

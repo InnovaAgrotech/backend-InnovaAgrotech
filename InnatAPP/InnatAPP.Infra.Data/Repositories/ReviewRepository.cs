@@ -7,50 +7,54 @@ namespace InnatAPP.Infra.Data.Repositories
 {
     public class ReviewRepository : IReviewRepository
     {
-        private ApplicationDbContext _reviewContext;
+        private readonly ApplicationDbContext _reviewContext;
 
         public ReviewRepository(ApplicationDbContext context)
         {
             _reviewContext = context;
         }
-        public async Task<Review> AtualizarReviewAsync(Review review)
-        {
-            _reviewContext.Update(review);
-            await _reviewContext.SaveChangesAsync();
-            return review;
-        }
 
-        public async Task<Review> BuscarReviewPorIdAsync(int id)
-        {
-            return await _reviewContext.Reviews.Include(e => e.Produto)
-                .Include(e => e.Avaliador)
-                .SingleOrDefaultAsync(p => p.Id == id);
-        }
+        #region Buscas
 
+        public async Task<Review?> BuscarReviewPorIdAsync(Guid id)
+        {
+            return await _reviewContext.Reviews.FindAsync(id);
+        }
         public async Task<IEnumerable<Review>> BuscarReviewsAsync()
         {
             return await _reviewContext.Reviews.ToListAsync();
         }
 
-        public async Task<IEnumerable<Review>> BuscarReviewsPorAvaliadorAsync(int idAvaliador)
+        public async Task<IEnumerable<Review>> BuscarReviewsPorAvaliadorAsync(Guid idAvaliador)
         {
             return await _reviewContext.Reviews
-                .Include(e => e.Avaliador)
-                .Where(e => e.IdAvaliador == idAvaliador)
+                .Include(r => r.Avaliador)
+                .Where(r => r.IdAvaliador == idAvaliador)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Review>> BuscarReviewsPorProdutoAsync(int idProduto)
+        public async Task<IEnumerable<Review>> BuscarReviewsPorProdutoAsync(Guid idProduto)
         {
             return await _reviewContext.Reviews
-                .Include(e => e.Produto)
-                .Where(e => e.IdProduto == idProduto)
+                .Include(r => r.Produto)
+                .Where(r => r.IdProduto == idProduto)
                 .ToListAsync();
         }
+
+        #endregion
+
+        #region Comandos
 
         public async Task<Review> CriarReviewAsync(Review review)
         {
             _reviewContext.Add(review);
+            await _reviewContext.SaveChangesAsync();
+            return review;
+        }
+
+        public async Task<Review> AtualizarReviewAsync(Review review)
+        {
+            _reviewContext.Update(review);
             await _reviewContext.SaveChangesAsync();
             return review;
         }
@@ -61,5 +65,7 @@ namespace InnatAPP.Infra.Data.Repositories
             await _reviewContext.SaveChangesAsync();
             return review;
         }
+
+        #endregion
     }
 }
