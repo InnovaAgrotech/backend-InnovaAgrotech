@@ -1,4 +1,5 @@
-﻿using InnatAPP.Domain.Interfaces;
+﻿using InnatAPP.Domain.Account;
+using InnatAPP.Domain.Interfaces;
 using InnatAPP.Infra.Data.Context;
 using InnatAPP.Infra.Data.Services;
 using InnatAPP.Infra.Data.Identity;
@@ -107,6 +108,8 @@ namespace InnatAPP.Infra.IoC
             #region Serviços da camada infradata
 
             services.AddScoped<IServicoHash, ServicoHash>();
+
+            services.AddScoped<IAuthenticate, AuthenticateService>();
 
             #endregion
 
