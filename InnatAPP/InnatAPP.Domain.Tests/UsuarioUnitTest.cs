@@ -1235,41 +1235,19 @@ namespace InnatAPP.Domain.Tests
         [Fact(DisplayName = "Criar usuário com tipo vazio")]
         public void CriarUsuario_ComTipoVazio_ResultandoEmExcecaoDeDominio()
         {
-            Action action = () =>
-            {
-                var usuario = new Usuario(
-                    Guid.NewGuid(),
-                    "Eduarda Ribeiro",
-                    "EduardaRb@outlook.com",
-                    "Edu@rd@9382",
-                    "Foto-de-perfil.png",
-                    "Agrônoma há mais de 10 anos.",
-                    TipoUsuario.FromString("")
-                );
-            };
+            Action action = () => TipoUsuario.FromString("");
             action.Should()
-                .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
-                .WithMessage("O tipo de usuário é obrigatório.");
+                .Throw<ArgumentException>()
+                .WithMessage($"Tipo de usuário inválido, use \"Empresa\", \"Avaliador\" ou \"Administrador\".*");
         }
 
         [Fact(DisplayName = "Criar usuário com tipo em branco")]
         public void CriarUsuario_ComTipoEmBranco_ResultandoEmExcecaoDeDominio()
         {
-            Action action = () =>
-            {
-                var usuario = new Usuario(
-                    Guid.NewGuid(),
-                    "Eduarda Ribeiro",
-                    "EduardaRb@outlook.com",
-                    "Edu@rd@9382",
-                    "Foto-de-perfil.png",
-                    "Agrônoma há mais de 10 anos.",
-                    TipoUsuario.FromString("  ")
-                );
-            };
+            Action action = () => TipoUsuario.FromString("  ");
             action.Should()
-                .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
-                .WithMessage("O tipo de usuário é obrigatório.");
+                .Throw<ArgumentException>()
+                .WithMessage($"Tipo de usuário inválido, use \"Empresa\", \"Avaliador\" ou \"Administrador\".*");
         }
 
         [Fact(DisplayName = "Criar usuário com tipo inválido")]
