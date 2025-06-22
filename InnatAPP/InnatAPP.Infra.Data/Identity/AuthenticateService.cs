@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
+using InnatAPP.Domain.Interfaces;
+using InnatAPP.Infra.Data.Services;
 
 namespace InnatAPP.Infra.Data.Identity
 {
@@ -14,20 +16,24 @@ namespace InnatAPP.Infra.Data.Identity
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IServicoHash _servicoHash;
 
-        public AuthenticateService(ApplicationDbContext context, IConfiguration configuration)
+        public AuthenticateService(ApplicationDbContext context, IConfiguration configuration, IServicoHash servicoHash)
         {
             _context = context;
             _configuration = configuration;
+            _servicoHash = servicoHash;
         }
         public async Task<bool> AuthenticateAsync(string email, string password)
         {
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => string.Equals(x.Email, email, StringComparison.OrdinalIgnoreCase) && x.SenhaHash == password);
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+
             if (usuario == null)
-            {
                 return false;
-            }
-            return true;
+
+            var senhaValida = _servicoHash.VerificarHash(password, usuario.SenhaHash);
+            return senhaValida;
         }
 
         public UserToken GetUserToken(Guid id, string email, TipoUsuario tipoUsuario)
