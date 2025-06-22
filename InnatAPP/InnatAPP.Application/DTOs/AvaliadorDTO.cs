@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using InnatAPP.Application.DTOs.Usuario;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace InnatAPP.Application.DTOs
@@ -15,6 +16,6 @@ namespace InnatAPP.Application.DTOs
 
         [Required(ErrorMessage = "Os dados do usuário são obrigatórios.")]
         [DisplayName("Usuario")]
-        public UsuarioDTO Usuario { get; set; } = new UsuarioDTO();
+        public UsuarioRespostaDTO Usuario { get; set; } = new UsuarioRespostaDTO();
     }
 }

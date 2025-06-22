@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using InnatAPP.Application.DTOs;
 using InnatAPP.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InnatAPP.API.Controllers
 {
@@ -15,19 +16,10 @@ namespace InnatAPP.API.Controllers
             _reviewService = reviewService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAll()
-        {
-            var reviews = await _reviewService.BuscarReviewsAsync();
-            if (reviews == null)
-            {
-                return NotFound("Reviews não encontradas.");
-            }
-            return Ok(reviews);
-        }
+        #region Buscas
 
-        [HttpGet("{id:int}", Name = "GetReview")]
-        public async Task<ActionResult<ReviewDTO>> GetById(int id)
+        [HttpGet("{id:Guid}", Name = "GetReview")]
+        public async Task<ActionResult<ReviewDTO>> GetById(Guid id)
         {
             var review = await _reviewService.BuscarReviewPorIdAsync(id);
             if (review == null)
@@ -37,28 +29,50 @@ namespace InnatAPP.API.Controllers
             return Ok(review);
         }
 
-        [HttpGet("avaliador/{idAvaliador:int}")]
-        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetByAvaliador(int idAvaliador)
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAll()
+        {
+            var reviews = await _reviewService.BuscarReviewsAsync();
+            if (reviews == null || !reviews.Any())
+            {
+                return NotFound("Reviews não encontradas.");
+            }
+            return Ok(reviews);
+        }
+
+        [HttpGet("Avaliador/{idAvaliador:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAllByAvaliador(Guid idAvaliador)
         {
             var reviews = await _reviewService.BuscarReviewsPorAvaliadorAsync(idAvaliador);
-            if (reviews == null)
+            if (reviews == null || !reviews.Any())
             {
-                return NotFound("Nenhuma review encontrada para esse avaliador.");
+                return NotFound("Reviews não encontradas.");
             }
             return Ok(reviews);
         }
 
-        [HttpGet("produto/{idProduto:int}")]
-        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetByProduto(int idProduto)
+        [HttpGet("Produto/{idProduto:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAllByProduto(Guid idProduto)
         {
             var reviews = await _reviewService.BuscarReviewsPorProdutoAsync(idProduto);
-            if (reviews == null)
+            if (reviews == null || !reviews.Any())
             {
-                return NotFound("Nenhuma review encontrada para esse produto.");
+                return NotFound("Reviews não encontradas.");
             }
             return Ok(reviews);
         }
 
+        #endregion
+
+        #region Comandos
+
+        [Authorize(Roles = "Avaliador")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ReviewDTO reviewDTO)
         {
@@ -70,22 +84,24 @@ namespace InnatAPP.API.Controllers
             return new CreatedAtRouteResult("GetReview", new { id = reviewDTO.Id }, reviewDTO);
         }
 
+        [Authorize(Roles = "Avaliador")]
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] ReviewDTO reviewDTO)
+        public async Task<ActionResult> Put(Guid id, [FromBody] ReviewDTO reviewDTO)
         {
-            if (id != reviewDTO.Id)
-                return BadRequest("Dados inválidos.");
-
             if (reviewDTO == null)
                 return BadRequest("Review não encontrada.");
+
+            if (id != reviewDTO.Id)
+                return BadRequest("Dados inválidos.");
 
             await _reviewService.AtualizarReviewAsync(reviewDTO);
 
             return Ok(reviewDTO);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<ReviewDTO>> Delete(int id)
+        [Authorize(Roles = "Avaliador")]
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult<ReviewDTO>> Delete(Guid id)
         {
             var review = await _reviewService.BuscarReviewPorIdAsync(id);
             if (review == null)
@@ -96,5 +112,7 @@ namespace InnatAPP.API.Controllers
             await _reviewService.DeletarReviewAsync(id);
             return Ok(review);
         }
+
+        #endregion
     }
 }

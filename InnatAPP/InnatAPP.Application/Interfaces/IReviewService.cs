@@ -4,13 +4,21 @@ namespace InnatAPP.Application.Interfaces
 {
     public interface IReviewService
     {
-        Task<ReviewDTO> BuscarReviewPorIdAsync(int id);
+        #region Buscas
+
+        Task<ReviewDTO?> BuscarReviewPorIdAsync(Guid id);
         Task<IEnumerable<ReviewDTO>> BuscarReviewsAsync();
-        Task<IEnumerable<ReviewDTO>> BuscarReviewsPorAvaliadorAsync(int idAvaliador);
-        Task<IEnumerable<ReviewDTO>> BuscarReviewsPorProdutoAsync(int idProduto);
+        Task<IEnumerable<ReviewDTO>> BuscarReviewsPorAvaliadorAsync(Guid idAvaliador);
+        Task<IEnumerable<ReviewDTO>> BuscarReviewsPorProdutoAsync(Guid idProduto);
+
+        #endregion
+
+        #region Comandos
 
         Task CriarReviewAsync(ReviewDTO reviewDto);
         Task AtualizarReviewAsync(ReviewDTO reviewDto);
-        Task DeletarReviewAsync(int id);
+        Task DeletarReviewAsync(Guid id);
+
+        #endregion
     }
 }

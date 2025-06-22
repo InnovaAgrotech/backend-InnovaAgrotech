@@ -1,48 +1,67 @@
-﻿using AutoMapper;
-using InnatAPP.Domain.Entities;
+﻿using MediatR;
+using AutoMapper;
 using InnatAPP.Application.DTOs;
-using InnatAPP.Domain.Interfaces;
 using InnatAPP.Application.Interfaces;
+using InnatAPP.Application.CQRS.Empresas.Commands;
+using InnatAPP.Application.CQRS.Empresas.Queries;
 
 namespace InnatAPP.Application.Services
 {
     public class EmpresaService : IEmpresaService
     {
-        private IEmpresaRepository _empresaRepository;
         private readonly IMapper _mapper;
-        public EmpresaService(IEmpresaRepository empresaRepository, IMapper mapper)
+        private readonly IMediator _mediator;
+        public EmpresaService(IMapper mapper, IMediator mediator)
         {
-            _empresaRepository = empresaRepository;
             _mapper = mapper;
-        }
-        public async Task AtualizarEmpresaAsync(EmpresaDTO empresaDto)
-        {
-            var empresaEntity = _mapper.Map<Empresa>(empresaDto);
-            await _empresaRepository.AtualizarEmpresaAsync(empresaEntity);
+            _mediator = mediator;
         }
 
-        public async Task<EmpresaDTO> BuscarEmpresaPorIdAsync(int id)
+        #region Buscas
+        public async Task<EmpresaDTO?> BuscarEmpresaPorIdAsync(Guid id)
         {
-            var empresaEntity = await _empresaRepository.BuscarEmpresaPorIdAsync(id);
-            return _mapper.Map<EmpresaDTO>(empresaEntity);
+            var empresaByIdQuery = new GetEmpresaByIdQuery(id) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(empresaByIdQuery);
+            return _mapper.Map<EmpresaDTO>(resultado);
+        }
+
+        public async Task<EmpresaDTO?> BuscarEmpresaPorIdDeUsuarioAsync(Guid idUsuario)
+        {
+            var empresaByIdUsuario = new GetEmpresaByIdUsuarioQuery(idUsuario) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(empresaByIdUsuario);
+            return _mapper.Map<EmpresaDTO>(resultado);
+        }
+
+        public async Task<EmpresaDTO?> BuscarEmpresaPorEmailAsync(string email)
+        {
+            var empresaByEmail = new GetEmpresaByEmailQuery(email) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(empresaByEmail);
+            return _mapper.Map<EmpresaDTO>(resultado);
         }
 
         public async Task<IEnumerable<EmpresaDTO>> BuscarEmpresasAsync()
         {
-            var empresaEntity = await _empresaRepository.BuscarEmpresasAsync();
-            return _mapper.Map<IEnumerable<EmpresaDTO>>(empresaEntity);
+            var empresasQuery = new GetEmpresasQuery() ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(empresasQuery);
+            return _mapper.Map<IEnumerable<EmpresaDTO>>(resultado);
         }
+
+        #endregion
+
+        #region Comandos
 
         public async Task CriarEmpresaAsync(EmpresaDTO empresaDto)
         {
-            var empresaEntity = _mapper.Map<Empresa>(empresaDto);
-            await _empresaRepository.CriarEmpresaAsync(empresaEntity);
+            var empresaCreateCommand = _mapper.Map<EmpresaCreateCommand>(empresaDto);
+            await _mediator.Send(empresaCreateCommand);
         }
 
-        public async Task DeletarEmpresaAsync(int id)
+        public async Task DeletarEmpresaAsync(Guid id)
         {
-            var empresaEntity = _empresaRepository.BuscarEmpresaPorIdAsync(id).Result;
-            await _empresaRepository.DeletarEmpresaAsync(empresaEntity);
+            var empresaRemoveCommand = new EmpresaRemoveCommand(id) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            await _mediator.Send(empresaRemoveCommand);
         }
+
+        #endregion
     }
 }

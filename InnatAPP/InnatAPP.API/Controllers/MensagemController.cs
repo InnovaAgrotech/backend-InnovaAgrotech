@@ -1,7 +1,6 @@
-﻿using InnatAPP.Application.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using InnatAPP.Application.DTOs;
 using InnatAPP.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace InnatAPP.API.Controllers
 {
@@ -16,19 +15,10 @@ namespace InnatAPP.API.Controllers
             _mensagemService = mensagemService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MensagemDTO>>> GetAll()
-        {
-            var mensagens = await _mensagemService.BuscarMensagensAsync();
-            if (mensagens == null)
-            {
-                return NotFound("Mensagens não encontradas.");
-            }
-            return Ok(mensagens);
-        }
+        #region Buscas
 
-        [HttpGet("{id:int}", Name = "GetMensagem")]
-        public async Task<ActionResult<MensagemDTO>> GetById(int id)
+        [HttpGet("{id:Guid}", Name = "GetMensagem")]
+        public async Task<ActionResult<MensagemDTO>> GetById(Guid id)
         {
             var mensagem = await _mensagemService.BuscarMensagemPorIdAsync(id);
             if (mensagem == null)
@@ -37,6 +27,23 @@ namespace InnatAPP.API.Controllers
             }
             return Ok(mensagem);
         }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MensagemDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<MensagemDTO>>> GetAll()
+        {
+            var mensagens = await _mensagemService.BuscarMensagensAsync();
+            if (mensagens == null || !mensagens.Any())
+            {
+                return NotFound("Mensagens não encontradas.");
+            }
+            return Ok(mensagens);
+        }
+
+        #endregion
+
+        #region Comandos
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] MensagemDTO mensagemDTO)
@@ -49,31 +56,6 @@ namespace InnatAPP.API.Controllers
             return new CreatedAtRouteResult("GetMensagem", new { id = mensagemDTO.Id }, mensagemDTO);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] MensagemDTO mensagemDTO)
-        {
-            if (id != mensagemDTO.Id)
-                return BadRequest("Dados inválidos.");
-
-            if (mensagemDTO == null)
-                return BadRequest("Mensagem não encontrada.");
-
-            await _mensagemService.AtualizarMensagemAsync(mensagemDTO);
-
-            return Ok(mensagemDTO);
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<MensagemDTO>> Delete(int id)
-        {
-            var mensagem = await _mensagemService.BuscarMensagemPorIdAsync(id);
-            if (mensagem == null)
-            {
-                return NotFound("Mensagem não encontrada.");
-            }
-
-            await _mensagemService.DeletarMensagemAsync(id);
-            return Ok(mensagem);
-        }
+        #endregion
     }
 }

@@ -23,7 +23,8 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
             builder.HasOne(t => t.Usuario)
                 .WithMany(t => t.Telefones)
                 .HasForeignKey(t => t.IdUsuario)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

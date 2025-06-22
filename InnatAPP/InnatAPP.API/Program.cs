@@ -1,4 +1,3 @@
-using InnatAPP.Infra.Data.Firestore;
 using InnatAPP.Infra.IoC;
 
 namespace InnatAPP.API
@@ -14,9 +13,18 @@ namespace InnatAPP.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddInfrastructureAPI(builder.Configuration);
-            builder.Services.AddSingleton<FirestoreService>();
+            builder.Services.AddInfrastructureJWT(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        .AllowAnyOrigin() // ou .WithOrigins("http://localhost:5173")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
 
             var app = builder.Build();
 
@@ -27,10 +35,13 @@ namespace InnatAPP.API
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -1,17 +1,16 @@
-﻿using MediatR;
-using InnatAPP.Domain.Interfaces;
+﻿using InnatAPP.Domain.Interfaces;
 using InnatAPP.Infra.Data.Context;
-using InnatAPP.Infra.Data.Firestore;
+using InnatAPP.Infra.Data.Services;
+using InnatAPP.Infra.Data.Identity;
 using InnatAPP.Application.Mappings;
 using InnatAPP.Application.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using InnatAPP.Infra.Data.UnitOfWork;
+using InnatAPP.Application.Interfaces;
 using InnatAPP.Infra.Data.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Google.Cloud.Firestore;
-using InnatAPP.Infra.Data.Jobs;
 
 namespace InnatAPP.Infra.IoC
 {
@@ -22,6 +21,10 @@ namespace InnatAPP.Infra.IoC
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
             b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
+            services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             #region repositórios baseados em EF Core
 
@@ -47,7 +50,31 @@ namespace InnatAPP.Infra.IoC
 
             #endregion
 
-            #region Firestore Service
+            #region Serviços 
+
+            services.AddScoped<IAvaliadorService, AvaliadorService>();
+
+            services.AddScoped<ICategoriaService, CategoriaService>();
+
+            services.AddScoped<IEmailAlternativoService, EmailAlternativoService>();
+
+            services.AddScoped<IEmpresaService, EmpresaService>();
+
+            services.AddScoped<IEnderecoService, EnderecoService>();
+
+            services.AddScoped<IMensagemService, MensagemService>();
+
+            services.AddScoped<IProdutoService, ProdutoService>();
+
+            services.AddScoped<IReviewService, ReviewService>();
+
+            services.AddScoped<ITelefoneService, TelefoneService>();
+
+            services.AddScoped<IUsuarioService, UsuarioService>();
+
+            #endregion
+
+            /* #region Firestore Service
 
             services.AddSingleton<FirestoreService>();
 
@@ -75,19 +102,19 @@ namespace InnatAPP.Infra.IoC
 
             services.AddHostedService<UsuarioSyncJob>();
 
-            #endregion
+            #endregion */
 
-            #region Serviços da camada application
+            #region Serviços da camada infradata
 
-            services.AddScoped<PerfilService>();
+            services.AddScoped<IServicoHash, ServicoHash>();
 
             #endregion
 
             #region AutoMapper e MediatR
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
-            var myhandlers = AppDomain.CurrentDomain.Load("InnatAPP.Application");
-            services.AddMediatR(myhandlers);
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(AppDomain.CurrentDomain.Load("InnatAPP.Application")));
 
             #endregion
 

@@ -22,7 +22,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
 
@@ -48,7 +48,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -72,7 +72,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -92,7 +92,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -112,7 +112,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -132,7 +132,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -152,7 +152,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -172,7 +172,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -192,7 +192,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -212,7 +212,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -238,7 +238,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -258,7 +258,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -278,8 +278,8 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
-                );
+                    TipoUsuario.FromString("Avaliador")
+                );  
             };
             action.Should()
                 .Throw<InnatAPP.Domain.Validation.DomainExceptionValidation>()
@@ -298,7 +298,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -318,7 +318,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -338,7 +338,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -358,7 +358,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -382,7 +382,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -402,7 +402,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -422,7 +422,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -442,7 +442,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -462,7 +462,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -482,7 +482,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -502,7 +502,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -522,7 +522,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -542,7 +542,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -562,7 +562,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -582,7 +582,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -602,7 +602,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -622,7 +622,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -642,7 +642,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -662,7 +662,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -686,7 +686,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -706,7 +706,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -726,7 +726,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -746,7 +746,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -766,7 +766,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -786,7 +786,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -806,7 +806,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -826,7 +826,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -846,7 +846,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -866,7 +866,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -886,7 +886,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -906,7 +906,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -926,7 +926,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -946,7 +946,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -966,7 +966,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -992,7 +992,7 @@ namespace InnatAPP.Domain.Tests
                     null,
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1012,7 +1012,7 @@ namespace InnatAPP.Domain.Tests
                     "",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1032,7 +1032,7 @@ namespace InnatAPP.Domain.Tests
                     "Dud@9",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1052,7 +1052,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@R!Be!R09382M1lh0rS3nh@Agr0n0m!@2025#Segur@nç@T0t@lD0M1n!065",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1072,7 +1072,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@ 9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1092,7 +1092,7 @@ namespace InnatAPP.Domain.Tests
                     "edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1112,7 +1112,7 @@ namespace InnatAPP.Domain.Tests
                     "EDU@RD@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1132,7 +1132,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@NoveTresOitoDois",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1152,7 +1152,7 @@ namespace InnatAPP.Domain.Tests
                     "Eduarda9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1176,7 +1176,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil-2024-ultra-hd-4k-agronomia-soja-milho-cafe-plantio-colheita-solo-adubacao-irrigacao-tratore-sagricultura-precision-farming-fertiliizantes-sustentabilidade-biomas-brasileiros-certificacao-iso-9001-14001-global-gap-ifarm-logo-marca-dagua-selos.png",
                     "Agrônoma há mais de 10 anos.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1200,7 +1200,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há 12 anos, especialista em solos e agricultura digital. Mestra em Agronomia pela UFV, com MBA em Gestão Agroindustrial. Atuo no desenvolvimento de sistemas sustentáveis que unem tecnologia de precisão e práticas ancestrais. Apaixonada por café specialty, controle biológico e drones agrícolas. Criadora do projeto 'Adote um Hectare', que conecta produtores a investidores. Acredito que o futuro da agricultura está na ciência de dados sem perder o contato com a terra. Mãe de dois filhos, esposa de um produtor rural e viciada em fotografia de paisagens rurais. Minha missão: alimentar o mundo sem esgotar o planeta. Atualmente desenvolvendo um app para diagnóstico de pragas via IA.",
-                    "Avaliador"
+                    TipoUsuario.FromString("Avaliador")
                 );
             };
             action.Should()
@@ -1244,7 +1244,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    ""
+                    TipoUsuario.FromString("")
                 );
             };
             action.Should()
@@ -1264,7 +1264,7 @@ namespace InnatAPP.Domain.Tests
                     "Edu@rd@9382",
                     "Foto-de-perfil.png",
                     "Agrônoma há mais de 10 anos.",
-                    "  "
+                    TipoUsuario.FromString("  ")
                 );
             };
             action.Should()

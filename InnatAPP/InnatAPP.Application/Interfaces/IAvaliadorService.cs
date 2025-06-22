@@ -1,20 +1,23 @@
 ﻿using InnatAPP.Application.DTOs;
-using InnatAPP.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InnatAPP.Application.Interfaces
 {
     public interface IAvaliadorService
     {
+        #region Buscas
+
+        Task<AvaliadorDTO?> BuscarAvaliadorPorIdAsync(Guid id);
+        Task<AvaliadorDTO?> BuscarAvaliadorPorIdDeUsuarioAsync(Guid idUsuario);
+        Task<AvaliadorDTO?> BuscarAvaliadorPorEmailAsync(string email);
         Task<IEnumerable<AvaliadorDTO>> BuscarAvaliadoresAsync();
-        Task<AvaliadorDTO> BuscarAvaliadorPorIdAsync(int id);
+
+        #endregion
+
+        #region Comandos
 
         Task CriarAvaliadorAsync(AvaliadorDTO avaliadorDto);
-        Task AtualizarAvaliadorAsync(AvaliadorDTO avaliadorDto);
-        Task DeletarAvaliadorAsync(int id);
+        Task DeletarAvaliadorAsync(Guid id);
+
+        #endregion
     }
 }

@@ -1,7 +1,6 @@
-﻿using InnatAPP.Application.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using InnatAPP.Application.DTOs;
 using InnatAPP.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace InnatAPP.API.Controllers
 {
@@ -16,19 +15,10 @@ namespace InnatAPP.API.Controllers
             _empresaService = empresaService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmpresaDTO>>> GetAll()
-        {
-            var empresas = await _empresaService.BuscarEmpresasAsync();
-            if (empresas == null)
-            {
-                return NotFound("Empresas não encontradas.");
-            }
-            return Ok(empresas);
-        }
+        #region Buscas
 
-        [HttpGet("{id:int}", Name = "GetEmpresa")]
-        public async Task<ActionResult<EmpresaDTO>> GetById(int id)
+        [HttpGet("{id:Guid}", Name = "GetEmpresa")]
+        public async Task<ActionResult<EmpresaDTO>> GetById(Guid id)
         {
             var empresa = await _empresaService.BuscarEmpresaPorIdAsync(id);
             if (empresa == null)
@@ -37,6 +27,45 @@ namespace InnatAPP.API.Controllers
             }
             return Ok(empresa);
         }
+
+        [HttpGet("usuario/{idUsuario:Guid}")]
+        public async Task<ActionResult<EmpresaDTO>> GetByUsuario(Guid idUsuario)
+        {
+            var empresa = await _empresaService.BuscarEmpresaPorIdDeUsuarioAsync(idUsuario);
+            if (empresa == null)
+            {
+                return NotFound("Nenhuma empresa encontrada.");
+            }
+            return Ok(empresa);
+        }
+
+        [HttpGet("email:/{email}", Name = "GetEmpresaByEmail")]
+        public async Task<ActionResult<EmpresaDTO>> GetByEmail(string email)
+        {
+            var empresa = await _empresaService.BuscarEmpresaPorEmailAsync(email);
+            if (empresa == null)
+            {
+                return NotFound("Empresa não encontrada.");
+            }
+            return Ok(empresa);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<EmpresaDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<EmpresaDTO>>> GetAll()
+        {
+            var empresas = await _empresaService.BuscarEmpresasAsync();
+            if (empresas == null || !empresas.Any())
+            {
+                return NotFound("Empresas não encontradas.");
+            }
+            return Ok(empresas);
+        }
+
+        #endregion
+
+        #region Comandos
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] EmpresaDTO empresaDTO)
@@ -49,22 +78,8 @@ namespace InnatAPP.API.Controllers
             return new CreatedAtRouteResult("GetEmpresa", new { id = empresaDTO.Id }, empresaDTO);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] EmpresaDTO empresaDTO)
-        {
-            if (id != empresaDTO.Id)
-                return BadRequest("Dados inválidos.");
-
-            if (empresaDTO == null)
-                return BadRequest("Empresa não encontrada.");
-
-            await _empresaService.AtualizarEmpresaAsync(empresaDTO);
-
-            return Ok(empresaDTO);
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<EmpresaDTO>> Delete(int id)
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult<EmpresaDTO>> Delete(Guid id)
         {
             var empresa = await _empresaService.BuscarEmpresaPorIdAsync(id);
             if (empresa == null)
@@ -75,5 +90,7 @@ namespace InnatAPP.API.Controllers
             await _empresaService.DeletarEmpresaAsync(id);
             return Ok(empresa);
         }
+
+        #endregion
     }
 }

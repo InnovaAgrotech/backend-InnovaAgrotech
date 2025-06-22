@@ -22,7 +22,7 @@ namespace InnatAPP.Application.CQRS.Usuarios.Handlers
             }
             else
             {
-                usuario.Alterar(request.Nome, request.Email, request.SenhaHash, request.Foto, request.Biografia);
+                usuario.Alterar(request.Nome, request.Foto, request.Biografia);
                 return await _usuarioRepository.AtualizarUsuarioAsync(usuario);
             }
         }

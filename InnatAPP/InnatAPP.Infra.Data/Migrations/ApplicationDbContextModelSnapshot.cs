@@ -17,54 +17,33 @@ namespace InnatAPP.Infra.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Avaliador", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Bio")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Foto")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                    b.Property<Guid>("IdUsuario")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Avaliadores");
+                    b.HasIndex("IdUsuario")
+                        .IsUnique();
+
+                    b.ToTable("Avaliadores", (string)null);
                 });
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Categoria", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -73,160 +52,114 @@ namespace InnatAPP.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("Categorias", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("e6e97a8f-dc2f-4a75-a5ff-6f2d2f6a9d02"),
                             Nome = "Drones"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("ae32fc1f-14e2-470c-aecf-cf52a79d4e4f"),
                             Nome = "Tratores"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("b1b4d98c-2cc1-4a08-b7d9-baf8403c2a23"),
                             Nome = "Semeadeiras"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("8c0fc7a1-63d2-40d6-b31c-1c0a741d42b7"),
                             Nome = "Colheitadeiras"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = new Guid("9ed18ed4-17ef-4a6a-9e0b-6cbb7eeb88c2"),
                             Nome = "Pulverizadores"
                         },
                         new
                         {
-                            Id = 6,
+                            Id = new Guid("03b6e5d5-b98e-4436-9115-2db0220c7381"),
                             Nome = "Arados"
                         },
                         new
                         {
-                            Id = 7,
+                            Id = new Guid("72476c3f-2a83-4686-94bc-d3b3c9d33c2e"),
                             Nome = "Grades"
                         },
                         new
                         {
-                            Id = 8,
+                            Id = new Guid("d19c882e-19c0-4395-a2c6-f6a80f5dbb0e"),
                             Nome = "Subsoladores"
                         },
                         new
                         {
-                            Id = 9,
+                            Id = new Guid("cad2a5a7-77a6-4b1b-85f0-b643b2489fd3"),
                             Nome = "Enxadas Rotativas"
                         },
                         new
                         {
-                            Id = 10,
+                            Id = new Guid("a9dcadad-dde9-4d8f-b91a-0e6eb396f582"),
                             Nome = "Escarificadores"
                         },
                         new
                         {
-                            Id = 11,
+                            Id = new Guid("3c80cbd3-df45-476b-9bfb-e50d7e89940e"),
                             Nome = "Adubadoras"
                         },
                         new
                         {
-                            Id = 12,
+                            Id = new Guid("d86c580e-88e5-42cf-882c-175848229dbf"),
                             Nome = "Enfardadoras"
                         });
                 });
 
-            modelBuilder.Entity("InnatAPP.Domain.Entities.EmailAlternativoAvaliador", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.EmailAlternativo", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("EnderecoEmail")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(254)
+                        .HasColumnType("nvarchar(254)");
 
-                    b.Property<int>("IdAvaliador")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdAvaliador");
-
-                    b.ToTable("EmailsAlternativosAvaliador");
-                });
-
-            modelBuilder.Entity("InnatAPP.Domain.Entities.EmailAlternativoEmpresa", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("EnderecoEmail")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("IdEmpresa")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IdUsuario")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdEmpresa");
+                    b.HasIndex("IdUsuario");
 
-                    b.ToTable("EmailsAlternativosEmpresa");
+                    b.ToTable("EmailsAlternativos", (string)null);
                 });
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Empresa", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Bio")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Foto")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                    b.Property<Guid>("IdUsuario")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Empresas");
+                    b.HasIndex("IdUsuario")
+                        .IsUnique();
+
+                    b.ToTable("Empresas", (string)null);
                 });
 
-            modelBuilder.Entity("InnatAPP.Domain.Entities.EnderecoAvaliador", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.Endereco", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Bairro")
                         .IsRequired()
@@ -244,6 +177,7 @@ namespace InnatAPP.Infra.Data.Migrations
                         .HasColumnType("nvarchar(80)");
 
                     b.Property<string>("Complemento")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -252,8 +186,8 @@ namespace InnatAPP.Infra.Data.Migrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
-                    b.Property<int>("IdAvaliador")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IdUsuario")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Numero")
                         .IsRequired()
@@ -267,75 +201,21 @@ namespace InnatAPP.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdAvaliador");
+                    b.HasIndex("IdUsuario");
 
-                    b.ToTable("EnderecosAvaliador");
-                });
-
-            modelBuilder.Entity("InnatAPP.Domain.Entities.EnderecoEmpresa", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Bairro")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("Cep")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("Cidade")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("Complemento")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
-
-                    b.Property<int>("IdEmpresa")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Numero")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Rua")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdEmpresa");
-
-                    b.ToTable("EnderecosEmpresa");
+                    b.ToTable("Enderecos", (string)null);
                 });
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Mensagem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(254)
+                        .HasColumnType("nvarchar(254)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -349,42 +229,41 @@ namespace InnatAPP.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mensagens");
+                    b.ToTable("Mensagens", (string)null);
                 });
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Produto", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Avaliacao")
-                        .ValueGeneratedOnAdd()
-                        .HasPrecision(3, 2)
-                        .HasColumnType("decimal(3,2)")
-                        .HasDefaultValue(5m);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("IdCategoria")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdEmpresa")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Imagem")
+                    b.Property<string>("Foto")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
+
+                    b.Property<Guid>("IdCategoria")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdEmpresa")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("Nota")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(3, 2)
+                        .HasColumnType("decimal(3,2)")
+                        .HasDefaultValue(5m);
 
                     b.Property<int>("TotalReviews")
                         .ValueGeneratedOnAdd()
@@ -397,48 +276,47 @@ namespace InnatAPP.Infra.Data.Migrations
 
                     b.HasIndex("IdEmpresa");
 
-                    b.ToTable("Produtos");
+                    b.ToTable("Produtos", (string)null);
                 });
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Review", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("AtualizadoEm")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 5, 2, 23, 41, 1, 31, DateTimeKind.Utc).AddTicks(569));
-
-                    b.Property<decimal>("Avaliacao")
-                        .HasPrecision(3, 2)
-                        .HasColumnType("decimal(3,2)");
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<DateTime>("CriadoEm")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 5, 2, 23, 41, 1, 31, DateTimeKind.Utc).AddTicks(149));
+                        .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("Dislikes")
+                    b.Property<int>("Curtidas")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.Property<int>("IdAvaliador")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProduto")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Likes")
+                    b.Property<int>("Descurtidas")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.Property<string>("Mensagem")
+                    b.Property<Guid>("IdAvaliador")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdProduto")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Nota")
+                        .HasPrecision(3, 2)
+                        .HasColumnType("decimal(3,2)");
+
+                    b.Property<string>("Resenha")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -448,24 +326,22 @@ namespace InnatAPP.Infra.Data.Migrations
 
                     b.HasIndex("IdProduto");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
-            modelBuilder.Entity("InnatAPP.Domain.Entities.TelefoneAvaliador", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.Telefone", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Ddd")
                         .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
-                    b.Property<int>("IdAvaliador")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IdUsuario")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Numero")
                         .IsRequired()
@@ -474,279 +350,95 @@ namespace InnatAPP.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdAvaliador");
+                    b.HasIndex("IdUsuario");
 
-                    b.ToTable("TelefonesAvaliador");
+                    b.ToTable("Telefones", (string)null);
                 });
 
-            modelBuilder.Entity("InnatAPP.Domain.Entities.TelefoneEmpresa", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.Usuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ddd")
+                    b.Property<string>("Biografia")
                         .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
-
-                    b.Property<int>("IdEmpresa")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Numero")
-                        .IsRequired()
-                        .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdEmpresa");
-
-                    b.ToTable("TelefonesEmpresa");
-                });
-
-            modelBuilder.Entity("InnatAPP.Infra.Data.Identity.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(254)
+                        .HasColumnType("nvarchar(254)");
+
+                    b.Property<string>("Foto")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SenhaHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.HasIndex("Nome")
+                        .IsUnique();
+
+                    b.ToTable("Usuarios", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.Avaliador", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("InnatAPP.Domain.Entities.EmailAlternativoAvaliador", b =>
-                {
-                    b.HasOne("InnatAPP.Domain.Entities.Avaliador", "Avaliador")
-                        .WithMany("EmailsAlternativosAvaliador")
-                        .HasForeignKey("IdAvaliador")
+                    b.HasOne("InnatAPP.Domain.Entities.Usuario", "Usuario")
+                        .WithOne()
+                        .HasForeignKey("InnatAPP.Domain.Entities.Avaliador", "IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Avaliador");
+                    b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("InnatAPP.Domain.Entities.EmailAlternativoEmpresa", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.EmailAlternativo", b =>
                 {
-                    b.HasOne("InnatAPP.Domain.Entities.Empresa", "Empresa")
-                        .WithMany("EmailsAlternativosEmpresa")
-                        .HasForeignKey("IdEmpresa")
+                    b.HasOne("InnatAPP.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("EmailsAlternativos")
+                        .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Empresa");
+                    b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("InnatAPP.Domain.Entities.EnderecoAvaliador", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.Empresa", b =>
                 {
-                    b.HasOne("InnatAPP.Domain.Entities.Avaliador", "Avaliador")
-                        .WithMany("EnderecosAvaliador")
-                        .HasForeignKey("IdAvaliador")
+                    b.HasOne("InnatAPP.Domain.Entities.Usuario", "Usuario")
+                        .WithOne()
+                        .HasForeignKey("InnatAPP.Domain.Entities.Empresa", "IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Avaliador");
+                    b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("InnatAPP.Domain.Entities.EnderecoEmpresa", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.Endereco", b =>
                 {
-                    b.HasOne("InnatAPP.Domain.Entities.Empresa", "Empresa")
-                        .WithMany("EnderecosEmpresa")
-                        .HasForeignKey("IdEmpresa")
+                    b.HasOne("InnatAPP.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("Enderecos")
+                        .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Empresa");
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Produto", b =>
@@ -773,7 +465,7 @@ namespace InnatAPP.Infra.Data.Migrations
                     b.HasOne("InnatAPP.Domain.Entities.Avaliador", "Avaliador")
                         .WithMany("Reviews")
                         .HasForeignKey("IdAvaliador")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("InnatAPP.Domain.Entities.Produto", "Produto")
@@ -787,88 +479,44 @@ namespace InnatAPP.Infra.Data.Migrations
                     b.Navigation("Produto");
                 });
 
-            modelBuilder.Entity("InnatAPP.Domain.Entities.TelefoneAvaliador", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.Telefone", b =>
                 {
-                    b.HasOne("InnatAPP.Domain.Entities.Avaliador", "Avaliador")
-                        .WithMany("TelefonesAvaliador")
-                        .HasForeignKey("IdAvaliador")
+                    b.HasOne("InnatAPP.Domain.Entities.Usuario", "Usuario")
+                        .WithMany("Telefones")
+                        .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Avaliador");
+                    b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("InnatAPP.Domain.Entities.TelefoneEmpresa", b =>
+            modelBuilder.Entity("InnatAPP.Domain.Entities.Usuario", b =>
                 {
-                    b.HasOne("InnatAPP.Domain.Entities.Empresa", "Empresa")
-                        .WithMany("TelefonesEmpresa")
-                        .HasForeignKey("IdEmpresa")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsOne("InnatAPP.Domain.ValueObjects.TipoUsuario", "TipoUsuario", b1 =>
+                        {
+                            b1.Property<Guid>("UsuarioId")
+                                .HasColumnType("uniqueidentifier");
 
-                    b.Navigation("Empresa");
-                });
+                            b1.Property<string>("Valor")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("TipoUsuario");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                            b1.HasKey("UsuarioId");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("InnatAPP.Infra.Data.Identity.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                            b1.ToTable("Usuarios");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("InnatAPP.Infra.Data.Identity.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                            b1.WithOwner()
+                                .HasForeignKey("UsuarioId");
+                        });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("InnatAPP.Infra.Data.Identity.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("InnatAPP.Infra.Data.Identity.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.Navigation("TipoUsuario")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Avaliador", b =>
                 {
-                    b.Navigation("EmailsAlternativosAvaliador");
-
-                    b.Navigation("EnderecosAvaliador");
-
                     b.Navigation("Reviews");
-
-                    b.Navigation("TelefonesAvaliador");
                 });
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Categoria", b =>
@@ -878,18 +526,21 @@ namespace InnatAPP.Infra.Data.Migrations
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Empresa", b =>
                 {
-                    b.Navigation("EmailsAlternativosEmpresa");
-
-                    b.Navigation("EnderecosEmpresa");
-
                     b.Navigation("Produtos");
-
-                    b.Navigation("TelefonesEmpresa");
                 });
 
             modelBuilder.Entity("InnatAPP.Domain.Entities.Produto", b =>
                 {
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("InnatAPP.Domain.Entities.Usuario", b =>
+                {
+                    b.Navigation("EmailsAlternativos");
+
+                    b.Navigation("Enderecos");
+
+                    b.Navigation("Telefones");
                 });
 #pragma warning restore 612, 618
         }

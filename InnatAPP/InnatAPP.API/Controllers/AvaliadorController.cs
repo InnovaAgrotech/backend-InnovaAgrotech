@@ -1,7 +1,6 @@
-﻿using InnatAPP.Application.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using InnatAPP.Application.DTOs;
 using InnatAPP.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace InnatAPP.API.Controllers
 {
@@ -16,21 +15,10 @@ namespace InnatAPP.API.Controllers
             _avaliadorService = avaliadorService;
         }
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AvaliadorDTO>))]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<IEnumerable<AvaliadorDTO>>> GetAll()
-        {
-            var avaliadores = await _avaliadorService.BuscarAvaliadoresAsync();
-            if (avaliadores == null)
-            {
-                return NotFound("Avaliadores não encontrados.");
-            }
-            return Ok(avaliadores);
-        }
+        #region Buscas
 
-        [HttpGet("{id:int}", Name = "GetAvaliador")]
-        public async Task<ActionResult<AvaliadorDTO>> GetById(int id)
+        [HttpGet("{id:Guid}", Name = "GetAvaliador")]
+        public async Task<ActionResult<AvaliadorDTO>> GetById(Guid id)
         {
             var avaliador = await _avaliadorService.BuscarAvaliadorPorIdAsync(id);
             if (avaliador == null)
@@ -39,6 +27,45 @@ namespace InnatAPP.API.Controllers
             }
             return Ok(avaliador);
         }
+
+        [HttpGet("usuario/{idUsuario:Guid}")]
+        public async Task<ActionResult<AvaliadorDTO>> GetByUsuario(Guid idUsuario)
+        {
+            var avaliador = await _avaliadorService.BuscarAvaliadorPorIdDeUsuarioAsync(idUsuario);
+            if (avaliador == null)
+            {
+                return NotFound("Nenhum avaliador encontrado.");
+            }
+            return Ok(avaliador);
+        }
+
+        [HttpGet("email:/{email}", Name = "GetAvaliadorByEmail")]
+        public async Task<ActionResult<AvaliadorDTO>> GetByEmail(string email)
+        {
+            var avaliador = await _avaliadorService.BuscarAvaliadorPorEmailAsync(email);
+            if (avaliador == null)
+            {
+                return NotFound("Avaliador não encontrado.");
+            }
+            return Ok(avaliador);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AvaliadorDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<AvaliadorDTO>>> GetAll()
+        {
+            var avaliadores = await _avaliadorService.BuscarAvaliadoresAsync();
+            if (avaliadores == null || !avaliadores.Any())
+            {
+                return NotFound("Avaliadores não encontrados.");
+            }
+            return Ok(avaliadores);
+        }
+
+        #endregion
+
+        #region Comandos
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] AvaliadorDTO avaliadorDTO)
@@ -51,22 +78,8 @@ namespace InnatAPP.API.Controllers
             return new CreatedAtRouteResult("GetAvaliador", new { id = avaliadorDTO.Id }, avaliadorDTO);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] AvaliadorDTO avaliadorDTO)
-        {
-            if (id != avaliadorDTO.Id)
-                return BadRequest("Dados inválidos.");
-
-            if (avaliadorDTO == null)
-                return BadRequest("Avaliador não encontrado.");
-
-            await _avaliadorService.AtualizarAvaliadorAsync(avaliadorDTO);
-
-            return Ok(avaliadorDTO);
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<AvaliadorDTO>> Delete(int id)
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult<AvaliadorDTO>> Delete(Guid id)
         {
             var avaliador = await _avaliadorService.BuscarAvaliadorPorIdAsync(id);
             if (avaliador == null)
@@ -77,5 +90,7 @@ namespace InnatAPP.API.Controllers
             await _avaliadorService.DeletarAvaliadorAsync(id);
             return Ok(avaliador);
         }
+
+        #endregion
     }
 }

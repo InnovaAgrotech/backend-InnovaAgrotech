@@ -3,6 +3,7 @@ using InnatAPP.Domain.Interfaces;
 using InnatAPP.Infra.Data.Context;
 using InnatAPP.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Google.Api;
 
 namespace InnatAPP.Infra.Data.Repositories
 {
@@ -36,7 +37,7 @@ namespace InnatAPP.Infra.Data.Repositories
 
         public async Task<IEnumerable<Usuario>> BuscarUsuariosPorTipoAsync(TipoUsuario tipoUsuario)
             => await _usuarioContext.Usuarios
-                                    .Where(u => u.TipoUsuario == tipoUsuario)
+                                    .Where(u => u.TipoUsuario.Valor == tipoUsuario.Valor)
                                     .AsNoTracking()
                                     .ToListAsync();
         #endregion
@@ -62,6 +63,20 @@ namespace InnatAPP.Infra.Data.Repositories
             _usuarioContext.Remove(usuario);
             await _usuarioContext.SaveChangesAsync();
             return usuario;
+        }
+
+        #endregion
+
+        #region Verificação de nome e e-mail
+
+        public async Task<bool> EmailJaExisteAsync(string email)
+        {
+            return await _usuarioContext.Usuarios.AnyAsync(u => u.Email == email);
+        }
+
+        public async Task<bool> NomeJaExisteAsync(string nome)
+        {
+            return await _usuarioContext.Usuarios.AnyAsync(u => u.Nome == nome);
         }
 
         #endregion

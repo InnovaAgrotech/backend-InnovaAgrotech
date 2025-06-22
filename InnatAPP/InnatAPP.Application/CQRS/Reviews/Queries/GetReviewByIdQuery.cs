@@ -3,10 +3,10 @@ using InnatAPP.Domain.Entities;
 
 namespace InnatAPP.Application.CQRS.Reviews.Queries
 {
-    public class GetReviewsAvaliadordQuery : IRequest<Review>
+    public class GetReviewByIdQuery : IRequest<Review>
     {
         public Guid Id { get; set; }
-        public GetReviewsAvaliadordQuery(Guid id)
+        public GetReviewByIdQuery(Guid id)
         {
             Id = id;
         }

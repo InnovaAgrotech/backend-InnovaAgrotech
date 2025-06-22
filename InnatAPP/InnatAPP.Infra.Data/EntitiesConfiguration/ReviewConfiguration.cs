@@ -38,11 +38,13 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
             builder.HasOne(r => r.Avaliador)
                 .WithMany(r => r.Reviews)
                 .HasForeignKey(r => r.IdAvaliador)
+                .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired();
 
             builder.HasOne(r => r.Produto)
                 .WithMany(r => r.Reviews)
                 .HasForeignKey(r => r.IdProduto)
+                .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
         }
     }
