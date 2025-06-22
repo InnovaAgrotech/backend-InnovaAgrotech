@@ -10,7 +10,16 @@ namespace InnatAPP.API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            }).ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressMapClientErrors = false;
+            });  
+
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddInfrastructureAPI(builder.Configuration);
             builder.Services.AddInfrastructureJWT(builder.Configuration);
