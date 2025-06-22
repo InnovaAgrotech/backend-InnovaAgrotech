@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using InnatAPP.Application.DTOs;
 using InnatAPP.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InnatAPP.API.Controllers
 {
@@ -15,19 +16,10 @@ namespace InnatAPP.API.Controllers
             _produtoService = produtoService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetAll()
-        {
-            var produtos = await _produtoService.BuscarProdutosAsync();
-            if (produtos == null)
-            {
-                return NotFound("Produtos não encontrados.");
-            }
-            return Ok(produtos);
-        }
+        #region Buscas
 
-        [HttpGet("{id:int}", Name = "GetProduto")]
-        public async Task<ActionResult<ProdutoDTO>> GetById(int id)
+        [HttpGet("{id:Guid}", Name = "GetProduto")]
+        public async Task<ActionResult<ProdutoDTO>> GetById(Guid id)
         {
             var produto = await _produtoService.BuscarProdutoPorIdAsync(id);
             if (produto == null)
@@ -37,28 +29,50 @@ namespace InnatAPP.API.Controllers
             return Ok(produto);
         }
 
-        [HttpGet("categoria/{idCategoria:int}")]
-        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetByCategoria(int idCategoria)
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProdutoDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetAll()
+        {
+            var produtos = await _produtoService.BuscarProdutosAsync();
+            if (produtos == null || !produtos.Any())
+            {
+                return NotFound("Produtos não encontrados.");
+            }
+            return Ok(produtos);
+        }
+
+        [HttpGet("Categoria/{idCategoria:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProdutoDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetAllByCategoria(Guid idCategoria)
         {
             var produtos = await _produtoService.BuscarProdutosPorCategoriaAsync(idCategoria);
-            if (produtos == null)
+            if (produtos == null || !produtos.Any())
             {
-                return NotFound("Nenhum produto encontrado para essa categoria.");
+                return NotFound("Produtos não encontrados.");
             }
             return Ok(produtos);
         }
 
-        [HttpGet("empresa/{idEmpresa:int}")]
-        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetByEmpresa(int idEmpresa)
+        [HttpGet("Empresa/{idEmpresa:Guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProdutoDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetAllByEmpresa(Guid idEmpresa)
         {
             var produtos = await _produtoService.BuscarProdutosPorEmpresaAsync(idEmpresa);
-            if (produtos == null)
+            if (produtos == null || !produtos.Any())
             {
-                return NotFound("Nenhum produto encontrado para essa empresa.");
+                return NotFound("Produtos não encontrados.");
             }
             return Ok(produtos);
         }
 
+        #endregion
+
+        #region Comandos
+
+        [Authorize(Roles = "Empresa")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ProdutoDTO produtoDTO)
         {
@@ -70,22 +84,24 @@ namespace InnatAPP.API.Controllers
             return new CreatedAtRouteResult("GetProduto", new { id = produtoDTO.Id }, produtoDTO);
         }
 
+        [Authorize(Roles = "Empresa")]
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] ProdutoDTO produtoDTO)
+        public async Task<ActionResult> Put(Guid id, [FromBody] ProdutoDTO produtoDTO)
         {
-            if (id != produtoDTO.Id)
-                return BadRequest("Dados inválidos.");
-
             if (produtoDTO == null)
                 return BadRequest("Produto não encontrado.");
+
+            if (id != produtoDTO.Id)
+                return BadRequest("Dados inválidos.");
 
             await _produtoService.AtualizarProdutoAsync(produtoDTO);
 
             return Ok(produtoDTO);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<ProdutoDTO>> Delete(int id)
+        [Authorize(Roles = "Empresa")]
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult<ProdutoDTO>> Delete(Guid id)
         {
             var produto = await _produtoService.BuscarProdutoPorIdAsync(id);
             if (produto == null)
@@ -96,5 +112,7 @@ namespace InnatAPP.API.Controllers
             await _produtoService.DeletarProdutoAsync(id);
             return Ok(produto);
         }
+
+        #endregion
     }
 }

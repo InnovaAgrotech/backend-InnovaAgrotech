@@ -22,5 +22,12 @@ namespace InnatAPP.Domain.Interfaces
         Task<Usuario> DeletarUsuarioAsync(Usuario usuario);
 
         #endregion
+
+        #region Verificação de nome e e-mail
+
+        Task<bool> EmailJaExisteAsync(string email);
+        Task<bool> NomeJaExisteAsync(string nome);
+
+        #endregion
     }
 }

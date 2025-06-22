@@ -1,8 +1,6 @@
-﻿using InnatAPP.Application.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using InnatAPP.Application.DTOs;
 using InnatAPP.Application.Interfaces;
-using InnatAPP.Domain.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace InnatAPP.API.Controllers
 {
@@ -16,19 +14,10 @@ namespace InnatAPP.API.Controllers
             _categoriaService = categoriaService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoriaDTO>>> Get()
-        {
-            var categorias = await _categoriaService.BuscarCategoriasAsync();
-            if (categorias == null)
-            {
-                return NotFound("Categorias não encontradas.");
-            }
-            return Ok(categorias);
-        }
+        #region Buscas
 
-        [HttpGet("{id:int}", Name = "GetCategoria")]
-        public async Task<ActionResult<CategoriaDTO>> Get(int id)
+        [HttpGet("{id:Guid}", Name = "GetCategoria")]
+        public async Task<ActionResult<CategoriaDTO>> GetById(Guid id)
         {
             var categoria = await _categoriaService.BuscarCategoriaPorIdAsync(id);
             if (categoria == null)
@@ -37,6 +26,23 @@ namespace InnatAPP.API.Controllers
             }
             return Ok(categoria);
         }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoriaDTO>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetAll()
+        {
+            var categorias = await _categoriaService.BuscarCategoriasAsync();
+            if (categorias == null || !categorias.Any())
+            {
+                return NotFound("Categorias não encontradas.");
+            }
+            return Ok(categorias);
+        }
+
+        #endregion
+
+        #region Comandos
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CategoriaDTO categoriaDTO)
@@ -50,21 +56,21 @@ namespace InnatAPP.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] CategoriaDTO categoriaDTO)
+        public async Task<ActionResult> Put(Guid id, [FromBody] CategoriaDTO categoriaDTO)
         {
-            if (id != categoriaDTO.Id)
-                return BadRequest("Dados inválidos.");
-
             if (categoriaDTO == null)
                 return BadRequest("Categoria não encontrada.");
+
+            if (id != categoriaDTO.Id)
+                return BadRequest("Dados inválidos.");
 
             await _categoriaService.AtualizarCategoriaAsync(categoriaDTO);
 
             return Ok(categoriaDTO);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<CategoriaDTO>> Delete(int id)
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult<CategoriaDTO>> Delete(Guid id)
         {
             var categoria = await _categoriaService.BuscarCategoriaPorIdAsync(id);
             if (categoria == null)
@@ -75,5 +81,7 @@ namespace InnatAPP.API.Controllers
             await _categoriaService.DeletarCategoriaAsync(id);
             return Ok(categoria);
         }
+
+        #endregion
     }
 }

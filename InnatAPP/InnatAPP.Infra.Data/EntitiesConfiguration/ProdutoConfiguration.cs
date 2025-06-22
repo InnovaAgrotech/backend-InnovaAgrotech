@@ -35,12 +35,14 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
             builder.HasOne(p => p.Categoria)
                 .WithMany(p => p.Produtos)
                 .HasForeignKey(p => p.IdCategoria)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(p => p.Empresa)
                 .WithMany(p => p.Produtos)
                 .HasForeignKey(p => p.IdEmpresa)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -35,7 +35,15 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
                 tipo.Property(t => t.Valor)
                     .HasColumnName("TipoUsuario")
                     .IsRequired();
+
+                tipo.WithOwner(); 
             });
+
+            builder.HasIndex(u => u.Nome)
+            .IsUnique();
+
+            builder.HasIndex(u => u.Email)
+            .IsUnique();
         }
     }
 }

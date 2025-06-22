@@ -16,51 +16,40 @@ namespace InnatAPP.Application.Services
             _mapper = mapper;
             _mediator = mediator;
         }
-        public async Task AtualizarReviewAsync(ReviewDTO reviewDto)
-        {
-            var reviewUpdateCommand = _mapper.Map<ReviewUpdateCommand>(reviewDto);
-            await _mediator.Send(reviewUpdateCommand);
-        }
 
-        public async Task<ReviewDTO> BuscarReviewPorIdAsync(int id)
-        {
-            var reviewByIdQuery = new GetReviewByIdQuery(id);
-            if (reviewByIdQuery == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
+        #region Buscas
 
-            var result = await _mediator.Send(reviewByIdQuery);
-            return _mapper.Map<ReviewDTO>(result);
+        public async Task<ReviewDTO?> BuscarReviewPorIdAsync(Guid id)
+        {
+            var reviewByIdQuery = new GetReviewByIdQuery(id) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(reviewByIdQuery);
+            return _mapper.Map<ReviewDTO>(resultado);
         }
 
         public async Task<IEnumerable<ReviewDTO>> BuscarReviewsAsync()
         {
-            var reviewsQuery = new GetReviewsQuery();
-            if (reviewsQuery == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
-
-            var result = await _mediator.Send(reviewsQuery);
-            return _mapper.Map<IEnumerable<ReviewDTO>>(result);
+            var reviewsQuery = new GetReviewsQuery() ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(reviewsQuery);
+            return _mapper.Map<IEnumerable<ReviewDTO>>(resultado);
         }
 
-        public async Task<IEnumerable<ReviewDTO>> BuscarReviewsPorAvaliadorAsync(int idAvaliador)
+        public async Task<IEnumerable<ReviewDTO>> BuscarReviewsPorAvaliadorAsync(Guid idAvaliador)
         {
-            var reviewsPorAvaliadorQuery = new GetReviewsPorAvaliadorQuery(idAvaliador);
-            if (reviewsPorAvaliadorQuery == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
-
-            var result = await _mediator.Send(reviewsPorAvaliadorQuery);
-            return _mapper.Map<IEnumerable<ReviewDTO>>(result);
+            var reviewsPorAvaliadorQuery = new GetReviewsByAvaliadorQuery(idAvaliador) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(reviewsPorAvaliadorQuery);
+            return _mapper.Map<IEnumerable<ReviewDTO>>(resultado);
         }
 
-        public async Task<IEnumerable<ReviewDTO>> BuscarReviewsPorProdutoAsync(int idProduto)
+        public async Task<IEnumerable<ReviewDTO>> BuscarReviewsPorProdutoAsync(Guid idProduto)
         {
-            var reviewsPorProdutoQuery = new GetReviewsPorProdutoQuery(idProduto);
-            if (reviewsPorProdutoQuery == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
-
-            var result = await _mediator.Send(reviewsPorProdutoQuery);
-            return _mapper.Map<IEnumerable<ReviewDTO>>(result);
+            var reviewsPorProdutoQuery = new GetReviewsByProdutoQuery(idProduto) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(reviewsPorProdutoQuery);
+            return _mapper.Map<IEnumerable<ReviewDTO>>(resultado);
         }
+
+        #endregion
+
+        #region Comandos
 
         public async Task CriarReviewAsync(ReviewDTO reviewDto)
         {
@@ -68,13 +57,18 @@ namespace InnatAPP.Application.Services
             await _mediator.Send(reviewCreateCommand);
         }
 
-        public async Task DeletarReviewAsync(int id)
+        public async Task AtualizarReviewAsync(ReviewDTO reviewDto)
         {
-            var reviewRemoveCommand = new ReviewRemoveCommand(id);
-            if (reviewRemoveCommand == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
+            var reviewUpdateCommand = _mapper.Map<ReviewUpdateCommand>(reviewDto);
+            await _mediator.Send(reviewUpdateCommand);
+        }
 
+        public async Task DeletarReviewAsync(Guid id)
+        {
+            var reviewRemoveCommand = new ReviewRemoveCommand(id) ?? throw new Exception($"Não foi possível carregar a entidade.");
             await _mediator.Send(reviewRemoveCommand);
         }
+
+        #endregion
     }
 }

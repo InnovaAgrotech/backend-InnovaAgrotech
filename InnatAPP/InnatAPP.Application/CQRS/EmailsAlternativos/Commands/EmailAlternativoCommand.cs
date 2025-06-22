@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using InnatAPP.Domain.Entities;
 
 namespace InnatAPP.Application.CQRS.EmailsAlternativos.Commands
 {
-    internal class EmailAlternativoCommand
+    public abstract class EmailAlternativoCommand : IRequest<EmailAlternativo>
     {
+        public string EnderecoEmail { get; set; } = string.Empty;
+        public Guid IdUsuario { get; set; }
     }
 }

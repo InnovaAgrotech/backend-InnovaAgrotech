@@ -41,7 +41,8 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
             builder.HasOne(e => e.Usuario)
                 .WithMany(e => e.Enderecos)
                 .HasForeignKey(e => e.IdUsuario)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

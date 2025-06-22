@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using InnatAPP.Domain.Entities;
 using InnatAPP.Application.DTOs;
+using InnatAPP.Domain.ValueObjects;
+using InnatAPP.Application.DTOs.Usuario;
 
 namespace InnatAPP.Application.Mappings
 {
@@ -26,7 +28,8 @@ namespace InnatAPP.Application.Mappings
 
             CreateMap<Telefone, TelefoneDTO>().ReverseMap();
 
-            CreateMap<Usuario, UsuarioDTO>().ReverseMap();
+            CreateMap<Usuario, UsuarioRespostaDTO>()
+                 .ForMember(dest => dest.TipoUsuarioTexto, opt => opt.MapFrom(src => src.TipoUsuario.Valor));
         }
     }
 }

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InnatAPP.Application.CQRS.EmailsAlternativos.Commands
+﻿namespace InnatAPP.Application.CQRS.EmailsAlternativos.Commands
 {
-    internal class EmailAlternativoUpdateCommand
+    public class EmailAlternativoUpdateCommand : EmailAlternativoCommand
     {
+        public Guid Id { get; set; }
     }
 }

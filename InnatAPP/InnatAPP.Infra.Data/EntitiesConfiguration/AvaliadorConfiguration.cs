@@ -21,7 +21,8 @@ namespace InnatAPP.Infra.Data.EntitiesConfiguration
             builder.HasOne(a => a.Usuario)
                 .WithOne()
                 .HasForeignKey<Avaliador>(a => a.IdUsuario)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

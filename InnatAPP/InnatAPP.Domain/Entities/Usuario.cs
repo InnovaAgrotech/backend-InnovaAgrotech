@@ -20,7 +20,7 @@ namespace InnatAPP.Domain.Entities
 
         #region Propriedades de Navegação
 
-        public TipoUsuario TipoUsuario { get; private set; } = default!;
+        public TipoUsuario TipoUsuario { get; set; } = default!;
 
         #endregion
 
@@ -96,9 +96,9 @@ namespace InnatAPP.Domain.Entities
 
         #region Métodos Públicos
 
-        public void Alterar(string nome, string email, string senhaHash, string foto, string biografia)
+        public void Alterar(string nome, string foto, string biografia)
         {
-            ValidateDomain(nome, email, senhaHash, foto, biografia);
+            ValidatePerfil(nome, foto, biografia);
         }
 
         #endregion
@@ -314,6 +314,53 @@ namespace InnatAPP.Domain.Entities
             Nome = nome;
             Email = email;
             SenhaHash = senhaHash;
+            Foto = foto ?? string.Empty;
+            Biografia = biografia ?? string.Empty;
+
+            #endregion
+        }
+
+        private void ValidatePerfil(string nome, string? foto, string? biografia)
+        {
+            #region Validações de Nome
+
+            DomainExceptionValidation.When(string.IsNullOrWhiteSpace(nome),
+            "O nome de usuário é obrigatório.");
+
+            DomainExceptionValidation.When(nome.StartsWith(' '),
+            "O nome de usuário não pode começar com espaço (\" \").");
+
+            DomainExceptionValidation.When(nome.EndsWith(' '),
+            "O nome de usuário não pode terminar com espaço (\" \").");
+
+            DomainExceptionValidation.When(ConstantesValidacao.EspacosConsecutivos.IsMatch(nome),
+            "O nome de usuário não pode ter espaços consecutivos (\"  \", \"   \", \"    \" e etc).");
+
+            DomainExceptionValidation.When(nome.Length < 3,
+            "O nome de usuário deve ter no mínimo 3 caracteres.");
+
+            DomainExceptionValidation.When(nome.Length > 100,
+            "O nome de usuário pode ter no máximo 100 caracteres.");
+
+            #endregion
+
+            #region Validações de Foto
+
+            DomainExceptionValidation.When(foto?.Length > 250,
+            "A URL da foto pode ter no máximo 250 caracteres.");
+
+            #endregion
+
+            #region Validações de Biografia
+
+            DomainExceptionValidation.When(biografia?.Length > 500,
+            "A biografia pode ter no máximo 500 caracteres.");
+
+            #endregion
+
+            #region Inicialização das Propriedades
+
+            Nome = nome;
             Foto = foto ?? string.Empty;
             Biografia = biografia ?? string.Empty;
 

@@ -16,65 +16,57 @@ namespace InnatAPP.Application.Services
             _mapper = mapper;
             _mediator = mediator;
         }
-        public async Task AtualizarProdutoAsync(ProdutoDTO produtoDto)
-        {
-            var produtoUpdateCommand = _mapper.Map<ProdutoUpdateCommand>(produtoDto);
-            await _mediator.Send(produtoUpdateCommand);
-        }
 
-        public async Task<ProdutoDTO> BuscarProdutoPorIdAsync(int id)
+        #region Buscas
+        public async Task<ProdutoDTO?> BuscarProdutoPorIdAsync(Guid id)
         {
-            var produtoByIdQuery = new GetProdutoByIdQuery(id);
-            if (produtoByIdQuery == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
-
-            var result = await _mediator.Send(produtoByIdQuery);
-            return _mapper.Map<ProdutoDTO>(result);
+            var produtoByIdQuery = new GetProdutoByIdQuery(id) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(produtoByIdQuery);
+            return _mapper.Map<ProdutoDTO>(resultado);
         }
 
         public async Task<IEnumerable<ProdutoDTO>> BuscarProdutosAsync()
         {
-            var produtosQuery = new GetProdutosQuery();
-            if (produtosQuery == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
-
-            var result = await _mediator.Send(produtosQuery);
-            return _mapper.Map<IEnumerable<ProdutoDTO>>(result);
+            var produtosQuery = new GetProdutosQuery() ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(produtosQuery);
+            return _mapper.Map<IEnumerable<ProdutoDTO>>(resultado);
         }
 
-        public async Task<IEnumerable<ProdutoDTO>> BuscarProdutosPorCategoriaAsync(int idCategoria)
+        public async Task<IEnumerable<ProdutoDTO>> BuscarProdutosPorCategoriaAsync(Guid idCategoria)
         {
-            var produtosPorCategoriaQuery = new GetProdutosPorCategoriaQuery(idCategoria);
-            if (produtosPorCategoriaQuery == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
-
-            var result = await _mediator.Send(produtosPorCategoriaQuery);
-            return _mapper.Map<IEnumerable<ProdutoDTO>>(result);
+            var produtosPorCategoriaQuery = new GetProdutosByCategoriaQuery(idCategoria) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(produtosPorCategoriaQuery);
+            return _mapper.Map<IEnumerable<ProdutoDTO>>(resultado);
         }
 
-        public async Task<IEnumerable<ProdutoDTO>> BuscarProdutosPorEmpresaAsync(int idEmpresa)
+        public async Task<IEnumerable<ProdutoDTO>> BuscarProdutosPorEmpresaAsync(Guid idEmpresa)
         {
-            var produtosPorEmpresaQuery = new GetProdutosPorEmpresaQuery(idEmpresa);
-            if (produtosPorEmpresaQuery == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
-
-            var result = await _mediator.Send(produtosPorEmpresaQuery);
-            return _mapper.Map<IEnumerable<ProdutoDTO>>(result);
+            var produtosPorEmpresaQuery = new GetProdutosByCategoriaQuery(idEmpresa) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(produtosPorEmpresaQuery);
+            return _mapper.Map<IEnumerable<ProdutoDTO>>(resultado);
         }
 
+        #endregion
+
+        #region Comandos
         public async Task CriarProdutoAsync(ProdutoDTO produtoDto)
         {
             var produtoCreateCommand = _mapper.Map<ProdutoCreateCommand>(produtoDto);
             await _mediator.Send(produtoCreateCommand);
         }
 
-        public async Task DeletarProdutoAsync(int id)
+        public async Task AtualizarProdutoAsync(ProdutoDTO produtoDto)
         {
-            var produtoRemoveCommand = new ProdutoRemoveCommand(id);
-            if (produtoRemoveCommand == null)
-                throw new Exception($"Não foi possível carregar a entidade.");
+            var produtoUpdateCommand = _mapper.Map<ProdutoUpdateCommand>(produtoDto);
+            await _mediator.Send(produtoUpdateCommand);
+        }
 
+        public async Task DeletarProdutoAsync(Guid id)
+        {
+            var produtoRemoveCommand = new ProdutoRemoveCommand(id) ?? throw new Exception($"Não foi possível carregar a entidade.");
             await _mediator.Send(produtoRemoveCommand);
         }
+
+        #endregion
     }
 }

@@ -1,48 +1,69 @@
-﻿using AutoMapper;
-using InnatAPP.Domain.Entities;
+﻿using MediatR;
+using AutoMapper;
 using InnatAPP.Application.DTOs;
-using InnatAPP.Domain.Interfaces;
 using InnatAPP.Application.Interfaces;
+using InnatAPP.Application.CQRS.Avaliadores.Queries;
+using InnatAPP.Application.CQRS.Avaliadores.Commands;
 
 namespace InnatAPP.Application.Services
 {
     public class AvaliadorService : IAvaliadorService
     {
-    private IAvaliadorRepository _avaliadorRepository;
-    private readonly IMapper _mapper;
-    public AvaliadorService(IAvaliadorRepository avaliadorRepository, IMapper mapper)
-    {
-        _avaliadorRepository = avaliadorRepository;
-        _mapper = mapper;
-    }
-        public async Task AtualizarAvaliadorAsync(AvaliadorDTO avaliadorDto)
+        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
+
+        public AvaliadorService(IMapper mapper, IMediator mediator)
         {
-            var avaliadorEntity = _mapper.Map<Avaliador>(avaliadorDto);
-            await _avaliadorRepository.AtualizarAvaliadorAsync(avaliadorEntity);
+            _mapper = mapper;
+            _mediator = mediator;
+        }
+
+        #region Buscas
+
+        public async Task<AvaliadorDTO?> BuscarAvaliadorPorIdAsync(Guid id)
+        {
+            var avaliadorByIdQuery = new GetAvaliadorByIdQuery(id) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(avaliadorByIdQuery);
+            return _mapper.Map<AvaliadorDTO>(resultado);
+        }
+
+        public async Task<AvaliadorDTO?> BuscarAvaliadorPorIdDeUsuarioAsync(Guid idUsuario)
+        {
+            var avaliadorByIdUsuario = new GetAvaliadorByIdUsuarioQuery(idUsuario) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(avaliadorByIdUsuario);
+            return _mapper.Map<AvaliadorDTO>(resultado);
+        }
+
+        public async Task<AvaliadorDTO?> BuscarAvaliadorPorEmailAsync(string email)
+        {
+            var avaliadorByEmail = new GetAvaliadorByEmailQuery(email) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(avaliadorByEmail);
+            return _mapper.Map<AvaliadorDTO>(resultado);
         }
 
         public async Task<IEnumerable<AvaliadorDTO>> BuscarAvaliadoresAsync()
         {
-            var avaliadorEntity = await _avaliadorRepository.BuscarAvaliadoresAsync();
-            return _mapper.Map<IEnumerable<AvaliadorDTO>>(avaliadorEntity);
+            var avaliadoresQuery = new GetAvaliadoresQuery() ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(avaliadoresQuery);
+            return _mapper.Map<IEnumerable<AvaliadorDTO>>(resultado);
         }
 
-        public async Task<AvaliadorDTO> BuscarAvaliadorPorIdAsync(int id)
-        {
-            var avaliadorEntity = await _avaliadorRepository.BuscarAvaliadorPorIdAsync(id);
-            return _mapper.Map<AvaliadorDTO>(avaliadorEntity);
-        }
+        #endregion
+
+        #region Comandos
 
         public async Task CriarAvaliadorAsync(AvaliadorDTO avaliadorDto)
         {
-            var avaliadorEntity = _mapper.Map<Avaliador>(avaliadorDto);
-            await _avaliadorRepository.CriarAvaliadorAsync(avaliadorEntity);
+            var avaliadorCreateCommand = _mapper.Map<AvaliadorCreateCommand>(avaliadorDto);
+            await _mediator.Send(avaliadorCreateCommand);
         }
 
-        public async Task DeletarAvaliadorAsync(int id)
+        public async Task DeletarAvaliadorAsync(Guid id)
         {
-            var avaliadorEntity = _avaliadorRepository.BuscarAvaliadorPorIdAsync(id).Result;
-            await _avaliadorRepository.DeletarAvaliadorAsync(avaliadorEntity);
+            var avaliadorRemoveCommand = new AvaliadorRemoveCommand(id) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            await _mediator.Send(avaliadorRemoveCommand);
         }
+
+        #endregion
     }
 }

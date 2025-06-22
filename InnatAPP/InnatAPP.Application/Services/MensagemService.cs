@@ -1,48 +1,47 @@
-﻿using AutoMapper;
-using InnatAPP.Domain.Entities;
+﻿using MediatR;
+using AutoMapper;
 using InnatAPP.Application.DTOs;
-using InnatAPP.Domain.Interfaces;
 using InnatAPP.Application.Interfaces;
+using InnatAPP.Application.CQRS.Mensagens.Queries;
+using InnatAPP.Application.CQRS.Mensagens.Commands;
 
 namespace InnatAPP.Application.Services
 {
     public class MensagemService : IMensagemService
     {
-        private IMensagemRepository _mensagemRepository;
         private readonly IMapper _mapper;
-        public MensagemService(IMensagemRepository mensagemRepository, IMapper mapper)
+        private readonly IMediator _mediator;
+        public MensagemService(IMapper mapper, IMediator mediator)
         {
-            _mensagemRepository = mensagemRepository;
             _mapper = mapper;
-        }
-        public async Task AtualizarMensagemAsync(MensagemDTO mensagemDto)
-        {
-            var mensagemEntity = _mapper.Map<Mensagem>(mensagemDto);
-            await _mensagemRepository.AtualizarMensagemAsync(mensagemEntity);
+            _mediator = mediator;
         }
 
-        public async Task<MensagemDTO> BuscarMensagemPorIdAsync(int id)
+        #region Buscas
+        public async Task<MensagemDTO?> BuscarMensagemPorIdAsync(Guid id)
         {
-            var mensagemEntity = await _mensagemRepository.BuscarMensagemPorIdAsync(id);
-            return _mapper.Map<MensagemDTO>(mensagemEntity);
+            var mensagemByIdQuery = new GetMensagemByIdQuery(id) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(mensagemByIdQuery);
+            return _mapper.Map<MensagemDTO>(resultado);
         }
 
         public async Task<IEnumerable<MensagemDTO>> BuscarMensagensAsync()
         {
-            var mensagemEntity = await _mensagemRepository.BuscarMensagensAsync();
-            return _mapper.Map<IEnumerable<MensagemDTO>>(mensagemEntity);
+            var mensagensQuery = new GetMensagensQuery() ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var resultado = await _mediator.Send(mensagensQuery);
+            return _mapper.Map<IEnumerable<MensagemDTO>>(resultado);
         }
+
+        #endregion
+
+        #region Comandos
 
         public async Task CriarMensagemAsync(MensagemDTO mensagemDto)
         {
-            var mensagemEntity = _mapper.Map<Mensagem>(mensagemDto);
-            await _mensagemRepository.CriarMensagemAsync(mensagemEntity);
+            var mensagemCreateCommand = _mapper.Map<MensagemCreateCommand>(mensagemDto);
+            await _mediator.Send(mensagemCreateCommand);
         }
 
-        public async Task DeletarMensagemAsync(int id)
-        {
-            var mensagemEntity = _mensagemRepository.BuscarMensagemPorIdAsync(id).Result;
-            await _mensagemRepository.DeletarMensagemAsync(mensagemEntity);
-        }
+        #endregion
     }
 }
