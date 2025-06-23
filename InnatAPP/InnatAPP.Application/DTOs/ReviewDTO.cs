@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using InnatAPP.Application.DTOs.Produto;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace InnatAPP.Application.DTOs

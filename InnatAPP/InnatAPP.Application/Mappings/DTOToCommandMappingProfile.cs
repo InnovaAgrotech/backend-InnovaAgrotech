@@ -11,6 +11,7 @@ using InnatAPP.Application.CQRS.Categorias.Commands;
 using InnatAPP.Application.CQRS.Avaliadores.Commands;
 using InnatAPP.Application.CQRS.EmailsAlternativos.Commands;
 using InnatAPP.Application.DTOs.Usuario;
+using InnatAPP.Application.DTOs.Produto;
 
 namespace InnatAPP.Application.Mappings
 {
@@ -33,8 +34,8 @@ namespace InnatAPP.Application.Mappings
 
             CreateMap<MensagemDTO, MensagemCreateCommand>();
 
-            CreateMap<ProdutoDTO, ProdutoCreateCommand>();
-            CreateMap<ProdutoDTO, ProdutoUpdateCommand>();
+            CreateMap<ProdutoCreateDTO, ProdutoCreateCommand>();
+            CreateMap<ProdutoUpdateDTO, ProdutoUpdateCommand>();
 
             CreateMap<ReviewDTO, ReviewCreateCommand>();
             CreateMap<ReviewDTO, ReviewUpdateCommand>();

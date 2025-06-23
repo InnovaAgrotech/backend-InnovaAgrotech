@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 namespace InnatAPP.Infra.IoC
 {
@@ -28,6 +29,7 @@ namespace InnatAPP.Infra.IoC
                         ValidIssuer = configuration["Jwt:ValidIssuer"],
                         ValidAudience = configuration["Jwt:ValidAudience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"])),
+                        RoleClaimType = ClaimTypes.Role,
                         ClockSkew = TimeSpan.Zero
                     };
                 });

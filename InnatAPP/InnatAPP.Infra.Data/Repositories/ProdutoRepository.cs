@@ -18,7 +18,11 @@ namespace InnatAPP.Infra.Data.Repositories
 
         public async Task<Produto?> BuscarProdutoPorIdAsync(Guid id)
         {
-            return await _produtoContext.Produtos.FindAsync(id);
+            return await _produtoContext.Produtos
+                .Include(p => p.Categoria)
+                .Include(p => p.Empresa)
+                    .ThenInclude(e => e.Usuario)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Produto>> BuscarProdutosAsync()

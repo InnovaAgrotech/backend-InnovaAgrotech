@@ -1,4 +1,5 @@
-﻿using InnatAPP.Application.DTOs;
+﻿using InnatAPP.Application.DTOs.Produto;
+using InnatAPP.Domain.Entities;
 
 namespace InnatAPP.Application.Interfaces
 {
@@ -15,8 +16,8 @@ namespace InnatAPP.Application.Interfaces
 
         #region Comandos
 
-        Task CriarProdutoAsync(ProdutoDTO produtoDto);
-        Task AtualizarProdutoAsync(ProdutoDTO produtoDto);
+        Task<Produto> CriarProdutoAsync(ProdutoCreateDTO produtoDto);
+        Task AtualizarProdutoAsync(ProdutoUpdateDTO produtoDto);
         Task DeletarProdutoAsync(Guid id);
 
         #endregion

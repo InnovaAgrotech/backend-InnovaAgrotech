@@ -3,6 +3,7 @@ using InnatAPP.Domain.Entities;
 using InnatAPP.Application.DTOs;
 using InnatAPP.Domain.ValueObjects;
 using InnatAPP.Application.DTOs.Usuario;
+using InnatAPP.Application.DTOs.Produto;
 
 namespace InnatAPP.Application.Mappings
 {
@@ -22,7 +23,9 @@ namespace InnatAPP.Application.Mappings
 
             CreateMap<Mensagem, MensagemDTO>().ReverseMap();
 
-            CreateMap<Produto, ProdutoDTO>().ReverseMap();
+            CreateMap<Produto, ProdutoDTO>().ReverseMap()
+                    .ForMember(dest => dest.Empresa, opt => opt.MapFrom(src => src.Empresa))
+                    .ForMember(dest => dest.Categoria, opt => opt.MapFrom(src => src.Categoria)); ;
 
             CreateMap<Review, ReviewDTO>().ReverseMap();
 

@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using AutoMapper;
-using InnatAPP.Application.DTOs;
 using InnatAPP.Application.Interfaces;
 using InnatAPP.Application.CQRS.Produtos.Queries;
 using InnatAPP.Application.CQRS.Produtos.Commands;
+using InnatAPP.Application.DTOs.Produto;
+using InnatAPP.Domain.Entities;
 
 namespace InnatAPP.Application.Services
 {
@@ -41,7 +42,8 @@ namespace InnatAPP.Application.Services
 
         public async Task<IEnumerable<ProdutoDTO>> BuscarProdutosPorEmpresaAsync(Guid idEmpresa)
         {
-            var produtosPorEmpresaQuery = new GetProdutosByCategoriaQuery(idEmpresa) ?? throw new Exception($"Não foi possível carregar a entidade.");
+            var produtosPorEmpresaQuery = new GetProdutosByEmpresaQuery(idEmpresa)
+                ?? throw new Exception($"Não foi possível carregar a entidade.");
             var resultado = await _mediator.Send(produtosPorEmpresaQuery);
             return _mapper.Map<IEnumerable<ProdutoDTO>>(resultado);
         }
@@ -49,13 +51,14 @@ namespace InnatAPP.Application.Services
         #endregion
 
         #region Comandos
-        public async Task CriarProdutoAsync(ProdutoDTO produtoDto)
+        public async Task<Produto> CriarProdutoAsync(ProdutoCreateDTO produtoDto)
         {
             var produtoCreateCommand = _mapper.Map<ProdutoCreateCommand>(produtoDto);
-            await _mediator.Send(produtoCreateCommand);
+            var produtoCriado = await _mediator.Send(produtoCreateCommand);
+            return produtoCriado;
         }
 
-        public async Task AtualizarProdutoAsync(ProdutoDTO produtoDto)
+        public async Task AtualizarProdutoAsync(ProdutoUpdateDTO produtoDto)
         {
             var produtoUpdateCommand = _mapper.Map<ProdutoUpdateCommand>(produtoDto);
             await _mediator.Send(produtoUpdateCommand);

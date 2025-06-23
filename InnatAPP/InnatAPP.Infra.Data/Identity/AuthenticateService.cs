@@ -53,7 +53,7 @@ namespace InnatAPP.Infra.Data.Identity
             var expiration = DateTime.UtcNow.AddHours(5);
 
             JwtSecurityToken token = new(
-                issuer: _configuration["Jwt:ValidUser"],
+                issuer: _configuration["Jwt:ValidIssuer"],
                 audience: _configuration["Jwt:ValidAudience"],
                 claims: claims,
                 expires: expiration,
