@@ -123,7 +123,7 @@ namespace InnatAPP.API.Controllers
 
             return Ok(produtoDTO);
         }
-
+         
         [Authorize(Roles = "Empresa")]
         [HttpDelete("{id:Guid}")]
         public async Task<ActionResult<ProdutoDTO>> Delete(Guid id)
