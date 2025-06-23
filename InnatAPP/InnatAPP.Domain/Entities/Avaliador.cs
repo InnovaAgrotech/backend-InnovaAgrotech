@@ -43,7 +43,7 @@ namespace InnatAPP.Domain.Entities
 
             #region Inicialização das Propriedades
 
-            Id = Guid.NewGuid();
+            Id = idUsuario;
             IdUsuario = idUsuario;
 
             #endregion
