@@ -12,7 +12,7 @@ COPY --from=build /app/publish .
 
 # Heroku define a variável de ambiente PORT em runtime.
 # Aqui você só precisa garantir que sua app use esse valor no código.
-ENV ASPNETCORE_URLS=http://+:$PORT
+ENV ASPNETCORE_URLS=http://+:8080
 
 # Exponha uma porta padrão só para o Docker não reclamar.
 EXPOSE 8080
