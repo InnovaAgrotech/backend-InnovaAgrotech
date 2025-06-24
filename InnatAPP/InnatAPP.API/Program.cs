@@ -9,6 +9,13 @@ namespace InnatAPP.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                var portEnv = Environment.GetEnvironmentVariable("PORT");
+                var port = string.IsNullOrEmpty(portEnv) ? 8080 : int.Parse(portEnv);
+                options.ListenAnyIP(port);
+            });
+
             // Add services to the container.
 
             builder.Services.AddControllers(options =>
