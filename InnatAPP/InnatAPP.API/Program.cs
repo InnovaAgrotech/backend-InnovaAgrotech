@@ -1,5 +1,6 @@
 using InnatAPP.Infra.IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Prometheus;
 
 namespace InnatAPP.API
 {
@@ -11,11 +12,11 @@ namespace InnatAPP.API
 
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {
-                serverOptions.ListenAnyIP(Environment.GetEnvironmentVariable("PORT") != null ? int.Parse(Environment.GetEnvironmentVariable("PORT")) : 8080);
+                var portEnv = Environment.GetEnvironmentVariable("PORT");
+                serverOptions.ListenAnyIP(!string.IsNullOrEmpty(portEnv) ? int.Parse(portEnv) : 8080);
             });
 
             // Add services to the container.
-
             builder.Services.AddControllers(options =>
             {
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
@@ -24,9 +25,6 @@ namespace InnatAPP.API
                 options.SuppressMapClientErrors = false;
             });
 
-
-
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddInfrastructureAPI(builder.Configuration);
             builder.Services.AddInfrastructureJWT(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
@@ -69,15 +67,15 @@ namespace InnatAPP.API
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder
-                        .AllowAnyOrigin() // ou .WithOrigins("http://localhost:5173")
+                    policyBuilder => policyBuilder
+                        .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Middleware pipeline
             if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
             {
                 app.UseSwagger();
@@ -90,11 +88,18 @@ namespace InnatAPP.API
 
             app.UseHttpsRedirection();
 
+            //  Middleware Prometheus: mede requisições HTTP
+            app.UseHttpMetrics();
+
             app.UseAuthorization();
 
             app.MapControllers();
 
+            // Endpoint de métricas Prometheus (/metrics)
+            app.MapMetrics();
+
             app.Run();
         }
     }
-}// New build
+}
+
